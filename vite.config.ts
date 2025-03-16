@@ -10,6 +10,9 @@ export default defineConfig({
     vueDevTools(),
     VitePWA({
       registerType: "autoUpdate",
+      workbox: {
+        cleanupOutdatedCaches: true, // Hapus cache lama
+      },
       manifest: {
         name: "Benz Absensi",
         short_name: "Aplikasi",
