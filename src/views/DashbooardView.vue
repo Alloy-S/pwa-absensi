@@ -77,13 +77,13 @@
             <div class="mb-10"></div>
         </div>
         <div>
-            <ReusableModal v-model:isOpen="isModalOpen" title="Informasi" @close="isModalOpen = false">
-                <p>Pengenalan Muka belum Terdaftar</p>
-                <p>Daftar Sekarang</p>
+            <ReusableModal v-model:isOpen="isModalOpen" title="Pemberitahuan" @close="isModalOpen = false">
+                <p>Wajah belum Terdaftar</p>
+                <p>Lakukan Pendaftar Wajah Sekarang</p>
 
                 <template #footer>
-                    <button @click="isModalOpen = false" class="px-4 py-2 bg-gray-300 rounded">Tutup</button>
-                    <button class="px-4 py-2 bg-blue-500 text-white rounded">Lanjut</button>
+                    <!-- <button @click="isModalOpen = false" class="px-4 py-2 bg-gray-300 rounded">Tutup</button> -->
+                    <button @click="isModalOpen = false" class="px-4 py-2 bg-blue-500 text-white rounded">Lanjut</button>
                 </template>
             </ReusableModal>
         </div>

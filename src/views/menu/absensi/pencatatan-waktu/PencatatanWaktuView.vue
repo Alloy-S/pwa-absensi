@@ -40,6 +40,9 @@ import { ref } from 'vue';
 import TopAbsensiNavigation from '../../../../components/TopAbsensiNavigation.vue';
 import TopHeader from '../../../../components/TopHeader.vue';
 import BasePageNoNav from '../../../../layouts/BasePageNoNav.vue';
+import { useRouter } from 'vue-router';
+
+const route = useRouter();
 
 const shiftKerja = ref("Normal (08:00 - 16:00)");
 const jamMasuk = ref<string | null>(null);
@@ -66,6 +69,7 @@ const formatDateTime = (date: Date): string => {
 const catatMasuk = () => {
     jamMasuk.value = formatDateTime(new Date());
     isMasuk.value = true;
+    route.push('/menu/absensi/take-photo');
 };
 
 const catatPulang = () => {

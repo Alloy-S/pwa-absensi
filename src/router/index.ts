@@ -18,6 +18,7 @@ import DetailAbsensi from '../views/menu/absensi/DetailAbsensi.vue';
 import DetailKoreksiView from '../views/menu/absensi/koreksi/DetailKoreksiView.vue';
 import DetailIzinView from '../views/menu/absensi/izin/DetailIzinView.vue';
 import DetailLemburView from '../views/menu/absensi/lembur/DetailLemburView.vue';
+import TakePhotoView from '../views/menu/absensi/TakePhotoView.vue';
 
 const routes = [
   {
@@ -107,6 +108,12 @@ const routes = [
     path: '/menu/absensi/lembur/add',
     name: 'Tambah Lembur',
     component: AddLemburView,
+    // meta: { requiresAuth: true }
+  },
+  {
+    path: '/menu/absensi/take-photo',
+    name: 'Ambil Foto',
+    component: TakePhotoView,
     // meta: { requiresAuth: true }
   },
   {

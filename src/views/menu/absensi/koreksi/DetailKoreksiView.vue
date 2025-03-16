@@ -21,13 +21,12 @@
 </template>
 
 <script setup lang="ts">
-import { useRoute } from 'vue-router';
+// import { useRoute } from 'vue-router';
 import BasePageNoNav from '@/layouts/BasePageNoNav.vue';
 import TopHeader from '@/components/TopHeader.vue';
 import DetailItem from '@/components/DetailItem.vue';
 
-const route = useRoute();
-const pageTitle = `Detail ${route.params.type}`;
+// const route = useRoute();
 
 const data = {
     pengaju: 'Alloysius Steven',
