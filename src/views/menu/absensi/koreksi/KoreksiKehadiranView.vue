@@ -11,16 +11,16 @@
             <div class="mt-4">
                 <div v-if="koreksiList.length > 0" class="space-y-3">
                     <h2 class="text-lg font-semibold text-gray-700">Daftar Pengajuan Koreksi</h2>
-                    <div v-for="(koreksi, index) in koreksiList" :key="index"
-                        class="flex justify-between bg-white p-4 rounded-lg shadow border-l-4"
-                        :class="statusColor(koreksi.status)">
-                        <div>
+                    <Button v-for="(koreksi, index) in koreksiList" :key="index"
+                        class="w-full flex justify-between bg-white p-4 rounded-lg shadow border-l-4"
+                        :class="statusColor(koreksi.status)" @click="detailKoreksi(koreksi.id)">
+                        <div class="flex flex-col items-start">
                             <p class="text-sm font-semibold">Tanggal: {{ koreksi.tanggal }}</p>
                             <p class="text-sm">Alasan: {{ koreksi.alasan }}</p>
                         </div>
                         <div class="text-sm font-semibold" :class="statusTextColor(koreksi.status)">{{ koreksi.status }}
                         </div>
-                    </div>
+                    </Button>
                 </div>
                 <p v-else class="text-center text-gray-500">Belum ada pengajuan koreksi.</p>
             </div>
@@ -33,11 +33,14 @@ import { ref } from 'vue';
 import TopAbsensiNavigation from '../../../../components/TopAbsensiNavigation.vue';
 import TopHeader from '../../../../components/TopHeader.vue';
 import BasePageNoNav from '../../../../layouts/BasePageNoNav.vue';
+import { useRouter } from 'vue-router';
+
+const router = useRouter();
 
 const koreksiList = ref([
-    { tanggal: '2025-03-10', alasan: 'Terlambat Absen', status: 'Diproses' },
-    { tanggal: '2025-03-12', alasan: 'Lupa Absen Masuk', status: 'Disetujui' },
-    { tanggal: '2025-03-14', alasan: 'Kesalahan Data', status: 'Ditolak' }
+    {id: "1", tanggal: '2025-03-10', alasan: 'Terlambat Absen', status: 'Diproses' },
+    {id: "1", tanggal: '2025-03-12', alasan: 'Lupa Absen Masuk', status: 'Disetujui' },
+    {id: "1", tanggal: '2025-03-14', alasan: 'Kesalahan Data', status: 'Ditolak' }
 ]);
 
 const statusColor = (status: string) => {
@@ -57,6 +60,10 @@ const statusTextColor = (status: string) => {
 };
 
 const tambahKoreksi = () => {
-    alert('Fitur tambah koreksi akan ditambahkan nanti');
+    router.push('/menu/absensi/koreksi-kehadiran/add');
+};
+
+const detailKoreksi = (id: string) => {
+    router.push('/menu/absensi/koreksi-kehadiran/' + id);
 };
 </script>

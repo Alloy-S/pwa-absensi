@@ -22,6 +22,7 @@ const router = useRouter();
 
 const buttons = ref([
     { text: 'Absensi', path: '/menu/absensi/pencatatan-waktu' },
+    { text: 'Input Absensi Borongan/Harian', path: '/menu/borongan-harian' },
     { text: 'Pengumuman', path: '/pengumuman' },
     { text: 'Reimburse', path: '/reimburse' },
     { text: 'Approval', path: '/approval' },

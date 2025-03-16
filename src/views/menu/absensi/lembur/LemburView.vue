@@ -13,16 +13,16 @@
             <div class="mt-4">
                 <div class="mt-3" v-if="pengajuanLembur.length > 0">
                     <p class="text-lg font-semibold text-gray-700">Riwayat Pengajuan Lembur</p>
-                    <div v-for="(lembur, index) in pengajuanLembur" :key="index"
-                        class="flex justify-between bg-white p-4 rounded-lg shadow mb-3 border-l-4 border-blue-500">
-                        <div>
+                    <button v-for="(lembur, index) in pengajuanLembur" :key="index" @click="detailLembur(lembur.id)"
+                        class="w-full flex justify-between bg-white p-4 rounded-lg shadow mb-3 border-l-4 border-blue-500">
+                        <div class="flex flex-col items-start">
                             <p class="font-semibold">{{ lembur.tanggal }}</p>
                             <p class="text-sm text-gray-600">{{ lembur.jamMulai }} - {{ lembur.jamSelesai }}</p>
                         </div>
                         <div class="text-sm font-semibold" :class="statusClass(lembur.status)">
                             {{ lembur.status }}
                         </div>
-                    </div>
+                    </button>
                 </div>
                 <p v-else class="text-gray-500 text-center">Belum ada pengajuan lembur.</p>
             </div>
@@ -32,13 +32,16 @@
 
 <script setup lang="ts">
 import { ref } from 'vue';
-import TopAbsensiNavigation from '../../../../components/TopAbsensiNavigation.vue';
-import TopHeader from '../../../../components/TopHeader.vue';
-import BasePageNoNav from '../../../../layouts/BasePageNoNav.vue';
+import TopAbsensiNavigation from '@/components/TopAbsensiNavigation.vue';
+import TopHeader from '@/components/TopHeader.vue';
+import BasePageNoNav from '@/layouts/BasePageNoNav.vue';
+import { useRouter } from 'vue-router';
+
+const router = useRouter();
 
 const pengajuanLembur = ref([
-    { tanggal: "15 Mar 2025", jamMulai: "18:00", jamSelesai: "21:00", status: "Disetujui" },
-    { tanggal: "10 Mar 2025", jamMulai: "17:30", jamSelesai: "20:00", status: "Menunggu" },
+    {id: "1", tanggal: "15 Mar 2025", jamMulai: "18:00", jamSelesai: "21:00", status: "Disetujui" },
+    {id: "1", tanggal: "10 Mar 2025", jamMulai: "17:30", jamSelesai: "20:00", status: "Menunggu" },
 ]);
 
 const statusClass = (status: string) => {
@@ -46,7 +49,11 @@ const statusClass = (status: string) => {
 };
 
 const ajukanLembur = () => {
-    alert("Fitur ajukan lembur akan ditambahkan nanti!");
+   router.push('lembur/add');
+};
+
+const detailLembur = (id: string) => {
+    router.push(`lembur/${id}`);
 };
 </script>
 

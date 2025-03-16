@@ -24,7 +24,8 @@
                         <div class="mt-2">
                             <div class="flex justify-between items-center">
                                 <p class="text-gray-600 text-sm">Hari ini</p>
-                                <p class="text-gray-600 text-sm"><span class="font-semibold">Shift</span>: Normal(08:00-16:00)</p>
+                                <p class="text-gray-600 text-sm"><span class="font-semibold">Shift</span>:
+                                    Normal(08:00-16:00)</p>
                             </div>
                             <div class="flex justify-between items-center">
                                 <p class="font-semibold text-gray-800">Masuk: 08:00</p>
@@ -75,16 +76,29 @@
             <!-- applly bottom margin -->
             <div class="mb-10"></div>
         </div>
+        <div>
+            <ReusableModal v-model:isOpen="isModalOpen" title="Informasi" @close="isModalOpen = false">
+                <p>Pengenalan Muka belum Terdaftar</p>
+                <p>Daftar Sekarang</p>
+
+                <template #footer>
+                    <button @click="isModalOpen = false" class="px-4 py-2 bg-gray-300 rounded">Tutup</button>
+                    <button class="px-4 py-2 bg-blue-500 text-white rounded">Lanjut</button>
+                </template>
+            </ReusableModal>
+        </div>
     </BasePage>
 </template>
 
 <script setup lang="ts">
 import BasePage from '../layouts/BasePage.vue';
+import ReusableModal from '../components/ReusableModal.vue';
 import { ref } from 'vue';
 import CardApproval from '../components/CardApproval.vue';
 
 const tabs = ref(['Pengumuman', 'Waiting Approval']);
 const activeTab = ref('Pengumuman');
+const isModalOpen = ref(true);
 
 const approvals = ref([
     { date: 'Apr 15, 2023 - Apr 18, 2023', approvedBy: 'Martin Deo', status: 'Waiting Approval', request: 'Koreksi Kehadiran' },

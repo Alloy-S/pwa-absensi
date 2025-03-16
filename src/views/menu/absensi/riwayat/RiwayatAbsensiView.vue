@@ -22,7 +22,7 @@
 
                 <!-- Daftar Riwayat Absensi -->
                 <div class="mt-3">
-                    <button v-for="(riwayat, index) in paginatedData" :key="index"
+                    <button v-for="(riwayat, index) in paginatedData" :key="index" @click="goToDetail(riwayat)"
                         class="w-full flex space-x-4 justify-between bg-white p-4 rounded-lg shadow mb-3 border-l-4 border-green-500">
                         <div class="flex flex-col justify-center">
                             <p class="text-5xl">{{ riwayat.tanggal }}</p>
@@ -92,15 +92,18 @@ import TopAbsensiNavigation from '../../../../components/TopAbsensiNavigation.vu
 import TopHeader from '../../../../components/TopHeader.vue';
 import BasePageNoNav from '../../../../layouts/BasePageNoNav.vue';
 import { ref, computed } from 'vue';
+import { useRouter } from 'vue-router';
+
+const router = useRouter();
 
 const selectedMonth = ref(null);
 const riwayatAbsensi = ref([
-    { tanggal: "15", bulan: "Mar 2025", shift: "Normal(08:00-16:00)", jamMasuk: "07:50-16:10 WIB", status: "Hadir" },
-    { tanggal: "14", bulan: "Mar 2025", shift: "Normal(08:00-16:00)", jamMasuk: "07:50-16:10 WIB", status: "Hadir" },
-    { tanggal: "13", bulan: "Mar 2025", shift: "Normal(08:00-16:00)", jamMasuk: "07:50-16:10 WIB", status: "Hadir" },
-    { tanggal: "12", bulan: "Mar 2025", shift: "Normal(08:00-16:00)", jamMasuk: "07:50-16:10 WIB", status: "Hadir" },
-    { tanggal: "11", bulan: "Mar 2025", shift: "Normal(08:00-16:00)", jamMasuk: "07:50-16:10 WIB", status: "Hadir" },
-    { tanggal: "10", bulan: "Mar 2025", shift: "Normal(08:00-16:00)", jamMasuk: "07:50-16:10 WIB", status: "Hadir" },
+    {id: "1", tanggal: "15", bulan: "Mar 2025", shift: "Normal(08:00-16:00)", jamMasuk: "07:50-16:10 WIB", status: "Hadir" },
+    {id: "1", tanggal: "14", bulan: "Mar 2025", shift: "Normal(08:00-16:00)", jamMasuk: "07:50-16:10 WIB", status: "Hadir" },
+    {id: "1", tanggal: "13", bulan: "Mar 2025", shift: "Normal(08:00-16:00)", jamMasuk: "07:50-16:10 WIB", status: "Hadir" },
+    {id: "1", tanggal: "12", bulan: "Mar 2025", shift: "Normal(08:00-16:00)", jamMasuk: "07:50-16:10 WIB", status: "Hadir" },
+    {id: "1", tanggal: "11", bulan: "Mar 2025", shift: "Normal(08:00-16:00)", jamMasuk: "07:50-16:10 WIB", status: "Hadir" },
+    {id: "1", tanggal: "10", bulan: "Mar 2025", shift: "Normal(08:00-16:00)", jamMasuk: "07:50-16:10 WIB", status: "Hadir" },
 ]);
 
 const itemsPerPage = 5;
@@ -130,5 +133,9 @@ const nextPage = () => {
     if (currentPage.value < totalPages.value) {
         currentPage.value++;
     }
+};
+
+const goToDetail = (riwayat: any) => {
+    router.push(`riwayat/${riwayat.id}`);
 };
 </script>
