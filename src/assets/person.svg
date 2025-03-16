@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?><!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo
+Mixer Tools -->
+
+<svg 
+    xmlns="http://www.w3.org/2000/svg" 
+    viewBox="0 0 24 24" 
+    fill="#6B7280"   
+>
+    <!-- Kepala -->
+    <circle cx="12" cy="8" r="4" />
+    
+    <!-- Badan -->
+    <path d="M4 20c0-4 3.5-7 8-7s8 3 8 7" />
+</svg>

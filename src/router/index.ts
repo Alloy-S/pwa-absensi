@@ -19,6 +19,7 @@ import DetailKoreksiView from '../views/menu/absensi/koreksi/DetailKoreksiView.v
 import DetailIzinView from '../views/menu/absensi/izin/DetailIzinView.vue';
 import DetailLemburView from '../views/menu/absensi/lembur/DetailLemburView.vue';
 import TakePhotoView from '../views/menu/absensi/TakePhotoView.vue';
+import AbsensView from '@/views/menu/absensi/pencatatan-waktu/AbsensView.vue';
 
 const routes = [
   {
@@ -72,6 +73,12 @@ const routes = [
     path: '/menu/absensi/pencatatan-waktu',
     name: 'Pencatatan Waktu',
     component: PencatatanWaktuView,
+    // meta: { requiresAuth: true }
+  },
+  {
+    path: '/menu/absensi/pencatatan-waktu/:type',
+    name: 'Pencatatan Waktu User',
+    component: AbsensView,
     // meta: { requiresAuth: true }
   },
   {

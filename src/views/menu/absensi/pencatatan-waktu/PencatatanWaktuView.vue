@@ -55,51 +55,17 @@ const formattedDate = new Date().toLocaleDateString('id-ID', {
     weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
 });
 
-const formatDateTime = (date: Date): string => {
-    const dd = String(date.getDate()).padStart(2, '0');
-    const mm = String(date.getMonth() + 1).padStart(2, '0');
-    const yyyy = date.getFullYear();
-    const hh = String(date.getHours()).padStart(2, '0');
-    const mi = String(date.getMinutes()).padStart(2, '0');
-    const ss = String(date.getSeconds()).padStart(2, '0');
-    
-    return `${dd}-${mm}-${yyyy} - ${hh}:${mi}:${ss}`;
-};
-
 const catatMasuk = () => {
-    jamMasuk.value = formatDateTime(new Date());
-    isMasuk.value = true;
-    route.push('/menu/absensi/take-photo');
+    // jamMasuk.value = formatDateTime(new Date());
+    // isMasuk.value = true;
+    route.push('/menu/absensi/pencatatan-waktu/masuk');
 };
 
 const catatPulang = () => {
-    jamPulang.value = formatDateTime(new Date());
-    isPulang.value = true;
-    hitungLamaKerja();
+    route.push('/menu/absensi/pencatatan-waktu/masuk');
+    // jamPulang.value = formatDateTime(new Date());
+    // isPulang.value = true;
+    // hitungLamaKerja();
 };
 
-const hitungLamaKerja = () => {
-    if (!jamMasuk.value || !jamPulang.value) return;
-
-    const [tanggalM, jamM] = jamMasuk.value.split(" - ");
-    const [tanggalP, jamP] = jamPulang.value.split(" - ");
-
-    const [ddM, mmM, yyyyM] = tanggalM.split('-').map(Number);
-    const [hhM, miM, ssM] = jamM.split(':').map(Number);
-
-    const [ddP, mmP, yyyyP] = tanggalP.split('-').map(Number);
-    const [hhP, miP, ssP] = jamP.split(':').map(Number);
-
-    const masuk = new Date(yyyyM, mmM - 1, ddM, hhM, miM, ssM);
-    const pulang = new Date(yyyyP, mmP - 1, ddP, hhP, miP, ssP);
-
-    const selisihMs = pulang.getTime() - masuk.getTime();
-    if (selisihMs > 0) {
-        const totalJam = Math.floor(selisihMs / (1000 * 60 * 60));
-        const totalMenit = Math.floor((selisihMs % (1000 * 60 * 60)) / (1000 * 60));
-        const totalDetik = Math.floor((selisihMs % (1000 * 60)) / 1000);
-
-        lamaKerja.value = `${String(totalJam).padStart(2, '0')}:${String(totalMenit).padStart(2, '0')}:${String(totalDetik).padStart(2, '0')}`;
-    }
-};
 </script>

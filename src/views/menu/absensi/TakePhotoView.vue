@@ -5,17 +5,18 @@
 <script setup>
 import WebCamUI from '@/components/WebCamUI.vue';
 import { useRouter } from 'vue-router';
-import { usePhotoStore } from '@/stores/UsePhotoStore';
+import {useAbsenceStore} from '@/stores/absenceStore';
 
 const router = useRouter();
-const photoStore = usePhotoStore();
+const absenceStore = useAbsenceStore();
+const fullscreenState = true;
 
 const photoTaken = (data) => {
   console.log('image blob: ', data.blob);
-  console.log('image data url', data.image_data_url);
+  // console.log('image data url', data.image_data_url);
 
   // Simpan ke Pinia
-  photoStore.setPhoto(data.blob, data.image_data_url);
+  absenceStore.setPhoto(data.image_data_url);
 
   setTimeout(() => {
       router.back();
