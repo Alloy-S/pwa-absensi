@@ -17,7 +17,7 @@ const router = useRouter();
 
 const navItems = [
   { label: 'Home', path: '/', icon: 'fas fa-home' },
-  { label: 'Menu', path: '/Menu', icon: 'fas fa-border-all' },
+  { label: 'Menu', path: '/menu', icon: 'fas fa-border-all' },
   { label: 'Profile', path: '/profile', icon: 'fas fa-user' },
 ];
 

@@ -22,10 +22,10 @@ const router = useRouter();
 
 const buttons = ref([
     { text: 'Absensi', path: '/menu/absensi/pencatatan-waktu' },
-    { text: 'Input Absensi Borongan/Harian', path: '/menu/borongan-harian' },
-    { text: 'Pengumuman', path: '/pengumuman' },
-    { text: 'Reimburse', path: '/reimburse' },
-    { text: 'Approval', path: '/approval' },
+    { text: 'Input Absensi Borongan/Harian', path: '/menu/absensi/borongan' },
+    { text: 'Pengumuman', path: '/menu/pengumuman' },
+    { text: 'Reimburse', path: '/menu/reimburse' },
+    { text: 'Approval', path: '/menu/approval' },
 ]);
 
 const navigate = (path: string) => {

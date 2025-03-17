@@ -20,6 +20,11 @@ import DetailIzinView from '../views/menu/absensi/izin/DetailIzinView.vue';
 import DetailLemburView from '../views/menu/absensi/lembur/DetailLemburView.vue';
 import TakePhotoView from '../views/menu/absensi/TakePhotoView.vue';
 import AbsensView from '@/views/menu/absensi/pencatatan-waktu/AbsensView.vue';
+import AbsensiBoronganList from '@/views/menu/absensiBorongan/AbsensiBoronganList.vue';
+import DetailAbsensiBorongan from '@/views/menu/absensiBorongan/DetailAbsensiBorongan.vue';
+import InputAbsensiBorongan from '@/views/menu/absensiBorongan/InputAbsensiBorongan.vue';
+import ListPengumuman from '@/views/menu/pengumuman/ListPengumuman.vue';
+import DetailPengumuman from '@/views/menu/pengumuman/DetailPengumuman.vue';
 
 const routes = [
   {
@@ -121,6 +126,36 @@ const routes = [
     path: '/menu/absensi/take-photo',
     name: 'Ambil Foto',
     component: TakePhotoView,
+    // meta: { requiresAuth: true }
+  },
+  {
+    path: '/menu/absensi/borongan',
+    name: 'Riwayat Absensi Borongan',
+    component: AbsensiBoronganList,
+    // meta: { requiresAuth: true }
+  },
+  {
+    path: '/menu/absensi/borongan/:id',
+    name: 'Detail Absensi Borongan',
+    component: DetailAbsensiBorongan,
+    // meta: { requiresAuth: true }
+  },
+  {
+    path: '/menu/absensi/borongan/create',
+    name: 'Input Absensi Borongan',
+    component: InputAbsensiBorongan,
+    // meta: { requiresAuth: true }
+  },
+  {
+    path: '/menu/pengumuman',
+    name: 'Pengumuman',
+    component: ListPengumuman,
+    // meta: { requiresAuth: true }
+  },
+  {
+    path: '/menu/pengumuman/:id',
+    name: 'Detail Pengumuman',
+    component: DetailPengumuman,
     // meta: { requiresAuth: true }
   },
   {
