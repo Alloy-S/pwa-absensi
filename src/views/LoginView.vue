@@ -39,7 +39,7 @@ const handleLogin = (): void => {
   console.log('Login attempted with', email.value, password.value);
   // Tambahkan logika autentikasi JWT di sini
   // Jika login berhasil, arahkan ke dashboard
-  router.push('/dashboard');
+  router.push('/');
 };
 
 const forgotPassword = (): void => {

@@ -7,7 +7,8 @@
             <div class="flex justify-between items-center border-b pb-2">
               <h3 class="text-lg font-semibold">{{ props.title }}</h3>
               <button @click="closeModal" class="text-gray-500 hover:text-gray-700">
-                <font-awesome-icon icon="times" />
+                <!-- <font-awesome-icon icon="times" /> -->
+                 <i class="fa-solid fa-times"></i>
               </button>
             </div>
   

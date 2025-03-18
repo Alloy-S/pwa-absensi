@@ -65,10 +65,10 @@ import { useRouter } from 'vue-router';
 
 const router = useRouter();
 
-const goToDetailProfile = () => router.push('/profile/detail');
-const goToCompanyProfile = () => router.push('/profile/company');
+const goToDetailProfile = () => router.push('/profile/kontak');
+const goToCompanyProfile = () => router.push('/perusahaan');
 const goToAdmin = () => router.push('/admin');
-const goToChangePassword = () => router.push('/change-password');
+const goToChangePassword = () => router.push('/profile/change-password');
 const logout = () => {
     console.log('Logging out...');
     router.push('/login');

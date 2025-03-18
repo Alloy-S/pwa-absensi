@@ -14,7 +14,7 @@ import NotFoundView from '../views/NotFoundView.vue';
 import AddKoreksiViwe from '../views/menu/absensi/koreksi/AddKoreksiViwe.vue';
 import AddIzinView from '../views/menu/absensi/izin/AddIzinView.vue';
 import AddLemburView from '../views/menu/absensi/lembur/AddLemburView.vue';
-import DetailAbsensi from '../views/menu/absensi/DetailAbsensi.vue';
+import DetailAbsensi from '../views/menu/absensi/riwayat/DetailAbsensi.vue';
 import DetailKoreksiView from '../views/menu/absensi/koreksi/DetailKoreksiView.vue';
 import DetailIzinView from '../views/menu/absensi/izin/DetailIzinView.vue';
 import DetailLemburView from '../views/menu/absensi/lembur/DetailLemburView.vue';
@@ -25,6 +25,16 @@ import DetailAbsensiBorongan from '@/views/menu/absensiBorongan/DetailAbsensiBor
 import InputAbsensiBorongan from '@/views/menu/absensiBorongan/InputAbsensiBorongan.vue';
 import ListPengumuman from '@/views/menu/pengumuman/ListPengumuman.vue';
 import DetailPengumuman from '@/views/menu/pengumuman/DetailPengumuman.vue';
+import RiwayatReimburse from '@/views/menu/reimburse/RiwayatReimburse.vue';
+import DetailReimburse from '@/views/menu/reimburse/DetailReimburse.vue';
+import AddReimburse from '@/views/menu/reimburse/AddReimburse.vue';
+import ApprovalView from '@/views/menu/approval/ApprovalView.vue';
+import DetailApproval from '@/views/menu/approval/DetailApproval.vue';
+import DataKontak from '@/views/profile/DataKontak.vue';
+import DataPribadi from '@/views/profile/DataPribadi.vue';
+import DataKaryawan from '@/views/profile/DataKaryawan.vue';
+import ProfilePerusahaan from '@/views/ProfilePerusahaan.vue';
+import ChangePassword from '@/views/ChangePassword.vue';
 
 const routes = [
   {
@@ -159,9 +169,69 @@ const routes = [
     // meta: { requiresAuth: true }
   },
   {
+    path: '/menu/reimburse',
+    name: 'Riwayat Reimburse',
+    component: RiwayatReimburse,
+    // meta: { requiresAuth: true }
+  },
+  {
+    path: '/menu/reimburse/:id',
+    name: 'Detail Reimburse',
+    component: DetailReimburse,
+    // meta: { requiresAuth: true }
+  },
+  {
+    path: '/menu/reimburse/create',
+    name: 'Add Reimburse',
+    component: AddReimburse,
+    // meta: { requiresAuth: true }
+  },
+  {
+    path: '/menu/approval',
+    name: 'Approval',
+    component: ApprovalView,
+    // meta: { requiresAuth: true }
+  },
+  {
+    path: '/menu/approval/:id',
+    name: 'Detail Approval',
+    component: DetailApproval,
+    // meta: { requiresAuth: true }
+  },
+  {
     path: '/profile',
     name: 'Profile',
     component: ProfileView,
+    // meta: { requiresAuth: true }
+  },
+  {
+    path: '/profile/kontak',
+    name: 'Profile Kontak',
+    component: DataKontak,
+    // meta: { requiresAuth: true }
+  },
+  {
+    path: '/profile/pribadi',
+    name: 'Profile Pribadi',
+    component: DataPribadi,
+    // meta: { requiresAuth: true }
+  },
+  {
+    path: '/profile/karyawan',
+    name: 'Profile Karyawan',
+    component: DataKaryawan,
+    // meta: { requiresAuth: true }
+  },
+  {
+    path: '/perusahaan',
+    name: 'Profile Perusahaan',
+    component: ProfilePerusahaan,
+    // meta: { requiresAuth: true }
+  },
+  {
+    path: '/profile/change-password',
+    name: 'Change Password',
+    component: ChangePassword,
     // meta: { requiresAuth: true }
   },
   {
