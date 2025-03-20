@@ -22,7 +22,6 @@
                                 <th class="border p-2">Barang</th>
                                 <th class="border p-2">Ton Normal</th>
                                 <th class="border p-2">Ton Lembur</th>
-                                <th class="border p-2">Harga Satuan</th>
                                 <th class="border p-2">Total Harga</th>
                             </tr>
                         </thead>
