@@ -12,7 +12,7 @@
                 <option value="lembur">Lembur</option>
                 <option value="reimburse">Reimburse</option>
             </select>
-            
+
             <!-- Filter Status -->
             <label class="block">Filter Status:</label>
             <select v-model="selectedStatus" class="w-full border-slate-300 p-2 rounded-md">
@@ -21,7 +21,7 @@
                 <option value="approved">Disetujui</option>
                 <option value="rejected">Ditolak</option>
             </select>
-            
+
             <!-- Daftar Pengajuan -->
             <div class="mt-3">
                 <button v-for="(request, index) in filteredRequests" :key="index" @click="goToDetail(request)"
@@ -29,7 +29,8 @@
                     <div class="flex flex-col justify-center items-start text-sm text-slate-800">
                         <p class="text-lg font-semibold">{{ request.category }}</p>
                         <p>Tanggal: <span class="font-semibold">{{ request.date }}</span></p>
-                        <p>Status: <span class="font-semibold" :class="statusClass(request.status)">{{ request.status }}</span></p>
+                        <p>Status: <span class="font-semibold" :class="statusClass(request.status)">{{ request.status
+                                }}</span></p>
                     </div>
                     <div class="flex flex-col justify-center">
                         <i class="fa-solid fa-angle-right"></i>
@@ -52,9 +53,10 @@ const selectedStatus = ref('all');
 
 const requests = ref([
     { id: 1, category: 'koreksi kehadiran', type: 'Koreksi Absensi', date: '2025-03-13', status: 'pending' },
-    { id: 2, category: 'izin',type: 'Reimburse', date: '2025-03-12', status: 'approved' },
-    { id: 3, category: 'lembur',type: 'Reimburse', date: '2025-03-11', status: 'rejected' },
-    { id: 4, category: 'reimburse',type: 'Koreksi Absensi', date: '2025-03-10', status: 'pending' },
+    { id: 3, category: 'borongan', type: 'Reimburse', date: '2025-03-11', status: 'pending' },
+    { id: 2, category: 'izin', type: 'Reimburse', date: '2025-03-12', status: 'approved' },
+    { id: 3, category: 'lembur', type: 'Reimburse', date: '2025-03-11', status: 'rejected' },
+    { id: 4, category: 'reimburse', type: 'Koreksi Absensi', date: '2025-03-10', status: 'pending' },
 ]);
 
 const filteredRequests = computed(() => {
@@ -73,8 +75,10 @@ const statusClass = (status) => {
 };
 
 const goToDetail = (request) => {
-    router.push(`/menu/approval/${request.id}`);
+    if (request.category === 'borongan') {
+        router.push(`/menu/approval/borongan/${request.id}`);
+    } else {
+        router.push(`/menu/approval/${request.id}`);
+    }
 };
 </script>
-
-

@@ -35,6 +35,7 @@ import DataPribadi from '@/views/profile/DataPribadi.vue';
 import DataKaryawan from '@/views/profile/DataKaryawan.vue';
 import ProfilePerusahaan from '@/views/ProfilePerusahaan.vue';
 import ChangePassword from '@/views/ChangePassword.vue';
+import DetailApprovalBorongan from '@/views/menu/approval/DetailApprovalBorongan.vue';
 
 const routes = [
   {
@@ -196,6 +197,12 @@ const routes = [
     path: '/menu/approval/:id',
     name: 'Detail Approval',
     component: DetailApproval,
+    // meta: { requiresAuth: true }
+  },
+  {
+    path: '/menu/approval/borongan/:id',
+    name: 'Detail Approval Borongan',
+    component: DetailApprovalBorongan,
     // meta: { requiresAuth: true }
   },
   {

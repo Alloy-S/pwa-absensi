@@ -18,11 +18,12 @@
                 <select v-model="selectedType" class="w-full border-slate-300 p-2 rounded-md">
                     <option value="harian">Harian</option>
                     <option value="borongan">Borongan</option>
+                    <option value="harian borongan">1/2 Hari & Borongan</option>
                 </select>
             </div>
 
             <!-- Input Borongan -->
-            <div v-if="selectedType === 'borongan'" class="bg-gray-50 p-4 rounded-md">
+            <div v-if="selectedType === 'borongan' || selectedType === 'harian borongan'" class="bg-gray-50 p-4 rounded-md">
                 <label class="block font-medium text-gray-600">Barang yang dikerjakan:</label>
                 <select v-model="selectedItem" class="w-full border p-2 rounded-md">
                     <option v-for="item in items" :key="item.id" :value="item">{{ item.name }}</option>
