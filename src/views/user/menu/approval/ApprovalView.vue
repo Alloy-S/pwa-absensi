@@ -44,7 +44,7 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue';
 import BasePageNoNav from '@/layouts/user/BasePageNoNav.vue';
-import TopHeader from '@/components/TopHeader.vue';
+import TopHeader from '@/components/user/TopHeader.vue';
 import { useRouter } from 'vue-router';
 
 const router = useRouter();

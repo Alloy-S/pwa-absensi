@@ -30,8 +30,8 @@
 
 <script setup lang="ts">
 import { ref } from 'vue';
-import TopAbsensiNavigation from '@/components/TopAbsensiNavigation.vue';
-import TopHeader from '@/components/TopHeader.vue';
+import TopAbsensiNavigation from '@/components/user/TopAbsensiNavigation.vue';
+import TopHeader from '@/components/user/TopHeader.vue';
 import BasePageNoNav from '@/layouts/user/BasePageNoNav.vue';
 import { useRouter } from 'vue-router';
 

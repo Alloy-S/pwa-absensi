@@ -92,9 +92,9 @@
 
 <script setup lang="ts">
 import BasePage from '@/layouts/user/BasePage.vue';
-import ReusableModal from '@/components/ReusableModal.vue';
+import ReusableModal from '@/components/user/ReusableModal.vue';
 import { ref } from 'vue';
-import CardApproval from '@/components/CardApproval.vue';
+import CardApproval from '@/components/user/CardApproval.vue';
 
 const tabs = ref(['Pengumuman', 'Waiting Approval']);
 const activeTab = ref('Pengumuman');

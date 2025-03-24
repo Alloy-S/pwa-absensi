@@ -45,7 +45,7 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import BasePageNoNav from '@/layouts/user/BasePageNoNav.vue';
-import TopHeader from '@/components/TopHeader.vue';
+import TopHeader from '@/components/user/TopHeader.vue';
 
 const company = ref({
     alamat: 'Jl. Raya Industri No. 45',

@@ -24,7 +24,7 @@
 <script setup lang="ts">
 import { useRouter } from 'vue-router';
 import BasePageNoNav from '@/layouts/user/BasePageNoNav.vue';
-import TopHeader from '@/components/TopHeader.vue';
+import TopHeader from '@/components/user/TopHeader.vue';
 
 const router = useRouter();
 const reimburses = [

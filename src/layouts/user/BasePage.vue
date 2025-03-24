@@ -17,5 +17,5 @@
 
 <script setup lang="ts">
 // import Navbar from '@/components/Navbar.vue';
-import BottomNavigation from '@/components/BottomNavigation.vue';
+import BottomNavigation from '@/components/user/BottomNavigation.vue';
 </script>

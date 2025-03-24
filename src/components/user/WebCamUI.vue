@@ -75,7 +75,7 @@
 </style>
 
 <script>
-import Webcam from '@/components/WebCam.vue';
+import Webcam from '@/components/user/WebCam.vue';
 import { useRouter } from 'vue-router';
 export default {
    components: { Webcam },

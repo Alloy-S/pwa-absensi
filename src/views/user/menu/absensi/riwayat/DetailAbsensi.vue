@@ -16,8 +16,8 @@
 
 <script setup lang="ts">
 import BasePageNoNav from '@/layouts/user/BasePageNoNav.vue';
-import TopHeader from '@/components/TopHeader.vue';
-import DetailItem from '@/components/DetailItem.vue';
+import TopHeader from '@/components/user/TopHeader.vue';
+import DetailItem from '@/components/user/DetailItem.vue';
 
 const data = {
     tanggal: '2025-03-13',

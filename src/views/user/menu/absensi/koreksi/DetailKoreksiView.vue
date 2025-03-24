@@ -23,8 +23,8 @@
 <script setup lang="ts">
 // import { useRoute } from 'vue-router';
 import BasePageNoNav from '@/layouts/user/BasePageNoNav.vue';
-import TopHeader from '@/components/TopHeader.vue';
-import DetailItem from '@/components/DetailItem.vue';
+import TopHeader from '@/components/user/TopHeader.vue';
+import DetailItem from '@/components/user/DetailItem.vue';
 
 // const route = useRoute();
 

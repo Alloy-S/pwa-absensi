@@ -39,7 +39,7 @@
 
 <script setup>
 import BasePageNoNav from '@/layouts/user/BasePageNoNav.vue';
-import TopHeader from '@/components/TopHeader.vue';
+import TopHeader from '@/components/user/TopHeader.vue';
 import { ref } from 'vue';
 
 const absence = ref({

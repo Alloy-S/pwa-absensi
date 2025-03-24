@@ -16,7 +16,7 @@
 import { ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import BasePageNoNav from '@/layouts/user/BasePageNoNav.vue';
-import TopHeader from '@/components/TopHeader.vue';
+import TopHeader from '@/components/user/TopHeader.vue';
 
 const route = useRoute();
 const router = useRouter();

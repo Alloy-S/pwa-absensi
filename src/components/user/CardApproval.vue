@@ -52,6 +52,6 @@
 </template>
 
 <script setup lang="ts">
-import StatusApproval from '../components/StatusApproval.vue';
+import StatusApproval from '@/components/user/StatusApproval.vue';
 const props = defineProps<{ approval: { date: String, approvedBy: String, status: String, request: String } }>();
 </script>

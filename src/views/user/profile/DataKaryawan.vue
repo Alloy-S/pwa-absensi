@@ -55,8 +55,8 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import BasePageNoNav from '@/layouts/user/BasePageNoNav.vue';
-import TopHeader from '@/components/TopHeader.vue';
-import TopProfileNavigation from '@/components/TopProfileNavigation.vue';
+import TopHeader from '@/components/user/TopHeader.vue';
+import TopProfileNavigation from '@/components/user/TopProfileNavigation.vue';
 
 const employee = ref({
     nip: '12345678',

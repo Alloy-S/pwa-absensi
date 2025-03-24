@@ -3,7 +3,7 @@
 </template>
 
 <script setup>
-import WebCamUI from '@/components/WebCamUI.vue';
+import WebCamUI from '@/components/user/WebCamUI.vue';
 import { useRouter } from 'vue-router';
 import {useAbsenceStore} from '@/stores/absenceStore';
 

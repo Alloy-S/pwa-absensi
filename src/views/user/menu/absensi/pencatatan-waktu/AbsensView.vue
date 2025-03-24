@@ -52,7 +52,7 @@
 <script setup>
 import { ref, onMounted, computed } from 'vue';
 import BasePageNoNav from '@/layouts/user/BasePageNoNav.vue';
-import TopHeader from '@/components/TopHeader.vue';
+import TopHeader from '@/components/user/TopHeader.vue';
 import { useRouter, useRoute } from 'vue-router';
 import { useAbsenceStore } from '@/stores/absenceStore';
 import { storeToRefs } from 'pinia';

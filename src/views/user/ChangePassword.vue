@@ -29,7 +29,7 @@
 <script setup>
 import { ref } from 'vue';
 import BasePageNoNav from '@/layouts/user/BasePageNoNav.vue';
-import TopHeader from '@/components/TopHeader.vue';
+import TopHeader from '@/components/user/TopHeader.vue';
 
 const oldPassword = ref('');
 const newPassword = ref('');
