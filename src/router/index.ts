@@ -36,6 +36,8 @@ import DataKaryawan from '@/views/user/profile/DataKaryawan.vue';
 import ProfilePerusahaan from '@/views/user/ProfilePerusahaan.vue';
 import ChangePassword from '@/views/user/ChangePassword.vue';
 import DetailApprovalBorongan from '@/views/user/menu/approval/DetailApprovalBorongan.vue';
+import NotFound from '@/views/admin/NotFound.vue';
+import Dasboard from '@/views/admin/Dasboard.vue';
 
 const routes = [
   {
@@ -247,9 +249,22 @@ const routes = [
   }
 ];
 
+const adminRoutes = [
+  {
+    path: '/admin',
+    name: 'Admin Dashboard',
+    component: Dasboard,
+    // meta: { requiresAuth: true }
+  },
+  {
+    path: '/admin/:pathMatch(.*)*',
+    component: NotFound
+  }
+];
+
 const router = createRouter({
   history: createWebHistory(),
-  routes
+  routes: [...routes, ...adminRoutes]
 });
 
 router.beforeEach((to, _from, next) => {

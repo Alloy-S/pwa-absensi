@@ -10,7 +10,24 @@
 
             <div class="mt-4">
 
-                <div v-if="daftarIzin.length > 0" class="space-y-3">
+                <div class="mt-3">
+                    <label for="month-picker" class="text-sm font-semibold text-gray-700">Periode Berdasarkan
+                        Bulan</label>
+                    <input type="month" v-model="selectedMonth" id="month-picker"
+                        class="w-full border border-gray-300 rounded-md px-4 py-2 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all" />
+                </div>
+
+                <div class="mt-3">
+                    <label class="block">Filter Status:</label>
+                    <select v-model="selectedStatus" class="w-full border-slate-300 p-2 rounded-md">
+                        <option value="all">Semua</option>
+                        <option value="pending">Menunggu Persetujuan</option>
+                        <option value="approved">Disetujui</option>
+                        <option value="rejected">Ditolak</option>
+                    </select>
+                </div>
+
+                <div v-if="daftarIzin.length > 0" class="mt-3 space-y-3">
                     <h2 class="text-lg font-semibold text-gray-700">Daftar Pengajuan Izin</h2>
                     <button v-for="(izin, index) in daftarIzin" :key="index"
                         class="w-full flex justify-between p-4 bg-white shadow-md rounded-md mt-2 border-l-4" :class="{
@@ -44,6 +61,9 @@ import BasePageNoNav from '@/layouts/user/BasePageNoNav.vue';
 import { useRouter } from 'vue-router';
 
 const router = useRouter();
+
+const selectedMonth = ref(null);
+const selectedStatus = ref('pending');
 
 const daftarIzin = ref([
     {id: "1", tanggal: '2025-03-10', keterangan: 'Sakit', status: 'Menunggu Persetujuan' },
