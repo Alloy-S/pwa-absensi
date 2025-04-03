@@ -10,6 +10,11 @@ export const useAdminSidebarStore = defineStore('global', () => {
   const isPengumumanOpen = ref(false);
   const isConfigOpen = ref(false);
   const isLaporanOpen = ref(false);
+  const scrollTop = ref(0);
+
+  const setScrollTop = (value: number) => {
+    scrollTop.value = value;
+}
 
   const toggleIsOpen = () => {
     isOpen.value = !isOpen.value;
@@ -48,6 +53,6 @@ export const useAdminSidebarStore = defineStore('global', () => {
     isPengumumanOpen, isConfigOpen, isLaporanOpen,
     toggleIsOpen, toggleIsKarywanOpen, toggleAbsensiOpen, toggleIsApprovalOpen, 
     toggleIsReimburseOpen, toggleIsPengumumanOpen, 
-    toggleIsConfigOpen, toggleIsLaporanOpen
+    toggleIsConfigOpen, toggleIsLaporanOpen, scrollTop, setScrollTop
   };
 });

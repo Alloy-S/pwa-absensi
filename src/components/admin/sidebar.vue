@@ -4,7 +4,7 @@
         <div class="flex items-center justify-center h-14 border-b">
             <div class="py-3">Absensi Management</div>
         </div>
-        <div class="sidebar overflow-y-auto overflow-x-hidden flex-grow">
+        <div ref="sidebarRef" @scroll="saveScroll" class="sidebar overflow-y-auto overflow-x-hidden flex-grow">
             <ul class="flex flex-col py-4 space-y-1">
                 <li class="px-5">
                     <div class="flex flex-row items-center h-8">
@@ -46,13 +46,13 @@
                         </svg>
                     </button>
                     <ul id="dropdown-reimburse" v-show="sidebarStore.isKarywanOpen" class=" py-2 space-y-2">
-                        <li >
-                            <RouterLink to="/admin/reimburse/all"
+                        <li>
+                            <RouterLink to="/admin/karyawan"
                                 class="flex items-center w-full p-2 text-base font-normal text-gray-600 transition duration-75  group hover:bg-gray-100 border-l-4 border-transparent hover:border-blue-600 pl-14">
                                 Karyawan Terdaftar</RouterLink>
                         </li>
-                        <li >
-                            <RouterLink to="/reimburse/claim"
+                        <li>
+                            <RouterLink to="/admin/karyawan/add"
                                 class="flex items-center w-full p-2 text-base font-normal text-gray-600 transition duration-75 group hover:bg-gray-100 border-l-4 border-transparent hover:border-blue-600 pl-14">
                                 Tambah Karywan</RouterLink>
                         </li>
@@ -78,23 +78,23 @@
                         </svg>
                     </button>
                     <ul id="dropdown-reimburse" v-show="sidebarStore.isAbsensiOpen" class=" py-2 space-y-2">
-                        <li >
-                            <RouterLink to="/admin/reimburse/all"
+                        <li>
+                            <RouterLink to="/admin/riwayat/absensi"
                                 class="flex items-center w-full p-2 text-base font-normal text-gray-600 transition duration-75  group hover:bg-gray-100 border-l-4 border-transparent hover:border-blue-600 pl-14">
                                 Riwayat Absensi</RouterLink>
                         </li>
-                        <li >
-                            <RouterLink to="/reimburse/claim"
+                        <li>
+                            <RouterLink to="/admin/riwayat/izin"
                                 class="flex items-center w-full p-2 text-base font-normal text-gray-600 transition duration-75 group hover:bg-gray-100 border-l-4 border-transparent hover:border-blue-600 pl-14">
                                 Riwayat Izin</RouterLink>
                         </li>
-                        <li >
-                            <RouterLink to="/reimburse/claim"
+                        <li>
+                            <RouterLink to="/admin/riwayat/lembur"
                                 class="flex items-center w-full p-2 text-base font-normal text-gray-600 transition duration-75 group hover:bg-gray-100 border-l-4 border-transparent hover:border-blue-600 pl-14">
                                 Riwayat Lembur</RouterLink>
                         </li>
-                        <li >
-                            <RouterLink to="/reimburse/claim"
+                        <li>
+                            <RouterLink to="/admin/riwayat/harian-borongan"
                                 class="flex items-center w-full p-2 text-base font-normal text-gray-600 transition duration-75 group hover:bg-gray-100 border-l-4 border-transparent hover:border-blue-600 pl-14">
                                 Riwayat Absensi Borongan</RouterLink>
                         </li>
@@ -119,12 +119,12 @@
                         </svg>
                     </button>
                     <ul id="dropdown-reimburse" v-show="sidebarStore.isReimburseOpen" class=" py-2 space-y-2">
-                        <li >
+                        <li>
                             <RouterLink to="/admin/reimburse/all"
                                 class="flex items-center w-full p-2 text-base font-normal text-gray-600 transition duration-75  group hover:bg-gray-100 border-l-4 border-transparent hover:border-blue-600 pl-14">
                                 List Reimburse</RouterLink>
                         </li>
-                        <li >
+                        <li>
                             <RouterLink to="/reimburse/claim"
                                 class="flex items-center w-full p-2 text-base font-normal text-gray-600 transition duration-75 group hover:bg-gray-100 border-l-4 border-transparent hover:border-blue-600 pl-14">
                                 Tambah Reimburse</RouterLink>
@@ -150,12 +150,12 @@
                         </svg>
                     </button>
                     <ul id="dropdown-reimburse" v-show="sidebarStore.isPengumumanOpen" class=" py-2 space-y-2">
-                        <li >
+                        <li>
                             <RouterLink to="/admin/reimburse/all"
                                 class="flex items-center w-full p-2 text-base font-normal text-gray-600 transition duration-75  group hover:bg-gray-100 border-l-4 border-transparent hover:border-blue-600 pl-14">
                                 Daftar Pengumuman</RouterLink>
                         </li>
-                        <li >
+                        <li>
                             <RouterLink to="/reimburse/claim"
                                 class="flex items-center w-full p-2 text-base font-normal text-gray-600 transition duration-75 group hover:bg-gray-100 border-l-4 border-transparent hover:border-blue-600 pl-14">
                                 Tambah Pengumuman</RouterLink>
@@ -193,28 +193,28 @@
                         </svg>
                     </button>
                     <ul id="dropdown-reimburse" v-show="sidebarStore.isApprovalOpen" class="py-2 space-y-2">
-                        <li >
-                            <RouterLink to="/admin/reimburse/all"
+                        <li>
+                            <RouterLink to="/admin/approval/absensi"
                                 class="flex items-center w-full p-2 text-base font-normal text-gray-600 transition duration-75  group hover:bg-gray-100 border-l-4 border-transparent hover:border-blue-600 pl-14">
                                 Koreksi Absensi</RouterLink>
                         </li>
-                        <li >
-                            <RouterLink to="/reimburse/claim"
+                        <li>
+                            <RouterLink to="/admin/approval/harian-borongan"
                                 class="flex items-center w-full p-2 text-base font-normal text-gray-600 transition duration-75 group hover:bg-gray-100 border-l-4 border-transparent hover:border-blue-600 pl-14">
                                 Absensi Borongan Harian</RouterLink>
                         </li>
-                        <li >
-                            <RouterLink to="/reimburse/claim"
+                        <li>
+                            <RouterLink to="/admin/approval/izin"
                                 class="flex items-center w-full p-2 text-base font-normal text-gray-600 transition duration-75 group hover:bg-gray-100 border-l-4 border-transparent hover:border-blue-600 pl-14">
                                 Izin</RouterLink>
                         </li>
-                        <li >
-                            <RouterLink to="/reimburse/claim"
+                        <li>
+                            <RouterLink to="/admin/approval/lembur"
                                 class="flex items-center w-full p-2 text-base font-normal text-gray-600 transition duration-75 group hover:bg-gray-100 border-l-4 border-transparent hover:border-blue-600 pl-14">
                                 Lembur</RouterLink>
                         </li>
-                        <li >
-                            <RouterLink to="/reimburse/claim"
+                        <li>
+                            <RouterLink to="/admin/approval/reimburse"
                                 class="flex items-center w-full p-2 text-base font-normal text-gray-600 transition duration-75 group hover:bg-gray-100 border-l-4 border-transparent hover:border-blue-600 pl-14">
                                 Reimburse</RouterLink>
                         </li>
@@ -251,37 +251,37 @@
                         </svg>
                     </button>
                     <ul id="dropdown-reimburse" v-show="sidebarStore.isConfigOpen" class="py-2 space-y-2">
-                        <li >
+                        <li>
                             <RouterLink to="/admin/reimburse/all"
                                 class="flex items-center w-full p-2 text-base font-normal text-gray-600 transition duration-75  group hover:bg-gray-100 border-l-4 border-transparent hover:border-blue-600 pl-14">
                                 Jadwal Kerja</RouterLink>
                         </li>
-                        <li >
+                        <li>
                             <RouterLink to="/reimburse/claim"
                                 class="flex items-center w-full p-2 text-base font-normal text-gray-600 transition duration-75 group hover:bg-gray-100 border-l-4 border-transparent hover:border-blue-600 pl-14">
                                 Lokasi</RouterLink>
                         </li>
-                        <li >
+                        <li>
                             <RouterLink to="/reimburse/claim"
                                 class="flex items-center w-full p-2 text-base font-normal text-gray-600 transition duration-75 group hover:bg-gray-100 border-l-4 border-transparent hover:border-blue-600 pl-14">
                                 Grup</RouterLink>
                         </li>
-                        <li >
+                        <li>
                             <RouterLink to="/reimburse/claim"
                                 class="flex items-center w-full p-2 text-base font-normal text-gray-600 transition duration-75 group hover:bg-gray-100 border-l-4 border-transparent hover:border-blue-600 pl-14">
                                 Harga Harian Borongan</RouterLink>
                         </li>
-                        <li >
+                        <li>
                             <RouterLink to="/reimburse/claim"
                                 class="flex items-center w-full p-2 text-base font-normal text-gray-600 transition duration-75 group hover:bg-gray-100 border-l-4 border-transparent hover:border-blue-600 pl-14">
                                 Kategori Gaji</RouterLink>
                         </li>
-                        <li >
+                        <li>
                             <RouterLink to="/reimburse/claim"
                                 class="flex items-center w-full p-2 text-base font-normal text-gray-600 transition duration-75 group hover:bg-gray-100 border-l-4 border-transparent hover:border-blue-600 pl-14">
                                 Kuota Cuti</RouterLink>
                         </li>
-                        <li >
+                        <li>
                             <RouterLink to="/reimburse/claim"
                                 class="flex items-center w-full p-2 text-base font-normal text-gray-600 transition duration-75 group hover:bg-gray-100 border-l-4 border-transparent hover:border-blue-600 pl-14">
                                 Hari Libur/Cuti Bersama</RouterLink>
@@ -313,7 +313,7 @@
                         <span class="ml-2 text-sm tracking-wide truncate">Menuju Aplikasi Absensi</span>
                     </RouterLink>
                 </li>
-                <li>
+                <!-- <li>
                     <a href="#"
                         class="relative flex flex-row items-center h-11 transition duration-150 ease-in-out focus:outline-none hover:bg-gray-50 text-gray-600 hover:text-gray-800 border-l-4 border-transparent hover:border-blue-600 pr-6">
                         <span class="inline-flex justify-center items-center ml-4">
@@ -326,7 +326,7 @@
                         </span>
                         <span class="ml-2 text-sm tracking-wide truncate">Logout</span>
                     </a>
-                </li>
+                </li> -->
 
             </ul>
             <div class="mb-32"></div>
@@ -335,10 +335,28 @@
 </template>
 
 <script setup lang="ts">
+import { ref, onMounted, nextTick } from "vue";
 import { RouterLink } from 'vue-router';
 import { useAdminSidebarStore } from '@/stores/adminsSidebarStore';
 
+const sidebarRef = ref<HTMLElement | null>(null);
 const sidebarStore = useAdminSidebarStore();
+
+const saveScroll = () => {
+    if (sidebarRef.value) {
+        sidebarStore.setScrollTop(sidebarRef.value.scrollTop);
+    }
+};
+
+onMounted(() => {
+    nextTick(() => {
+        if (sidebarRef.value) {
+            sidebarRef.value.scrollTop = sidebarStore.scrollTop;
+        }
+    });
+});
+
+
 
 const dropdownKarywan = () => {
     sidebarStore.toggleIsKarywanOpen();

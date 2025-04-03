@@ -38,6 +38,17 @@ import ChangePassword from '@/views/user/ChangePassword.vue';
 import DetailApprovalBorongan from '@/views/user/menu/approval/DetailApprovalBorongan.vue';
 import NotFound from '@/views/admin/NotFound.vue';
 import Dasboard from '@/views/admin/Dasboard.vue';
+import KaryawanView from '@/views/admin/karyawan/KaryawanView.vue';
+import AddKaryawan from '@/views/admin/karyawan/AddKaryawan.vue';
+import RiwayatAbsensiAdmin from '@/views/admin/riwayat/RiwayatAbsensiAdmin.vue';
+import RiwayatIzinAdmin from '@/views/admin/riwayat/RiwayatIzinAdmin.vue';
+import RiwayatLemburAdmin from '@/views/admin/riwayat/RiwayatLemburAdmin.vue';
+import RiwayatBoronganAdmin from '@/views/admin/riwayat/RiwayatBoronganAdmin.vue';
+import ApprovalAbsensiAdmin from '@/views/admin/approval/ApprovalAbsensiAdmin.vue';
+import ApprovalHarianBoronganAdmin from '@/views/admin/approval/ApprovalHarianBoronganAdmin.vue';
+import ApprovalIzinAdmin from '@/views/admin/approval/ApprovalIzinAdmin.vue';
+import ApprovalLemburAdmin from '@/views/admin/approval/ApprovalLemburAdmin.vue';
+import ApprovalReimbruseAdmin from '@/views/admin/approval/ApprovalReimbruseAdmin.vue';
 
 const routes = [
   {
@@ -254,6 +265,72 @@ const adminRoutes = [
     path: '/admin',
     name: 'Admin Dashboard',
     component: Dasboard,
+    // meta: { requiresAuth: true }
+  },
+  {
+    path: '/admin/karyawan',
+    name: 'List Karyawan',
+    component: KaryawanView,
+    // meta: { requiresAuth: true }
+  },
+  {
+    path: '/admin/karyawan/add',
+    name: 'Add Karyawan',
+    component: AddKaryawan,
+    // meta: { requiresAuth: true }
+  },
+  {
+    path: '/admin/riwayat/absensi',
+    name: 'riwayat absensi admin',
+    component: RiwayatAbsensiAdmin,
+    // meta: { requiresAuth: true }
+  },
+  {
+    path: '/admin/riwayat/izin',
+    name: 'riwayat izin admin',
+    component: RiwayatIzinAdmin,
+    // meta: { requiresAuth: true }
+  },
+  {
+    path: '/admin/riwayat/lembur',
+    name: 'riwayat lembur admin',
+    component: RiwayatLemburAdmin,
+    // meta: { requiresAuth: true }
+  },
+  {
+    path: '/admin/riwayat/harian-borongan',
+    name: 'riwayat harian borongan admin',
+    component: RiwayatBoronganAdmin,
+    // meta: { requiresAuth: true }
+  },
+  {
+    path: '/admin/approval/absensi',
+    name: 'approval absensi admin',
+    component: ApprovalAbsensiAdmin,
+    // meta: { requiresAuth: true }
+  },
+  {
+    path: '/admin/approval/harian-borongan',
+    name: 'approval harian borongan admin',
+    component: ApprovalHarianBoronganAdmin,
+    // meta: { requiresAuth: true }
+  },
+  {
+    path: '/admin/approval/izin',
+    name: 'approval izin admin',
+    component: ApprovalIzinAdmin,
+    // meta: { requiresAuth: true }
+  },
+  {
+    path: '/admin/approval/lembur',
+    name: 'approval lembur admin',
+    component: ApprovalLemburAdmin,
+    // meta: { requiresAuth: true }
+  },
+  {
+    path: '/admin/approval/reimburse',
+    name: 'approval reimburse admin',
+    component: ApprovalReimbruseAdmin,
     // meta: { requiresAuth: true }
   },
   {
