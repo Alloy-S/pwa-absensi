@@ -49,6 +49,21 @@ import ApprovalHarianBoronganAdmin from '@/views/admin/approval/ApprovalHarianBo
 import ApprovalIzinAdmin from '@/views/admin/approval/ApprovalIzinAdmin.vue';
 import ApprovalLemburAdmin from '@/views/admin/approval/ApprovalLemburAdmin.vue';
 import ApprovalReimbruseAdmin from '@/views/admin/approval/ApprovalReimbruseAdmin.vue';
+import JadwalKerjaAdmin from '@/views/admin/setting/jadwalKerja/JadwalKerjaAdmin.vue';
+import TambahJadwalKerja from '@/views/admin/setting/jadwalKerja/TambahJadwalKerja.vue';
+import LokasiAdmin from '@/views/admin/setting/lokasi/LokasiAdmin.vue';
+import TambahLokasi from '@/views/admin/setting/lokasi/TambahLokasi.vue';
+import HargaHarianBorongan from '@/views/admin/setting/hargaHarianBorongan/HargaHarianBorongan.vue';
+import TambahHarianBorongan from '@/views/admin/setting/hargaHarianBorongan/TambahHarianBorongan.vue';
+import JabatanAdmin from '@/views/admin/setting/jabatan/jabatanAdmin.vue';
+import TambahJabatan from '@/views/admin/setting/jabatan/TambahJabatan.vue';
+import KuotaCutiAdmin from '@/views/admin/setting/kuotaCuti/KuotaCutiAdmin.vue';
+import HariLiburAdmin from '@/views/admin/setting/hariLibur/HariLiburAdmin.vue';
+import TambahHariLibur from '@/views/admin/setting/hariLibur/TambahHariLibur.vue';
+import KomponenGaji from '@/views/admin/setting/gaji/komponenGaji/KomponenGaji.vue';
+import TambahKomponenGaji from '@/views/admin/setting/gaji/komponenGaji/TambahKomponenGaji.vue';
+import GroupGaji from '@/views/admin/setting/gaji/groupGaji/GroupGaji.vue';
+import TambahGroupGaji from '@/views/admin/setting/gaji/groupGaji/TambahGroupGaji.vue';
 
 const routes = [
   {
@@ -331,6 +346,96 @@ const adminRoutes = [
     path: '/admin/approval/reimburse',
     name: 'approval reimburse admin',
     component: ApprovalReimbruseAdmin,
+    // meta: { requiresAuth: true }
+  },
+  {
+    path: '/admin/pengaturan/jadwal-kerja',
+    name: 'pengaturan jadwal kerja',
+    component: JadwalKerjaAdmin,
+    // meta: { requiresAuth: true }
+  },
+  {
+    path: '/admin/pengaturan/jadwal-kerja/add',
+    name: 'pengaturan tambah jadwal kerja',
+    component: TambahJadwalKerja,
+    // meta: { requiresAuth: true }
+  },
+  {
+    path: '/admin/pengaturan/lokasi',
+    name: 'pengaturan lokasi',
+    component: LokasiAdmin,
+    // meta: { requiresAuth: true }
+  },
+  {
+    path: '/admin/pengaturan/lokasi/add',
+    name: 'pengaturan tambah lokasi',
+    component: TambahLokasi,
+    // meta: { requiresAuth: true }
+  },
+  {
+    path: '/admin/pengaturan/harga-harian-borongan',
+    name: 'pengaturan harian borobangan',
+    component: HargaHarianBorongan,
+    // meta: { requiresAuth: true }
+  },
+  {
+    path: '/admin/pengaturan/harga-harian-borongan/add',
+    name: 'pengaturan tambah  harian borobangan',
+    component: TambahHarianBorongan,
+    // meta: { requiresAuth: true }
+  },
+  {
+    path: '/admin/pengaturan/jabatan',
+    name: 'pengaturan jabatan',
+    component: JabatanAdmin,
+    // meta: { requiresAuth: true }
+  },
+  {
+    path: '/admin/pengaturan/jabatan/add',
+    name: 'pengaturan tambah jabatan',
+    component: TambahJabatan,
+    // meta: { requiresAuth: true }
+  },
+  {
+    path: '/admin/pengaturan/kuota-cuti',
+    name: 'pengaturan kuota cuti',
+    component: KuotaCutiAdmin,
+    // meta: { requiresAuth: true }
+  },
+  {
+    path: '/admin/pengaturan/hari-libur',
+    name: 'pengaturan hari libur',
+    component: HariLiburAdmin,
+    // meta: { requiresAuth: true }
+  },
+  {
+    path: '/admin/pengaturan/hari-libur/add',
+    name: 'pengaturan tambah hari libur',
+    component: TambahHariLibur,
+    // meta: { requiresAuth: true }
+  },
+  {
+    path: '/admin/pengaturan/gaji/komponen-gaji',
+    name: 'pengaturan komponen gaji',
+    component: KomponenGaji,
+    // meta: { requiresAuth: true }
+  },
+  {
+    path: '/admin/pengaturan/gaji/komponen-gaji/add',
+    name: 'pengaturan tambah komponen gaji',
+    component: TambahKomponenGaji,
+    // meta: { requiresAuth: true }
+  },
+  {
+    path: '/admin/pengaturan/gaji/group-gaji',
+    name: 'pengaturan group gaji',
+    component: GroupGaji,
+    // meta: { requiresAuth: true }
+  },
+  {
+    path: '/admin/pengaturan/gaji/group-gaji/add',
+    name: 'pengaturan tambah group gaji',
+    component: TambahGroupGaji,
     // meta: { requiresAuth: true }
   },
   {
