@@ -412,9 +412,9 @@ const dropdownConfig = () => {
 const dropdownConfigGaji = () => {
     sidebarStore.toggleIsConfigGajiOpen();
 }
-const dropdownLaporan = () => {
-    sidebarStore.toggleIsLaporanOpen();
-}
+// const dropdownLaporan = () => {
+//     sidebarStore.toggleIsLaporanOpen();
+// }
 </script>
 
 <style scoped>
