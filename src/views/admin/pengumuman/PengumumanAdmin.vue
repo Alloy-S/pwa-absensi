@@ -1,49 +1,31 @@
 <template>
     <BasePage>
-        <div class="my-5 flex justify-between items-center">
-            <p class="text-3xl font-semibold text-slate-800">Riwayat Harian Borongan</p>
 
-
-        </div>
-
-        <div class="bg-white p-3 mb-5 rounded-md shadow-md">
-
-            <div class="flex justify-center items-end space-x-2">
-                <div class="w-full ">
-                    <label class="block mb-2 text-sm font-medium text-gray-700">Pencarian</label>
+        <div class="mt-5 mb-5 flex justify-between items-center">
+            <p class="text-3xl font-semibold text-slate-800">Pengumuman</p>
+            <div class="flex items-center max-w-md">
+                <label for="simple-search" class="sr-only">Search</label>
+                <div class="relative w-full mr-3">
+                    <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                    </div>
                     <input type="text" id="simple-search"
                         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                        placeholder="cari..." required />
+                        placeholder="Cari..." required />
                 </div>
-
-                <button type="submit"
-                    class="flex items-center space-x-2 p-2.5  text-sm font-medium text-white bg-blue-700 rounded-lg border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                    <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
-                        viewBox="0 0 20 20">
-                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
-                    </svg>
-                    <p>Cari</p>
-                </button>
             </div>
-
         </div>
 
         <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+
             <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                 <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                     <tr>
                         <th scope="col" class="px-6 py-3">
-                            Nama PIC Karyawan
+                            Judul
                         </th>
                         <th scope="col" class="px-6 py-3">
-                            Tanggal
-                        </th>
-                        <th scope="col" class="px-6 py-3">
-                            Jumlah Karyawan
-                        </th>
-                        <th scope="col" class="px-6 py-3">
-                            Status
+                            Created at
                         </th>
                         <th scope="col" class="px-6 py-3">
                             Action
@@ -51,22 +33,17 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr v-for="_ in 10"
+                    <tr v-for="n in 10"
                         class="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700 border-gray-200">
-                        <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                            Bambang
+                        <th scope="row" class=" px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                            Pengumuman Libur
                         </th>
                         <td class="px-6 py-4">
-                            04-04-2025
+                            01-04-2025
                         </td>
-                        <td class="px-6 py-4">
-                            4
-                        </td>
-                        <td class="px-6 py-4">
-                            Menunggu Persetujuan
-                        </td>
-                        <td class="px-6 py-4 space-x-3">
-                            <a href="#" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Detail</a>
+                        <td class="w-1/4 px-6 py-4 space-x-3">
+                            <a @click="goToDetail(n)" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
+                            <a href="#" class="font-medium text-red-600 dark:text-red-500 hover:underline">Delete</a>
                         </td>
                     </tr>
                 </tbody>
@@ -75,7 +52,6 @@
 
 
         </div>
-
         <div class="mb-16 flex justify-end mt-4">
 
 
@@ -117,6 +93,15 @@
 
 <script setup lang="ts">
 import BasePage from '@/layouts/admin/BasePage.vue'
+import { useRouter } from 'vue-router'
 
+const router = useRouter()
 
+const addItem = () => {
+    router.push('pengumuman/add');
+}
+
+const goToDetail = (n: string) => {
+    router.push('pengumuman/' + n);
+}
 </script>

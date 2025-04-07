@@ -1,7 +1,7 @@
 <template>
     <BasePage>
         <div class="my-5 flex justify-between items-center">
-            <p class="text-3xl text-slate-700">Riwayat Izin</p>
+            <p class="text-3xl font-semibold text-slate-800">Riwayat Absensi</p>
 
 
         </div>
@@ -52,13 +52,13 @@
                             Nama Karyawan
                         </th>
                         <th scope="col" class="px-6 py-3">
-                            Jenis Izin
+                            Lokasi
                         </th>
                         <th scope="col" class="px-6 py-3">
-                            Alasan Izin
+                            Shift
                         </th>
                         <th scope="col" class="px-6 py-3">
-                            izin Hingga
+                            Status
                         </th>
                         <th scope="col" class="px-6 py-3">
                             Action
@@ -66,22 +66,22 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr v-for="_ in 10"
+                    <tr v-for="n in 10"
                         class="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700 border-gray-200">
                         <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                             Bambang
                         </th>
                         <td class="px-6 py-4">
-                            Izin
+                            Kandang A
                         </td>
                         <td class="px-6 py-4">
-                            Sakit
+                            Shift Pagi~
                         </td>
                         <td class="px-6 py-4">
-                            08-04-2025
+                            Hadir
                         </td>
                         <td class="px-6 py-4 space-x-3">
-                            <a href="#" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Detail</a>
+                            <a @click="goToDetail(n)" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Detail</a>
                         </td>
                     </tr>
                 </tbody>
@@ -133,6 +133,9 @@
 <script setup lang="ts">
 import BasePage from '@/layouts/admin/BasePage.vue'
 import { ref } from "vue";
+import { useRouter } from 'vue-router'
+
+const router = useRouter();
 
 const startDate = ref("");
 const endDate = ref("");
@@ -145,5 +148,9 @@ const validateDates = () => {
     } else {
         errorMessage.value = "";
     }
+};
+
+const goToDetail = (id: string) => {
+    router.push(`absensi/${id}`);
 };
 </script>

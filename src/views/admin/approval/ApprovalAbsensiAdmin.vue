@@ -1,7 +1,7 @@
 <template>
     <BasePage>
         <div class="my-5 flex justify-between items-center">
-            <p class="text-3xl text-slate-700">Approval Koreksi</p>
+            <p class="text-3xl font-semibold text-slate-800">Approval Koreksi</p>
         </div>
 
         <div class="bg-white p-3 mb-5 rounded-md shadow-md">

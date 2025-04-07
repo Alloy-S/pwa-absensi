@@ -2,7 +2,7 @@
     <BasePage>
 
         <div class="mt-5 mb-10 flex justify-between items-center">
-            <p class="text-3xl text-slate-700">Kuota Cuti</p>
+            <p class="text-3xl font-semibold text-slate-800">Kuota Cuti</p>
         </div>
 
         <div class="w-1/2 p-3 bg-white rounded-md shadow-md">

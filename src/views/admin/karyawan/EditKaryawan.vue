@@ -2,7 +2,7 @@
     <BasePage>
         <div class="space-y-3">
             <div class="mb-10 mt-5 flex justify-between items-start">
-                <p class="text-3xl font-semibold text-slate-800">Tambah Karyawan</p>
+                <p class="text-3xl font-semibold text-slate-800">Edit Karyawan</p>
                 <div class="w-1/3 flex">
                     <button type="button" @click="goBack"
                         class="w-full text-red-500 hover:text-white border border-red-600 hover:bg-red-500 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 dark:border-red-500 dark:text-red-500 dark:hover:text-white dark:hover:bg-red-500 dark:focus:ring-red-600">Batal</button>
@@ -264,7 +264,7 @@ onClickOutside(isDropdownRef, () => {
 
 const goBack = () => {
     router.back();
-};  
+};
 
 const filterResults = () => {
     if (search.value) {

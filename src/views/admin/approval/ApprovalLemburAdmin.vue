@@ -1,7 +1,7 @@
 <template>
     <BasePage>
         <div class="my-5 flex justify-between items-center">
-            <p class="text-3xl text-slate-700">Riwayat Lembur</p>
+            <p class="text-3xl font-semibold text-slate-800">Riwayat Lembur</p>
 
 
         </div>

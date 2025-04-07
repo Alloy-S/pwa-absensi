@@ -1,6 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import { useAuthStore } from '../stores/auth';
-import LoginView from '@/views/user/LoginView.vue';
 import DashboardView from '@/views/user/DashbooardView.vue';
 // import ForgotPassword from '@/views/ForgotPassword.vue';
 import RiwayatAbsensiView from '@/views/user/menu/absensi/riwayat/RiwayatAbsensiView.vue';
@@ -36,14 +35,16 @@ import DataKaryawan from '@/views/user/profile/DataKaryawan.vue';
 import ProfilePerusahaan from '@/views/user/ProfilePerusahaan.vue';
 import ChangePassword from '@/views/user/ChangePassword.vue';
 import DetailApprovalBorongan from '@/views/user/menu/approval/DetailApprovalBorongan.vue';
+
+// admin
 import NotFound from '@/views/admin/NotFound.vue';
 import Dasboard from '@/views/admin/Dasboard.vue';
 import KaryawanView from '@/views/admin/karyawan/KaryawanView.vue';
 import AddKaryawan from '@/views/admin/karyawan/AddKaryawan.vue';
-import RiwayatAbsensiAdmin from '@/views/admin/riwayat/RiwayatAbsensiAdmin.vue';
-import RiwayatIzinAdmin from '@/views/admin/riwayat/RiwayatIzinAdmin.vue';
-import RiwayatLemburAdmin from '@/views/admin/riwayat/RiwayatLemburAdmin.vue';
-import RiwayatBoronganAdmin from '@/views/admin/riwayat/RiwayatBoronganAdmin.vue';
+import RiwayatAbsensiAdmin from '@/views/admin/riwayat/absensi/RiwayatAbsensiAdmin.vue';
+import RiwayatIzinAdmin from '@/views/admin/riwayat/izin/RiwayatIzinAdmin.vue';
+import RiwayatLemburAdmin from '@/views/admin/riwayat/lembur/RiwayatLemburAdmin.vue';
+import RiwayatBoronganAdmin from '@/views/admin/riwayat/harianBorongan/RiwayatBoronganAdmin.vue';
 import ApprovalAbsensiAdmin from '@/views/admin/approval/ApprovalAbsensiAdmin.vue';
 import ApprovalHarianBoronganAdmin from '@/views/admin/approval/ApprovalHarianBoronganAdmin.vue';
 import ApprovalIzinAdmin from '@/views/admin/approval/ApprovalIzinAdmin.vue';
@@ -64,6 +65,19 @@ import KomponenGaji from '@/views/admin/setting/gaji/komponenGaji/KomponenGaji.v
 import TambahKomponenGaji from '@/views/admin/setting/gaji/komponenGaji/TambahKomponenGaji.vue';
 import GroupGaji from '@/views/admin/setting/gaji/groupGaji/GroupGaji.vue';
 import TambahGroupGaji from '@/views/admin/setting/gaji/groupGaji/TambahGroupGaji.vue';
+import ReimburseView from '@/views/admin/reimburse/ReimburseView.vue';
+import DetailReimburseAdmin from '@/views/admin/reimburse/DetailReimburseAdmin.vue';
+import PengumumanAdmin from '@/views/admin/pengumuman/PengumumanAdmin.vue';
+import TambahPengumumanAdmin from '@/views/admin/pengumuman/TambahPengumumanAdmin.vue';
+import GroupGajiKaryawan from '@/views/admin/setting/gaji/groupGaji/GroupGajiKaryawan.vue';
+import ProfilePerusahaanAdmin from '@/views/admin/setting/profilePerusahaan/ProfilePerusahaanAdmin.vue';
+import LoginView from '@/views/LoginView.vue';
+import EditKaryawan from '@/views/admin/karyawan/EditKaryawan.vue';
+import DetailRiwayatAbsensi from '@/views/admin/riwayat/absensi/DetailRiwayatAbsensi.vue';
+import DetailRiwayatIzin from '@/views/admin/riwayat/izin/DetailRiwayatIzin.vue';
+import DetailRiwayatLembur from '@/views/admin/riwayat/lembur/DetailRiwayatLembur.vue';
+import DetailRiwayatBoronganAdmin from '@/views/admin/riwayat/harianBorongan/DetailRiwayatBoronganAdmin.vue';
+import EditPengumumanAdmin from '@/views/admin/pengumuman/EditPengumumanAdmin.vue';
 
 const routes = [
   {
@@ -295,9 +309,21 @@ const adminRoutes = [
     // meta: { requiresAuth: true }
   },
   {
+    path: '/admin/karyawan/:id',
+    name: 'Edit Karyawan',
+    component: EditKaryawan,
+    // meta: { requiresAuth: true }
+  },
+  {
     path: '/admin/riwayat/absensi',
     name: 'riwayat absensi admin',
     component: RiwayatAbsensiAdmin,
+    // meta: { requiresAuth: true }
+  },
+  {
+    path: '/admin/riwayat/absensi/:id',
+    name: 'detail riwayat absensi admin',
+    component: DetailRiwayatAbsensi,
     // meta: { requiresAuth: true }
   },
   {
@@ -307,15 +333,33 @@ const adminRoutes = [
     // meta: { requiresAuth: true }
   },
   {
+    path: '/admin/riwayat/izin/:id',
+    name: 'detail riwayat izin admin',
+    component: DetailRiwayatIzin,
+    // meta: { requiresAuth: true }
+  },
+  {
     path: '/admin/riwayat/lembur',
     name: 'riwayat lembur admin',
     component: RiwayatLemburAdmin,
     // meta: { requiresAuth: true }
   },
   {
+    path: '/admin/riwayat/lembur/:id',
+    name: 'detail riwayat lembur admin',
+    component: DetailRiwayatLembur,
+    // meta: { requiresAuth: true }
+  },
+  {
     path: '/admin/riwayat/harian-borongan',
     name: 'riwayat harian borongan admin',
     component: RiwayatBoronganAdmin,
+    // meta: { requiresAuth: true }
+  },
+  {
+    path: '/admin/riwayat/harian-borongan/:id',
+    name: 'detail riwayat harian borongan admin',
+    component: DetailRiwayatBoronganAdmin,
     // meta: { requiresAuth: true }
   },
   {
@@ -340,6 +384,36 @@ const adminRoutes = [
     path: '/admin/approval/lembur',
     name: 'approval lembur admin',
     component: ApprovalLemburAdmin,
+    // meta: { requiresAuth: true }
+  },
+  {
+    path: '/admin/pengumuman',
+    name: 'pengumuman admin',
+    component: PengumumanAdmin,
+    // meta: { requiresAuth: true }
+  },
+  {
+    path: '/admin/pengumuman/add',
+    name: 'tambah pengumuman admin',
+    component: TambahPengumumanAdmin,
+    // meta: { requiresAuth: true }
+  },
+  {
+    path: '/admin/pengumuman/:id',
+    name: 'edit pengumuman admin',
+    component: EditPengumumanAdmin,
+    // meta: { requiresAuth: true }
+  },
+  {
+    path: '/admin/reimburse',
+    name: 'reimburse admin',
+    component: ReimburseView,
+    // meta: { requiresAuth: true }
+  },
+  {
+    path: '/admin/reimburse/:id',
+    name: 'reimburse admin detail',
+    component: DetailReimburseAdmin,
     // meta: { requiresAuth: true }
   },
   {
@@ -436,6 +510,18 @@ const adminRoutes = [
     path: '/admin/pengaturan/gaji/group-gaji/add',
     name: 'pengaturan tambah group gaji',
     component: TambahGroupGaji,
+    // meta: { requiresAuth: true }
+  },
+  {
+    path: '/admin/pengaturan/gaji/group-gaji-karyawan',
+    name: 'pengaturan group gaji karyawan',
+    component: GroupGajiKaryawan,
+    // meta: { requiresAuth: true }
+  },
+  {
+    path: '/admin/pengaturan/profile-perusahaan',
+    name: 'pengaturan profile perusahaan admin',
+    component: ProfilePerusahaanAdmin,
     // meta: { requiresAuth: true }
   },
   {

@@ -2,7 +2,7 @@
     <BasePage>
         <div class="space-y-3">
             <div class="mb-10 mt-5 flex justify-between items-start">
-                <p class=" text-3xl text-slate-800">Tambah Komponen Gaji</p>
+                <p class="text-3xl font-semibold text-slate-800">Tambah Komponen Gaji</p>
 
             </div>
 

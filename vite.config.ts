@@ -15,7 +15,7 @@ export default defineConfig({
       },
       manifest: {
         name: "Benz Absensi",
-        short_name: "Aplikasi",
+        short_name: "BCP Absensi",
         theme_color: "#42b983",
         background_color: "#ffffff",
         display: "standalone",

@@ -2,7 +2,7 @@
     <BasePage>
 
         <div class="mt-5 mb-10 flex justify-between items-center">
-            <p class="text-3xl text-slate-700">Group Gaji</p>
+            <h1 class="text-3xl font-semibold text-slate-800">Manajemen Group Gaji</h1>
         </div>
 
         <div class="flex justify-between mb-5">
@@ -55,7 +55,7 @@
                         </td>
                         <td class="w-1/4 px-6 py-4 space-x-3">
                             <a href="#" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
-                            <a href="#" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Delete</a>
+                            <a href="#" class="font-medium text-red-600 dark:text-red-500 hover:underline">Delete</a>
                         </td>
                     </tr>
                 </tbody>

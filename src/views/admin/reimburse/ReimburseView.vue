@@ -1,7 +1,7 @@
 <template>
     <BasePage>
         <div class="my-5 flex justify-between items-center">
-            <p class="text-3xl text-slate-700">Riwayat Absensi</p>
+            <p class="text-3xl font-semibold text-slate-800">Reimburse</p>
 
 
         </div>
@@ -9,29 +9,28 @@
         <div class="bg-white p-3 mb-5 rounded-md shadow-md">
 
             <div class="flex justify-center items-end space-x-2">
-                <div class="w-full max-w-md">
-                    <label class="block mb-2 text-sm font-medium text-gray-700">Cari Nama Karyawan</label>
-                    <input type="text" id="simple-search"
-                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                        placeholder="Cari Nama..." required />
-                </div>
+                <div class="w-full flex space-x-3">
 
-                <div class="">
-                    <label class="block text-sm font-medium text-gray-700">Pilih Rentang Tanggal</label>
-
-                    <div class="flex space-x-2 mt-2">
-                        <!-- Tanggal Mulai -->
-                        <input type="date" v-model="startDate" @change="validateDates"
-                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" />
-
-                        <!-- Tanggal Akhir -->
-                        <input type="date" v-model="endDate" @change="validateDates"
+                    <div class="w-1/2">
+                        <label class="block mb-2 text-sm font-medium text-gray-700">Pencarian</label>
+                        <input type="text" id="simple-search"
                             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                            :min="startDate" />
+                            placeholder="cari..." required />
                     </div>
 
-                    <p v-if="errorMessage" class="text-red-500 text-sm mt-2">{{ errorMessage }}</p>
+                    <div class="w-1/2">
+
+                        <label class="block mb-2 text-sm font-medium text-gray-900">Status</label>
+                        <select
+                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+                            <option disabled selected>Pilih salah satu</option>
+                            <option value="0">Menunggu Persetujuan</option>
+                            <option value="1">Disetujui</option>
+                            <option value="2">Ditolak</option>
+                        </select>
+                    </div>
                 </div>
+
                 <button type="submit"
                     class="flex items-center space-x-2 p-2.5  text-sm font-medium text-white bg-blue-700 rounded-lg border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                     <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
@@ -49,13 +48,13 @@
                 <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                     <tr>
                         <th scope="col" class="px-6 py-3">
-                            Nama Karyawan
+                            judul
                         </th>
                         <th scope="col" class="px-6 py-3">
-                            Lokasi
+                            Pengaju
                         </th>
                         <th scope="col" class="px-6 py-3">
-                            Shift
+                            Nominal
                         </th>
                         <th scope="col" class="px-6 py-3">
                             Status
@@ -66,22 +65,22 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr v-for="_ in 10"
+                    <tr v-for="n in 10"
                         class="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700 border-gray-200">
                         <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                            Bambang
+                            Reimburse Baut
                         </th>
                         <td class="px-6 py-4">
-                            Kandang A
+                            Bambang
                         </td>
                         <td class="px-6 py-4">
-                            Shift Pagi~
+                            Rp 50.000
                         </td>
                         <td class="px-6 py-4">
-                            Hadir
+                            Menunggu Persetujuan
                         </td>
                         <td class="px-6 py-4 space-x-3">
-                            <a href="#" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Detail</a>
+                            <a @click="gotoDetail(n)"  class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Detail</a>
                         </td>
                     </tr>
                 </tbody>
@@ -132,18 +131,12 @@
 
 <script setup lang="ts">
 import BasePage from '@/layouts/admin/BasePage.vue'
-import { ref } from "vue";
+import { useRouter } from 'vue-router'
 
-const startDate = ref("");
-const endDate = ref("");
-const errorMessage = ref("");
+const router = useRouter();
 
-const validateDates = () => {
-    if (startDate.value && endDate.value && startDate.value > endDate.value) {
-        errorMessage.value = "Tanggal akhir harus setelah tanggal mulai!";
-        endDate.value = startDate.value; // Reset endDate ke startDate jika tidak valid
-    } else {
-        errorMessage.value = "";
-    }
-};
+const gotoDetail = (id: string) => {
+    router.push('/admin/reimburse/' + id)
+    console.log(id)
+}
 </script>

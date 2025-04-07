@@ -5,7 +5,7 @@
 
 
         <div class="mb-10 mt-5 flex justify-between items-start">
-          <p class="text-3xl text-slate-800">Tambah Group Gaji</p>
+          <h1 class="text-3xl font-semibold text-slate-800">Tambah Group Gaji</h1>
         </div>
 
         <!-- Form Group -->
@@ -56,7 +56,7 @@
               <label class="block mb-1 text-sm font-medium text-gray-900">Kondisi</label>
               <div class="space-y-2">
                 <label class="text-sm">
-                  <input type="checkbox" v-model="komponen.kondisi.use" class="mr-2" /> Gunakan Kondisi
+                  <input type="checkbox" @click="handleKondisiToggle(index)" v-model="komponen.kondisi.use" class="mr-2" /> Gunakan Kondisi
                 </label>
                 <div v-if="komponen.kondisi.use" class="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <input v-model="komponen.kondisi.dasar" type="text" placeholder="Gunakan apa"
@@ -80,7 +80,7 @@
               <label class="block mb-1 text-sm font-medium text-gray-900">Rumus</label>
               <div class="space-y-2">
                 <label class="text-sm">
-                  <input type="checkbox" v-model="komponen.rumus.use" class="mr-2" /> Gunakan Rumus
+                  <input type="checkbox" @click="handleRumusToggle(index)" v-model="komponen.rumus.use" class="mr-2" /> Gunakan Rumus
                 </label>
                 <div v-if="komponen.rumus.use" class="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <input v-model="komponen.rumus.dasar" type="text" placeholder="Gunakan apa"
@@ -148,17 +148,19 @@
 </template>
 
 <script setup lang="ts">
-import { reactive } from 'vue'
+import { ref } from 'vue'
 import BasePage from '@/layouts/admin/BasePage.vue'
 
-const group = reactive({
+
+
+const group = ref({
   kode: '',
   nama: '',
   komponen: [] as any[]
 })
 
 const addKomponen = () => {
-  group.komponen.push({
+  group.value.komponen.push({
     kode: '',
     nama: '',
     hitung: '',
@@ -181,6 +183,24 @@ const addKomponen = () => {
     }
   })
 }
+
+const handleKondisiToggle = (index: number) => {
+  const komponen = group.value.komponen[index]
+  komponen.kondisi.use = !komponen.kondisi.use
+  if (komponen.kondisi.use) {
+    komponen.rumus.use = false
+  }
+}
+
+const handleRumusToggle = (index: number) => {
+  const komponen = group.value.komponen[index]
+  komponen.rumus.use = !komponen.rumus.use
+  if (komponen.rumus.use) {
+    komponen.kondisi.use = false
+  }
+}
+
+
 
 const removeKomponen = (index: number) => {
   group.komponen.splice(index, 1)

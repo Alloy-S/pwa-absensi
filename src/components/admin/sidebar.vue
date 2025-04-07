@@ -120,14 +120,14 @@
                     </button>
                     <ul id="dropdown-reimburse" v-show="sidebarStore.isReimburseOpen" class=" py-2 space-y-2">
                         <li>
-                            <RouterLink to="/admin/reimburse/all"
+                            <RouterLink to="/admin/reimburse"
                                 class="flex items-center w-full p-2 text-base font-normal text-gray-600 transition duration-75  group hover:bg-gray-100 border-l-4 border-transparent hover:border-blue-600 pl-14">
                                 List Reimburse</RouterLink>
                         </li>
                         <li>
-                            <RouterLink to="/reimburse/claim"
+                            <RouterLink to="/admin/approval/reimburse"
                                 class="flex items-center w-full p-2 text-base font-normal text-gray-600 transition duration-75 group hover:bg-gray-100 border-l-4 border-transparent hover:border-blue-600 pl-14">
-                                Tambah Reimburse</RouterLink>
+                                Approval Reimburse</RouterLink>
                         </li>
                     </ul>
                 </li>
@@ -151,12 +151,12 @@
                     </button>
                     <ul id="dropdown-reimburse" v-show="sidebarStore.isPengumumanOpen" class=" py-2 space-y-2">
                         <li>
-                            <RouterLink to="/admin/reimburse/all"
+                            <RouterLink to="/admin/pengumuman"
                                 class="flex items-center w-full p-2 text-base font-normal text-gray-600 transition duration-75  group hover:bg-gray-100 border-l-4 border-transparent hover:border-blue-600 pl-14">
                                 Daftar Pengumuman</RouterLink>
                         </li>
                         <li>
-                            <RouterLink to="/reimburse/claim"
+                            <RouterLink to="/admin/pengumuman/add"
                                 class="flex items-center w-full p-2 text-base font-normal text-gray-600 transition duration-75 group hover:bg-gray-100 border-l-4 border-transparent hover:border-blue-600 pl-14">
                                 Tambah Pengumuman</RouterLink>
                         </li>
@@ -222,11 +222,7 @@
                                 class="flex items-center w-full p-2 text-base font-normal text-gray-600 transition duration-75 group hover:bg-gray-100 border-l-4 border-transparent hover:border-blue-600 pl-14">
                                 Lembur</RouterLink>
                         </li>
-                        <li>
-                            <RouterLink to="/admin/approval/reimburse"
-                                class="flex items-center w-full p-2 text-base font-normal text-gray-600 transition duration-75 group hover:bg-gray-100 border-l-4 border-transparent hover:border-blue-600 pl-14">
-                                Reimburse</RouterLink>
-                        </li>
+                        
                     </ul>
                 </li>
                 <li class="px-5">
@@ -321,15 +317,15 @@
                                 class="flex items-center w-full p-2 text-base font-normal text-gray-600 transition duration-75 group hover:bg-gray-100 border-l-4 border-transparent hover:border-blue-600 pl-14">
                                 Group Gaji</RouterLink>
                         </li>
-                        <!-- <li>
-                            <RouterLink to="/admin/pengaturan/gaji/group-gaji-pegawai"
+                        <li>
+                            <RouterLink to="/admin/pengaturan/gaji/group-gaji-karyawan"
                                 class="flex items-center w-full p-2 text-base font-normal text-gray-600 transition duration-75 group hover:bg-gray-100 border-l-4 border-transparent hover:border-blue-600 pl-14">
-                                Group Gaji Pegawai</RouterLink>
-                        </li> -->
+                                Group Gaji Karyawan</RouterLink>
+                        </li>
                     </ul>
                 </li>
                 <li>
-                    <RouterLink to="/"
+                    <RouterLink to="/admin/pengaturan/profile-perusahaan"
                         class="relative flex flex-row items-center h-11 transition duration-150 ease-in-out focus:outline-none hover:bg-gray-50 text-gray-600 hover:text-gray-800 border-l-4 border-transparent hover:border-blue-600 pr-6">
                         <span class="inline-flex justify-center items-center ml-4">
                             <i class="fa-regular fa-building"></i>
