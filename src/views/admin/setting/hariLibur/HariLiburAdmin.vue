@@ -119,7 +119,7 @@ const addItem = () => {
     router.push('hari-libur/add');
 }
 
-const editItem = (id: string) => {
+const editItem = (id: any) => {
     router.push('hari-libur/' + id);
 }
 </script>

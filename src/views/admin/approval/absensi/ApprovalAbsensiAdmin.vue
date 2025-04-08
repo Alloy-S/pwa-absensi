@@ -1,9 +1,7 @@
 <template>
     <BasePage>
         <div class="my-5 flex justify-between items-center">
-            <p class="text-3xl font-semibold text-slate-800">Approval Reimburse</p>
-
-
+            <p class="text-3xl font-semibold text-slate-800">Approval Koreksi</p>
         </div>
 
         <div class="bg-white p-3 mb-5 rounded-md shadow-md">
@@ -28,18 +26,19 @@
             </div>
 
         </div>
+
         <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
             <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                 <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                     <tr>
                         <th scope="col" class="px-6 py-3">
-                            judul
+                            Nama Karyawan
                         </th>
                         <th scope="col" class="px-6 py-3">
-                            Pengaju
+                            Tanggal
                         </th>
                         <th scope="col" class="px-6 py-3">
-                            Nominal
+                            Lokasi
                         </th>
                         <th scope="col" class="px-6 py-3">
                             Status
@@ -50,22 +49,22 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr v-for="_ in 10"
+                    <tr v-for="n in 10"
                         class="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700 border-gray-200">
                         <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                            Reimburse Baut
+                            Bambang
                         </th>
                         <td class="px-6 py-4">
-                            Bambang
+                            02-03-2025
                         </td>
                         <td class="px-6 py-4">
-                            Rp 50.000
+                            Site A
                         </td>
                         <td class="px-6 py-4">
-                            Menunggu Persetujuan
+                            Menunggu persetujuan
                         </td>
                         <td class="px-6 py-4 space-x-3">
-                            <a href="#" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Detail</a>
+                            <a @click="goToDetail(n)" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Detail</a>
                         </td>
                     </tr>
                 </tbody>
@@ -116,4 +115,13 @@
 
 <script setup lang="ts">
 import BasePage from '@/layouts/admin/BasePage.vue'
+import { useRouter } from 'vue-router'
+
+const router = useRouter();
+
+const goToDetail = (n: any) => {
+    router.push(`absensi/${n}`)
+}
+
+
 </script>

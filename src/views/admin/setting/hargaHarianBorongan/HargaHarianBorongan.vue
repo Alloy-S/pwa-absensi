@@ -119,7 +119,7 @@ const addItem = () => {
     router.push('harga-harian-borongan/add');
 }
 
-const editItem = (id: string) => {
+const editItem = (id: any) => {
     router.push('harga-harian-borongan/' + id);
 }
 </script>

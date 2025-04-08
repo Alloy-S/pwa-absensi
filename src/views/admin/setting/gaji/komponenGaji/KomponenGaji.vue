@@ -113,7 +113,7 @@ const addItem = () => {
     router.push('komponen-gaji/add');
 }
 
-const editItem = (id: string) => {
+const editItem = (id: any) => {
     router.push('komponen-gaji/' + id);
 }
 </script>

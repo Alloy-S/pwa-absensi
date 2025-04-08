@@ -109,7 +109,7 @@ const addItem = () => {
     router.push('lokasi/add');
 }
 
-const editItem = (id: string) => {
+const editItem = (id: any) => {
     router.push('lokasi/' + id);
 }
 </script>

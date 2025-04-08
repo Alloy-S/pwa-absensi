@@ -149,7 +149,7 @@ const validateDates = () => {
     }
 };
 
-const goToDetail = (id: string) => {
+const goToDetail = (id: any) => {
     router.push('lembur/' + id);
 }
 </script>

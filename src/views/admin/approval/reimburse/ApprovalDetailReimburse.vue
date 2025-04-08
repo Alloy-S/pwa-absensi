@@ -3,7 +3,7 @@
       <div class="space-y-6 mt-4">
         <!-- Header -->
         <div class="flex items-center justify-between">
-          <h1 class="text-2xl font-semibold text-slate-800">Detail Reimburse</h1>
+          <h1 class="text-2xl font-semibold text-slate-800">Approval Reimburse</h1>
           <RouterLink to="/admin/reimburse" class="text-blue-600 hover:underline">← Kembali</RouterLink>
         </div>
   
@@ -11,7 +11,7 @@
         <div class="bg-white shadow-md rounded-lg p-6 space-y-2">
           <p><strong>Nama:</strong> {{ reimburse.name }}</p>
           <p><strong>Tanggal:</strong> {{ reimburse.date }}</p>
-          <p><strong>Status:</strong>
+          <p><strong>Status Saat Ini:</strong>
             <span :class="statusClass(reimburse.status)">
               {{ reimburse.status }}
             </span>
@@ -53,6 +53,22 @@
             class="w-64 h-64 object-cover rounded-md border"
           />
         </div>
+  
+        <!-- Tombol Approval -->
+        <div class="flex gap-4">
+          <button
+            @click="approve"
+            class="px-4 py-2 bg-green-500 hover:bg-green-700 text-white rounded-lg"
+          >
+            Setujui
+          </button>
+          <button
+            @click="reject"
+            class="px-4 py-2 bg-red-500 hover:bg-red-700 text-white rounded-lg"
+          >
+            Tolak
+          </button>
+        </div>
       </div>
       <div class="mb-20"></div>
     </BasePage>
@@ -61,13 +77,15 @@
   <script setup lang="ts">
   import { ref } from 'vue'
   import BasePage from '@/layouts/admin/BasePage.vue'
-  import { RouterLink } from 'vue-router'
+  import { RouterLink, useRouter } from 'vue-router'
+  
+  const router = useRouter()
   
   const reimburse = ref({
     id: 1,
     name: 'Dewi Kartika',
     date: '2025-04-05',
-    status: 'Disetujui',
+    status: 'Menunggu',
     note: 'Pembelian alat tulis kantor',
     total: 250000,
     items: [
@@ -75,7 +93,7 @@
       { description: 'Kertas A4', quantity: 5, unitPrice: 15000 },
       { description: 'Map folder', quantity: 3, unitPrice: 12000 },
     ],
-    imageUrl: 'https://via.placeholder.com/300x300.png?text=Bukti+Reimburse' // ganti dengan URL asli dari backend
+    imageUrl: 'https://via.placeholder.com/300x300.png?text=Bukti+Reimburse'
   })
   
   const formatRupiah = (value: number): string => {
@@ -91,6 +109,21 @@
       default:
         return 'text-yellow-600 font-semibold'
     }
+  }
+  
+  // Simulasi approval
+  const approve = () => {
+    // TODO: replace with API call
+    reimburse.value.status = 'Disetujui'
+    alert('Reimburse disetujui!')
+    router.push('/admin/reimburse')
+  }
+  
+  const reject = () => {
+    // TODO: replace with API call
+    reimburse.value.status = 'Ditolak'
+    alert('Reimburse ditolak!')
+    router.push('/admin/reimburse')
   }
   </script>
   

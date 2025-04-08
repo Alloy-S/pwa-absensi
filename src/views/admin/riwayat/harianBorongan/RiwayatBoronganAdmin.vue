@@ -130,7 +130,7 @@ import { ref } from "vue";
 import { useRouter } from 'vue-router'
 
 const router = useRouter();
-const goToDetail = (n: string) => {
+const goToDetail = (n: any) => {
     router.push('harian-borongan/'+ n);
 };
 const startDate = ref("");

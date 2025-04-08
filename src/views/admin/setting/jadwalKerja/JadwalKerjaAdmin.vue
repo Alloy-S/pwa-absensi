@@ -119,7 +119,7 @@ const addShift = () => {
     router.push('jadwal-kerja/add');
 }
 
-const editItem = (id: string) => {
+const editItem = (id: any) => {
     router.push('jadwal-kerja/' + id);
 }
 </script>

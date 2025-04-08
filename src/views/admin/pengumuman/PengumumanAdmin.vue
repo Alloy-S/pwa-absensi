@@ -97,11 +97,7 @@ import { useRouter } from 'vue-router'
 
 const router = useRouter()
 
-const addItem = () => {
-    router.push('pengumuman/add');
-}
-
-const goToDetail = (n: string) => {
+const goToDetail = (n: any) => {
     router.push('pengumuman/' + n);
 }
 </script>

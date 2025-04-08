@@ -122,7 +122,7 @@ import { useRouter } from 'vue-router'
 
 const router = useRouter();
 
-const goToDetail = (id: string) => {
+const goToDetail = (id: any) => {
     router.push(`karyawan/${id}`);
 }
 </script>

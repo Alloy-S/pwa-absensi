@@ -1,7 +1,7 @@
 <template>
     <BasePage>
         <div class="my-5 flex justify-between items-center">
-            <p class="text-3xl font-semibold text-slate-800">Riwayat Harian Borongan</p>
+            <p class="text-3xl font-semibold text-slate-800">Approval Izin</p>
 
 
         </div>
@@ -28,19 +28,21 @@
             </div>
 
         </div>
-
         <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
             <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                 <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                     <tr>
                         <th scope="col" class="px-6 py-3">
-                            Nama PIC Karyawan
+                            Nama Karyawan
                         </th>
                         <th scope="col" class="px-6 py-3">
                             Tanggal
                         </th>
                         <th scope="col" class="px-6 py-3">
-                            Jumlah Karyawan
+                            Jenis Izin
+                        </th>
+                        <th scope="col" class="px-6 py-3">
+                            izin Hingga
                         </th>
                         <th scope="col" class="px-6 py-3">
                             Status
@@ -51,7 +53,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr v-for="_ in 10"
+                    <tr v-for="n in 10"
                         class="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700 border-gray-200">
                         <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                             Bambang
@@ -60,13 +62,16 @@
                             04-04-2025
                         </td>
                         <td class="px-6 py-4">
-                            4
+                            Izin
+                        </td>
+                        <td class="px-6 py-4">
+                            08-04-2025
                         </td>
                         <td class="px-6 py-4">
                             Menunggu Persetujuan
                         </td>
                         <td class="px-6 py-4 space-x-3">
-                            <a href="#" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Detail</a>
+                            <a @click="goToDetail(n)" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Detail</a>
                         </td>
                     </tr>
                 </tbody>
@@ -117,6 +122,12 @@
 
 <script setup lang="ts">
 import BasePage from '@/layouts/admin/BasePage.vue'
+import { useRouter } from 'vue-router'
 
+const router = useRouter();
+
+const goToDetail = (n: any) => {
+    router.push(`izin/${n}`);
+}
 
 </script>

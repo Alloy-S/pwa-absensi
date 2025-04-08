@@ -135,7 +135,7 @@ import { useRouter } from 'vue-router'
 
 const router = useRouter();
 
-const gotoDetail = (id: string) => {
+const gotoDetail = (id: any) => {
     router.push('/admin/reimburse/' + id)
     console.log(id)
 }

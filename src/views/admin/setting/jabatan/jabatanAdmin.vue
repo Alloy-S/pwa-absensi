@@ -107,7 +107,7 @@ const addItem = () => {
     router.push('jabatan/add');
 }
 
-const editItem = (id: string) => {
+const editItem = (id: any) => {
     router.push('jabatan/' + id);
 }
 </script>

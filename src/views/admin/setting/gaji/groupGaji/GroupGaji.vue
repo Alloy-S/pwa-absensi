@@ -113,7 +113,7 @@ const addItem = () => {
     router.push('group-gaji/add');
 }
 
-const editItem = (id: string) => {
+const editItem = (id: any) => {
     router.push('group-gaji/' + id);
 }
 </script>

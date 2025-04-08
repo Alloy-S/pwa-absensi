@@ -1,293 +1,213 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import { useAuthStore } from '../stores/auth';
-import DashboardView from '@/views/user/DashbooardView.vue';
 // import ForgotPassword from '@/views/ForgotPassword.vue';
-import RiwayatAbsensiView from '@/views/user/menu/absensi/riwayat/RiwayatAbsensiView.vue';
-import ProfileView from '@/views/user/ProfileView.vue';
-import MenuView from '@/views/user/menu/MenuView.vue';
-import PencatatanWaktuView from '@/views/user/menu/absensi/pencatatan-waktu/PencatatanWaktuView.vue';
-import KoreksiKehadiranView from '@/views/user/menu/absensi/koreksi/KoreksiKehadiranView.vue';
-import IzinView from '@/views/user/menu/absensi/izin/IzinView.vue';
-import LemburView from '@/views/user/menu/absensi/lembur/LemburView.vue';
 import NotFoundView from '@/views/user/NotFoundView.vue';
-import AddKoreksiViwe from '@/views/user/menu/absensi/koreksi/AddKoreksiViwe.vue';
-import AddIzinView from '@/views/user/menu/absensi/izin/AddIzinView.vue';
-import AddLemburView from '@/views/user/menu/absensi/lembur/AddLemburView.vue';
-import DetailAbsensi from '@/views/user/menu/absensi/riwayat/DetailAbsensi.vue';
-import DetailKoreksiView from '@/views/user/menu/absensi/koreksi/DetailKoreksiView.vue';
-import DetailIzinView from '@/views/user/menu/absensi/izin/DetailIzinView.vue';
-import DetailLemburView from '@/views/user/menu/absensi/lembur/DetailLemburView.vue';
-import TakePhotoView from '@/views/user/menu/absensi/TakePhotoView.vue';
-import AbsensView from '@/views/user/menu/absensi/pencatatan-waktu/AbsensView.vue';
-import AbsensiBoronganList from '@/views/user/menu/absensiBorongan/AbsensiBoronganList.vue';
-import DetailAbsensiBorongan from '@/views/user/menu/absensiBorongan/DetailAbsensiBorongan.vue';
-import InputAbsensiBorongan from '@/views/user/menu/absensiBorongan/InputAbsensiBorongan.vue';
-import ListPengumuman from '@/views/user/menu/pengumuman/ListPengumuman.vue';
-import DetailPengumuman from '@/views/user/menu/pengumuman/DetailPengumuman.vue';
-import RiwayatReimburse from '@/views/user/menu/reimburse/RiwayatReimburse.vue';
-import DetailReimburse from '@/views/user/menu/reimburse/DetailReimburse.vue';
-import AddReimburse from '@/views/user/menu/reimburse/AddReimburse.vue';
-import ApprovalView from '@/views/user/menu/approval/ApprovalView.vue';
-import DetailApproval from '@/views/user/menu/approval/DetailApproval.vue';
-import DataKontak from '@/views/user/profile/DataKontak.vue';
-import DataPribadi from '@/views/user/profile/DataPribadi.vue';
-import DataKaryawan from '@/views/user/profile/DataKaryawan.vue';
-import ProfilePerusahaan from '@/views/user/ProfilePerusahaan.vue';
-import ChangePassword from '@/views/user/ChangePassword.vue';
-import DetailApprovalBorongan from '@/views/user/menu/approval/DetailApprovalBorongan.vue';
 
 // admin
 import NotFound from '@/views/admin/NotFound.vue';
-import Dasboard from '@/views/admin/Dasboard.vue';
-import KaryawanView from '@/views/admin/karyawan/KaryawanView.vue';
-import AddKaryawan from '@/views/admin/karyawan/AddKaryawan.vue';
-import RiwayatAbsensiAdmin from '@/views/admin/riwayat/absensi/RiwayatAbsensiAdmin.vue';
-import RiwayatIzinAdmin from '@/views/admin/riwayat/izin/RiwayatIzinAdmin.vue';
-import RiwayatLemburAdmin from '@/views/admin/riwayat/lembur/RiwayatLemburAdmin.vue';
-import RiwayatBoronganAdmin from '@/views/admin/riwayat/harianBorongan/RiwayatBoronganAdmin.vue';
-import ApprovalAbsensiAdmin from '@/views/admin/approval/ApprovalAbsensiAdmin.vue';
-import ApprovalHarianBoronganAdmin from '@/views/admin/approval/ApprovalHarianBoronganAdmin.vue';
-import ApprovalIzinAdmin from '@/views/admin/approval/ApprovalIzinAdmin.vue';
-import ApprovalLemburAdmin from '@/views/admin/approval/ApprovalLemburAdmin.vue';
-import ApprovalReimbruseAdmin from '@/views/admin/approval/ApprovalReimbruseAdmin.vue';
-import JadwalKerjaAdmin from '@/views/admin/setting/jadwalKerja/JadwalKerjaAdmin.vue';
-import TambahJadwalKerja from '@/views/admin/setting/jadwalKerja/TambahJadwalKerja.vue';
-import LokasiAdmin from '@/views/admin/setting/lokasi/LokasiAdmin.vue';
-import TambahLokasi from '@/views/admin/setting/lokasi/TambahLokasi.vue';
-import HargaHarianBorongan from '@/views/admin/setting/hargaHarianBorongan/HargaHarianBorongan.vue';
-import TambahHarianBorongan from '@/views/admin/setting/hargaHarianBorongan/TambahHarianBorongan.vue';
-import JabatanAdmin from '@/views/admin/setting/jabatan/jabatanAdmin.vue';
-import TambahJabatan from '@/views/admin/setting/jabatan/TambahJabatan.vue';
-import KuotaCutiAdmin from '@/views/admin/setting/kuotaCuti/KuotaCutiAdmin.vue';
-import HariLiburAdmin from '@/views/admin/setting/hariLibur/HariLiburAdmin.vue';
-import TambahHariLibur from '@/views/admin/setting/hariLibur/TambahHariLibur.vue';
-import KomponenGaji from '@/views/admin/setting/gaji/komponenGaji/KomponenGaji.vue';
-import TambahKomponenGaji from '@/views/admin/setting/gaji/komponenGaji/TambahKomponenGaji.vue';
-import GroupGaji from '@/views/admin/setting/gaji/groupGaji/GroupGaji.vue';
-import TambahGroupGaji from '@/views/admin/setting/gaji/groupGaji/TambahGroupGaji.vue';
-import ReimburseView from '@/views/admin/reimburse/ReimburseView.vue';
-import DetailReimburseAdmin from '@/views/admin/reimburse/DetailReimburseAdmin.vue';
-import PengumumanAdmin from '@/views/admin/pengumuman/PengumumanAdmin.vue';
-import TambahPengumumanAdmin from '@/views/admin/pengumuman/TambahPengumumanAdmin.vue';
-import GroupGajiKaryawan from '@/views/admin/setting/gaji/groupGaji/GroupGajiKaryawan.vue';
-import ProfilePerusahaanAdmin from '@/views/admin/setting/profilePerusahaan/ProfilePerusahaanAdmin.vue';
-import LoginView from '@/views/LoginView.vue';
-import EditKaryawan from '@/views/admin/karyawan/EditKaryawan.vue';
-import DetailRiwayatAbsensi from '@/views/admin/riwayat/absensi/DetailRiwayatAbsensi.vue';
-import DetailRiwayatIzin from '@/views/admin/riwayat/izin/DetailRiwayatIzin.vue';
-import DetailRiwayatLembur from '@/views/admin/riwayat/lembur/DetailRiwayatLembur.vue';
-import DetailRiwayatBoronganAdmin from '@/views/admin/riwayat/harianBorongan/DetailRiwayatBoronganAdmin.vue';
-import EditPengumumanAdmin from '@/views/admin/pengumuman/EditPengumumanAdmin.vue';
-import EditJadwalKerja from '@/views/admin/setting/jadwalKerja/EditJadwalKerja.vue';
-import EditLokasiAdmin from '@/views/admin/setting/lokasi/EditLokasiAdmin.vue';
-import EditHarianBorongan from '@/views/admin/setting/hargaHarianBorongan/EditHarianBorongan.vue';
-import EditJabatan from '@/views/admin/setting/jabatan/EditJabatan.vue';
-import EditHariLibur from '@/views/admin/setting/hariLibur/EditHariLibur.vue';
-import EditKomponenGaji from '@/views/admin/setting/gaji/komponenGaji/EditKomponenGaji.vue';
-import EditGroupGaji from '@/views/admin/setting/gaji/groupGaji/EditGroupGaji.vue';
 
 const routes = [
   {
     path: '/login',
     name: 'Login',
-    component: LoginView
+    component: () => import('@/views/LoginView.vue')
   },
   {
     path: '/',
     name: 'Dashboard',
-    component: DashboardView,
+    component: () => import('@/views/user/DashbooardView.vue'),
     // meta: { requiresAuth: true }
   },
   {
     path: '/menu',
     name: 'Menu',
-    component: MenuView,
+    component: () => import('@/views/user/menu/MenuView.vue'),
     // meta: { requiresAuth: true }
   },
   {
     path: '/menu/absensi/riwayat',
     name: 'Riwayat Absensi',
-    component: RiwayatAbsensiView,
+    component: () => import('@/views/user/menu/absensi/riwayat/RiwayatAbsensiView.vue'),
     // meta: { requiresAuth: true }
   },
   {
     path: '/menu/absensi/riwayat/:id',
     name: 'Detail Riwayat Absensi',
-    component: DetailAbsensi,
+    component: () => import('@/views/user/menu/absensi/riwayat/DetailAbsensi.vue'),
     // meta: { requiresAuth: true }
   },
   {
     path: '/menu/absensi/izin/:id',
     name: 'Detail Pengajuan Izin',
-    component: DetailIzinView,
+    component: () => import('@/views/user/menu/absensi/izin/DetailIzinView.vue'),
     // meta: { requiresAuth: true }
   },
   {
     path: '/menu/absensi/lembur/:id',
     name: 'Detail Pengajuan Lembur',
-    component: DetailLemburView,
+    component: () => import('@/views/user/menu/absensi/lembur/DetailLemburView.vue'),
     // meta: { requiresAuth: true }
   },
   {
     path: '/menu/absensi/koreksi-kehadiran/:id',
     name: 'Detail Koreksi Pengajuan',
-    component: DetailKoreksiView,
+    component: () => import('@/views/user/menu/absensi/koreksi/DetailKoreksiView.vue'),
     // meta: { requiresAuth: true }
   },
   {
     path: '/menu/absensi/pencatatan-waktu',
     name: 'Pencatatan Waktu',
-    component: PencatatanWaktuView,
+    component: () => import('@/views/user/menu/absensi/pencatatan-waktu/PencatatanWaktuView.vue'),
     // meta: { requiresAuth: true }
   },
   {
     path: '/menu/absensi/pencatatan-waktu/:type',
     name: 'Pencatatan Waktu User',
-    component: AbsensView,
+    component: () => import('@/views/user/menu/absensi/pencatatan-waktu/AbsensView.vue'),
     // meta: { requiresAuth: true }
   },
   {
     path: '/menu/absensi/koreksi-kehadiran',
     name: 'Koreksi Kehadiran',
-    component: KoreksiKehadiranView,
+    component: () => import('@/views/user/menu/absensi/koreksi/KoreksiKehadiranView.vue'),
     // meta: { requiresAuth: true }
   },
   {
     path: '/menu/absensi/koreksi-kehadiran/add',
     name: 'Tambah Koreksi Kehadiran',
-    component: AddKoreksiViwe,
+    component: () => import('@/views/user/menu/absensi/koreksi/AddKoreksiViwe.vue'),
     // meta: { requiresAuth: true }
   },
   {
     path: '/menu/absensi/izin',
     name: 'Izin',
-    component: IzinView,
+    component: () => import('@/views/user/menu/absensi/izin/IzinView.vue'),
     // meta: { requiresAuth: true }
   },
   {
     path: '/menu/absensi/izin/add',
     name: 'Tambah Izin',
-    component: AddIzinView,
+    component: () => import('@/views/user/menu/absensi/izin/AddIzinView.vue'),
     // meta: { requiresAuth: true }
   },
   {
     path: '/menu/absensi/lembur',
     name: 'Lembur',
-    component: LemburView,
+    component: () => import('@/views/user/menu/absensi/lembur/LemburView.vue'),
     // meta: { requiresAuth: true }
   },
   {
     path: '/menu/absensi/lembur/add',
     name: 'Tambah Lembur',
-    component: AddLemburView,
+    component: () => import('@/views/user/menu/absensi/lembur/AddLemburView.vue'),
     // meta: { requiresAuth: true }
   },
   {
     path: '/menu/absensi/take-photo',
     name: 'Ambil Foto',
-    component: TakePhotoView,
+    component: () => import('@/views/user/menu/absensi/TakePhotoView.vue'),
     // meta: { requiresAuth: true }
   },
   {
     path: '/menu/absensi/borongan',
     name: 'Riwayat Absensi Borongan',
-    component: AbsensiBoronganList,
+    component: () => import('@/views/user/menu/absensiBorongan/AbsensiBoronganList.vue'),
     // meta: { requiresAuth: true }
   },
   {
     path: '/menu/absensi/borongan/:id',
     name: 'Detail Absensi Borongan',
-    component: DetailAbsensiBorongan,
+    component: () => import('@/views/user/menu/absensiBorongan/DetailAbsensiBorongan.vue'),
     // meta: { requiresAuth: true }
   },
   {
     path: '/menu/absensi/borongan/create',
     name: 'Input Absensi Borongan',
-    component: InputAbsensiBorongan,
+    component: () => import('@/views/user/menu/absensiBorongan/InputAbsensiBorongan.vue'),
     // meta: { requiresAuth: true }
   },
   {
     path: '/menu/pengumuman',
     name: 'Pengumuman',
-    component: ListPengumuman,
+    component: () => import('@/views/user/menu/pengumuman/ListPengumuman.vue'),
     // meta: { requiresAuth: true }
   },
   {
     path: '/menu/pengumuman/:id',
     name: 'Detail Pengumuman',
-    component: DetailPengumuman,
+    component: () => import('@/views/user/menu/pengumuman/DetailPengumuman.vue'),
     // meta: { requiresAuth: true }
   },
   {
     path: '/menu/reimburse',
     name: 'Riwayat Reimburse',
-    component: RiwayatReimburse,
+    component: () => import('@/views/user/menu/reimburse/RiwayatReimburse.vue'),
     // meta: { requiresAuth: true }
   },
   {
     path: '/menu/reimburse/:id',
     name: 'Detail Reimburse',
-    component: DetailReimburse,
+    component: () => import('@/views/user/menu/reimburse/DetailReimburse.vue'),
     // meta: { requiresAuth: true }
   },
   {
     path: '/menu/reimburse/create',
     name: 'Add Reimburse',
-    component: AddReimburse,
+    component: () => import('@/views/user/menu/reimburse/AddReimburse.vue'),
     // meta: { requiresAuth: true }
   },
   {
     path: '/menu/approval',
     name: 'Approval',
-    component: ApprovalView,
+    component: () => import('@/views/user/menu/approval/ApprovalView.vue'),
     // meta: { requiresAuth: true }
   },
   {
     path: '/menu/approval/:id',
     name: 'Detail Approval',
-    component: DetailApproval,
+    component: () => import('@/views/user/menu/approval/DetailApproval.vue'),
     // meta: { requiresAuth: true }
   },
   {
     path: '/menu/approval/borongan/:id',
     name: 'Detail Approval Borongan',
-    component: DetailApprovalBorongan,
+    component: () => import('@/views/user/menu/approval/DetailApprovalBorongan.vue'),
     // meta: { requiresAuth: true }
   },
   {
     path: '/profile',
     name: 'Profile',
-    component: ProfileView,
+    component: () => import('@/views/user/ProfileView.vue'),
     // meta: { requiresAuth: true }
   },
   {
     path: '/profile/kontak',
     name: 'Profile Kontak',
-    component: DataKontak,
+    component: () => import('@/views/user/ProfileView.vue'),
     // meta: { requiresAuth: true }
   },
   {
     path: '/profile/pribadi',
     name: 'Profile Pribadi',
-    component: DataPribadi,
+    component: () => import('@/views/user/profile/DataPribadi.vue'),
     // meta: { requiresAuth: true }
   },
   {
     path: '/profile/karyawan',
     name: 'Profile Karyawan',
-    component: DataKaryawan,
+    component: () => import('@/views/user/profile/DataKaryawan.vue'),
     // meta: { requiresAuth: true }
   },
   {
     path: '/perusahaan',
     name: 'Profile Perusahaan',
-    component: ProfilePerusahaan,
+    component: () => import('@/views/user/ProfilePerusahaan.vue'),
     // meta: { requiresAuth: true }
   },
   {
     path: '/profile/change-password',
     name: 'Change Password',
-    component: ChangePassword,
+    component: () => import('@/views/user/ChangePassword.vue'),
     // meta: { requiresAuth: true }
   },
   {
@@ -300,277 +220,307 @@ const adminRoutes = [
   {
     path: '/admin',
     name: 'Admin Dashboard',
-    component: Dasboard,
+    component: () => import('@/views/admin/Dasboard.vue'),
     // meta: { requiresAuth: true }
   },
   {
     path: '/admin/karyawan',
     name: 'List Karyawan',
-    component: KaryawanView,
+    component: () => import('@/views/admin/karyawan/KaryawanView.vue'),
     // meta: { requiresAuth: true }
   },
   {
     path: '/admin/karyawan/add',
     name: 'Add Karyawan',
-    component: AddKaryawan,
+    component: () => import('@/views/admin/karyawan/AddKaryawan.vue'),
     // meta: { requiresAuth: true }
   },
   {
     path: '/admin/karyawan/:id',
     name: 'Edit Karyawan',
-    component: EditKaryawan,
+    component: () => import('@/views/admin/karyawan/EditKaryawan.vue'),
     // meta: { requiresAuth: true }
   },
   {
     path: '/admin/riwayat/absensi',
     name: 'riwayat absensi admin',
-    component: RiwayatAbsensiAdmin,
+    component: () => import('@/views/admin/riwayat/absensi/RiwayatAbsensiAdmin.vue'),
     // meta: { requiresAuth: true }
   },
   {
     path: '/admin/riwayat/absensi/:id',
     name: 'detail riwayat absensi admin',
-    component: DetailRiwayatAbsensi,
+    component: () => import('@/views/admin/riwayat/absensi/DetailRiwayatAbsensi.vue'),
     // meta: { requiresAuth: true }
   },
   {
     path: '/admin/riwayat/izin',
     name: 'riwayat izin admin',
-    component: RiwayatIzinAdmin,
+    component: () => import('@/views/admin/riwayat/izin/RiwayatIzinAdmin.vue'),
     // meta: { requiresAuth: true }
   },
   {
     path: '/admin/riwayat/izin/:id',
     name: 'detail riwayat izin admin',
-    component: DetailRiwayatIzin,
+    component: () => import('@/views/admin/riwayat/izin/DetailRiwayatIzin.vue'),
     // meta: { requiresAuth: true }
   },
   {
     path: '/admin/riwayat/lembur',
     name: 'riwayat lembur admin',
-    component: RiwayatLemburAdmin,
+    component: () => import('@/views/admin/riwayat/lembur/RiwayatLemburAdmin.vue'),
     // meta: { requiresAuth: true }
   },
   {
     path: '/admin/riwayat/lembur/:id',
     name: 'detail riwayat lembur admin',
-    component: DetailRiwayatLembur,
+    component: () => import('@/views/admin/riwayat/lembur/DetailRiwayatLembur.vue'),
     // meta: { requiresAuth: true }
   },
   {
     path: '/admin/riwayat/harian-borongan',
     name: 'riwayat harian borongan admin',
-    component: RiwayatBoronganAdmin,
+    component: () => import('@/views/admin/riwayat/harianBorongan/RiwayatBoronganAdmin.vue'),
     // meta: { requiresAuth: true }
   },
   {
     path: '/admin/riwayat/harian-borongan/:id',
     name: 'detail riwayat harian borongan admin',
-    component: DetailRiwayatBoronganAdmin,
+    component: () => import('@/views/admin/riwayat/harianBorongan/DetailRiwayatBoronganAdmin.vue'),
     // meta: { requiresAuth: true }
   },
   {
     path: '/admin/approval/absensi',
     name: 'approval absensi admin',
-    component: ApprovalAbsensiAdmin,
+    component: () => import('@/views/admin/approval/absensi/ApprovalAbsensiAdmin.vue'),
+    // meta: { requiresAuth: true }
+  },
+  {
+    path: '/admin/approval/absensi/:id',
+    name: 'approval detail absensi admin',
+    component: () => import('@/views/admin/approval/absensi/ApprovalDetailAbsensiAdmin.vue'),
     // meta: { requiresAuth: true }
   },
   {
     path: '/admin/approval/harian-borongan',
     name: 'approval harian borongan admin',
-    component: ApprovalHarianBoronganAdmin,
+    component: () => import('@/views/admin/approval/harianBorongan/ApprovalHarianBoronganAdmin.vue'),
+    // meta: { requiresAuth: true }
+  },
+  {
+    path: '/admin/approval/harian-borongan/:id',
+    name: 'approval detail harian borongan admin',
+    component: () => import('@/views/admin/approval/harianBorongan/ApprovalDetailHarianBoronganAdmin.vue'),
     // meta: { requiresAuth: true }
   },
   {
     path: '/admin/approval/izin',
     name: 'approval izin admin',
-    component: ApprovalIzinAdmin,
+    component: () => import('@/views/admin/approval/izin/ApprovalIzinAdmin.vue'),
+    // meta: { requiresAuth: true }
+  },
+  {
+    path: '/admin/approval/izin/:id',
+    name: 'approval detail izin admin',
+    component: () => import('@/views/admin/approval/izin/ApprovalDetailIzinAdmin.vue'),
     // meta: { requiresAuth: true }
   },
   {
     path: '/admin/approval/lembur',
     name: 'approval lembur admin',
-    component: ApprovalLemburAdmin,
+    component: () => import('@/views/admin/approval/lembur/ApprovalLemburAdmin.vue'),
+    // meta: { requiresAuth: true }
+  },
+  {
+    path: '/admin/approval/lembur/:id',
+    name: 'approval detail lembur admin',
+    component: () => import('@/views/admin/approval/lembur/ApprovalDetailLemburAdmin.vue'),
     // meta: { requiresAuth: true }
   },
   {
     path: '/admin/pengumuman',
     name: 'pengumuman admin',
-    component: PengumumanAdmin,
+    component: () => import('@/views/admin/pengumuman/PengumumanAdmin.vue'),
     // meta: { requiresAuth: true }
   },
   {
     path: '/admin/pengumuman/add',
     name: 'tambah pengumuman admin',
-    component: TambahPengumumanAdmin,
+    component: () => import('@/views/admin/pengumuman/TambahPengumumanAdmin.vue'),
     // meta: { requiresAuth: true }
   },
   {
     path: '/admin/pengumuman/:id',
     name: 'edit pengumuman admin',
-    component: EditPengumumanAdmin,
+    component: () => import('@/views/admin/pengumuman/EditPengumumanAdmin.vue'),
     // meta: { requiresAuth: true }
   },
   {
     path: '/admin/reimburse',
     name: 'reimburse admin',
-    component: ReimburseView,
+    component: () => import('@/views/admin/reimburse/ReimburseView.vue'),
     // meta: { requiresAuth: true }
   },
   {
     path: '/admin/reimburse/:id',
     name: 'reimburse admin detail',
-    component: DetailReimburseAdmin,
+    component: () => import('@/views/admin/reimburse/DetailReimburseAdmin.vue'),
     // meta: { requiresAuth: true }
   },
   {
     path: '/admin/approval/reimburse',
     name: 'approval reimburse admin',
-    component: ApprovalReimbruseAdmin,
+    component: () => import('@/views/admin/approval/reimburse/ApprovalReimbruseAdmin.vue'),
+    // meta: { requiresAuth: true }
+  },
+  {
+    path: '/admin/approval/reimburse/:id',
+    name: 'detail approval reimburse admin',
+    component: () => import('@/views/admin/approval/reimburse/ApprovalDetailReimburse.vue'),
     // meta: { requiresAuth: true }
   },
   {
     path: '/admin/pengaturan/jadwal-kerja',
     name: 'pengaturan jadwal kerja',
-    component: JadwalKerjaAdmin,
+    component: () => import('@/views/admin/setting/jadwalKerja/JadwalKerjaAdmin.vue'),
     // meta: { requiresAuth: true }
   },
   {
     path: '/admin/pengaturan/jadwal-kerja/add',
     name: 'pengaturan tambah jadwal kerja',
-    component: TambahJadwalKerja,
+    component: () => import('@/views/admin/setting/jadwalKerja/TambahJadwalKerja.vue'),
     // meta: { requiresAuth: true }
   },
   {
     path: '/admin/pengaturan/jadwal-kerja/:id',
     name: 'pengaturan edit jadwal kerja',
-    component: EditJadwalKerja,
+    component: () => import('@/views/admin/setting/jadwalKerja/EditJadwalKerja.vue'),
     // meta: { requiresAuth: true }
   },
   {
     path: '/admin/pengaturan/lokasi',
     name: 'pengaturan lokasi',
-    component: LokasiAdmin,
+    component: () => import('@/views/admin/setting/lokasi/LokasiAdmin.vue'),
     // meta: { requiresAuth: true }
   },
   {
     path: '/admin/pengaturan/lokasi/add',
     name: 'pengaturan tambah lokasi',
-    component: TambahLokasi,
+    component: () => import('@/views/admin/setting/lokasi/TambahLokasi.vue'),
     // meta: { requiresAuth: true }
   },
   {
     path: '/admin/pengaturan/lokasi/:id',
     name: 'pengaturan edit lokasi',
-    component: EditLokasiAdmin,
+    component: () => import('@/views/admin/setting/lokasi/EditLokasiAdmin.vue'),
     // meta: { requiresAuth: true }
   },
   {
     path: '/admin/pengaturan/harga-harian-borongan',
     name: 'pengaturan harian borobangan',
-    component: HargaHarianBorongan,
+    component: () => import('@/views/admin/setting/hargaHarianBorongan/HargaHarianBorongan.vue'),
     // meta: { requiresAuth: true }
   },
   {
     path: '/admin/pengaturan/harga-harian-borongan/add',
     name: 'pengaturan tambah  harian borobangan',
-    component: TambahHarianBorongan,
+    component: () => import('@/views/admin/setting/hargaHarianBorongan/TambahHarianBorongan.vue'),
     // meta: { requiresAuth: true }
   },
   {
     path: '/admin/pengaturan/harga-harian-borongan/:id',
     name: 'pengaturan edit  harian borobangan',
-    component: EditHarianBorongan,
+    component: () => import('@/views/admin/setting/hargaHarianBorongan/EditHarianBorongan.vue'),
     // meta: { requiresAuth: true }
   },
   {
     path: '/admin/pengaturan/jabatan',
     name: 'pengaturan jabatan',
-    component: JabatanAdmin,
+    component: () => import('@/views/admin/setting/jabatan/jabatanAdmin.vue'),
     // meta: { requiresAuth: true }
   },
   {
     path: '/admin/pengaturan/jabatan/add',
     name: 'pengaturan tambah jabatan',
-    component: TambahJabatan,
+    component: () => import('@/views/admin/setting/jabatan/TambahJabatan.vue'),
     // meta: { requiresAuth: true }
   },
   {
     path: '/admin/pengaturan/jabatan/:id',
     name: 'pengaturan edit jabatan',
-    component: EditJabatan,
+    component: () => import('@/views/admin/setting/jabatan/EditJabatan.vue'),
     // meta: { requiresAuth: true }
   },
   {
     path: '/admin/pengaturan/kuota-cuti',
     name: 'pengaturan kuota cuti',
-    component: KuotaCutiAdmin,
+    component: () => import('@/views/admin/setting/kuotaCuti/KuotaCutiAdmin.vue'),
     // meta: { requiresAuth: true }
   },
   {
     path: '/admin/pengaturan/hari-libur',
     name: 'pengaturan hari libur',
-    component: HariLiburAdmin,
+    component: () => import('@/views/admin/setting/hariLibur/HariLiburAdmin.vue'),
     // meta: { requiresAuth: true }
   },
   {
     path: '/admin/pengaturan/hari-libur/add',
     name: 'pengaturan tambah hari libur',
-    component: TambahHariLibur,
+    component: () => import('@/views/admin/setting/hariLibur/TambahHariLibur.vue'),
     // meta: { requiresAuth: true }
   },
   {
     path: '/admin/pengaturan/hari-libur/:id',
     name: 'pengaturan edit hari libur',
-    component: EditHariLibur,
+    component: () => import('@/views/admin/setting/hariLibur/EditHariLibur.vue'),
     // meta: { requiresAuth: true }
   },
   {
     path: '/admin/pengaturan/gaji/komponen-gaji',
     name: 'pengaturan komponen gaji',
-    component: KomponenGaji,
+    component: () => import('@/views/admin/setting/gaji/komponenGaji/KomponenGaji.vue'),
     // meta: { requiresAuth: true }
   },
   {
     path: '/admin/pengaturan/gaji/komponen-gaji/add',
     name: 'pengaturan tambah komponen gaji',
-    component: TambahKomponenGaji,
+    component:  () => import('@/views/admin/setting/gaji/komponenGaji/TambahKomponenGaji.vue'),
     // meta: { requiresAuth: true }
   },
   {
     path: '/admin/pengaturan/gaji/komponen-gaji/:id',
     name: 'pengaturan edit komponen gaji',
-    component: EditKomponenGaji,
+    component:  () => import('@/views/admin/setting/gaji/komponenGaji/EditKomponenGaji.vue'),
     // meta: { requiresAuth: true }
   },
   {
     path: '/admin/pengaturan/gaji/group-gaji',
     name: 'pengaturan group gaji',
-    component: GroupGaji,
+    component:  () => import('@/views/admin/setting/gaji/groupGaji/GroupGaji.vue'),
     // meta: { requiresAuth: true }
   },
   {
     path: '/admin/pengaturan/gaji/group-gaji/add',
     name: 'pengaturan tambah group gaji',
-    component: TambahGroupGaji,
+    component:  () => import('@/views/admin/setting/gaji/groupGaji/TambahGroupGaji.vue'),
     // meta: { requiresAuth: true }
   },
   {
     path: '/admin/pengaturan/gaji/group-gaji/:id',
     name: 'pengaturan edit group gaji',
-    component: EditGroupGaji,
+    component:  () => import('@/views/admin/setting/gaji/groupGaji/EditGroupGaji.vue'),
     // meta: { requiresAuth: true }
   },
   {
     path: '/admin/pengaturan/gaji/group-gaji-karyawan',
     name: 'pengaturan group gaji karyawan',
-    component: GroupGajiKaryawan,
+    component:  () => import('@/views/admin/setting/gaji/groupGaji/GroupGajiKaryawan.vue'),
     // meta: { requiresAuth: true }
   },
   {
     path: '/admin/pengaturan/profile-perusahaan',
     name: 'pengaturan profile perusahaan admin',
-    component: ProfilePerusahaanAdmin,
+    component:  () => import('@/views/admin/setting/profilePerusahaan/ProfilePerusahaanAdmin.vue'),
     // meta: { requiresAuth: true }
   },
   {
