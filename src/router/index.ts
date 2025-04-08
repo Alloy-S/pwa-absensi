@@ -78,6 +78,13 @@ import DetailRiwayatIzin from '@/views/admin/riwayat/izin/DetailRiwayatIzin.vue'
 import DetailRiwayatLembur from '@/views/admin/riwayat/lembur/DetailRiwayatLembur.vue';
 import DetailRiwayatBoronganAdmin from '@/views/admin/riwayat/harianBorongan/DetailRiwayatBoronganAdmin.vue';
 import EditPengumumanAdmin from '@/views/admin/pengumuman/EditPengumumanAdmin.vue';
+import EditJadwalKerja from '@/views/admin/setting/jadwalKerja/EditJadwalKerja.vue';
+import EditLokasiAdmin from '@/views/admin/setting/lokasi/EditLokasiAdmin.vue';
+import EditHarianBorongan from '@/views/admin/setting/hargaHarianBorongan/EditHarianBorongan.vue';
+import EditJabatan from '@/views/admin/setting/jabatan/EditJabatan.vue';
+import EditHariLibur from '@/views/admin/setting/hariLibur/EditHariLibur.vue';
+import EditKomponenGaji from '@/views/admin/setting/gaji/komponenGaji/EditKomponenGaji.vue';
+import EditGroupGaji from '@/views/admin/setting/gaji/groupGaji/EditGroupGaji.vue';
 
 const routes = [
   {
@@ -435,6 +442,12 @@ const adminRoutes = [
     // meta: { requiresAuth: true }
   },
   {
+    path: '/admin/pengaturan/jadwal-kerja/:id',
+    name: 'pengaturan edit jadwal kerja',
+    component: EditJadwalKerja,
+    // meta: { requiresAuth: true }
+  },
+  {
     path: '/admin/pengaturan/lokasi',
     name: 'pengaturan lokasi',
     component: LokasiAdmin,
@@ -444,6 +457,12 @@ const adminRoutes = [
     path: '/admin/pengaturan/lokasi/add',
     name: 'pengaturan tambah lokasi',
     component: TambahLokasi,
+    // meta: { requiresAuth: true }
+  },
+  {
+    path: '/admin/pengaturan/lokasi/:id',
+    name: 'pengaturan edit lokasi',
+    component: EditLokasiAdmin,
     // meta: { requiresAuth: true }
   },
   {
@@ -459,6 +478,12 @@ const adminRoutes = [
     // meta: { requiresAuth: true }
   },
   {
+    path: '/admin/pengaturan/harga-harian-borongan/:id',
+    name: 'pengaturan edit  harian borobangan',
+    component: EditHarianBorongan,
+    // meta: { requiresAuth: true }
+  },
+  {
     path: '/admin/pengaturan/jabatan',
     name: 'pengaturan jabatan',
     component: JabatanAdmin,
@@ -468,6 +493,12 @@ const adminRoutes = [
     path: '/admin/pengaturan/jabatan/add',
     name: 'pengaturan tambah jabatan',
     component: TambahJabatan,
+    // meta: { requiresAuth: true }
+  },
+  {
+    path: '/admin/pengaturan/jabatan/:id',
+    name: 'pengaturan edit jabatan',
+    component: EditJabatan,
     // meta: { requiresAuth: true }
   },
   {
@@ -489,6 +520,12 @@ const adminRoutes = [
     // meta: { requiresAuth: true }
   },
   {
+    path: '/admin/pengaturan/hari-libur/:id',
+    name: 'pengaturan edit hari libur',
+    component: EditHariLibur,
+    // meta: { requiresAuth: true }
+  },
+  {
     path: '/admin/pengaturan/gaji/komponen-gaji',
     name: 'pengaturan komponen gaji',
     component: KomponenGaji,
@@ -501,6 +538,12 @@ const adminRoutes = [
     // meta: { requiresAuth: true }
   },
   {
+    path: '/admin/pengaturan/gaji/komponen-gaji/:id',
+    name: 'pengaturan edit komponen gaji',
+    component: EditKomponenGaji,
+    // meta: { requiresAuth: true }
+  },
+  {
     path: '/admin/pengaturan/gaji/group-gaji',
     name: 'pengaturan group gaji',
     component: GroupGaji,
@@ -510,6 +553,12 @@ const adminRoutes = [
     path: '/admin/pengaturan/gaji/group-gaji/add',
     name: 'pengaturan tambah group gaji',
     component: TambahGroupGaji,
+    // meta: { requiresAuth: true }
+  },
+  {
+    path: '/admin/pengaturan/gaji/group-gaji/:id',
+    name: 'pengaturan edit group gaji',
+    component: EditGroupGaji,
     // meta: { requiresAuth: true }
   },
   {

@@ -2,7 +2,7 @@
     <BasePage>
       <div class="space-y-3">
         <div class="mb-10 mt-5 flex justify-between items-start">
-          <p class="text-3xl font-semibold text-slate-800">Tambah Jadwal Kerja</p>
+          <p class="text-3xl font-semibold text-slate-800">Edit Jadwal Kerja</p>
         </div>
   
         <div class="flex space-x-3">
@@ -105,10 +105,6 @@ import { useRouter } from 'vue-router'
 
 const router = useRouter();
 
-const goBack = () => {
-    router.back();
-}
-
 const days = [
   { label: 'Senin', value: 'monday' },
   { label: 'Selasa', value: 'tuesday' },
@@ -143,4 +139,6 @@ const getDayLabel = (value: string) => {
   const day = days.find((d) => d.value === value)
   return day?.label || value
 }
+
+const goBack = () => router.back();
 </script>

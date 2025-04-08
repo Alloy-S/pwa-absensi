@@ -2,7 +2,7 @@
     <BasePage>
         <div class="space-y-3">
             <div class="mb-10 mt-5 flex justify-between items-start">
-                <p class="text-3xl font-semibold text-slate-800">Tambah Komponen Gaji</p>
+                <p class="text-3xl font-semibold text-slate-800">Edit Jadwal Kerja</p>
 
             </div>
 
@@ -12,46 +12,28 @@
                 <div class="flex-[7] space-y-3">
                     <div class="p-3 bg-white rounded-md shadow-md">
                         <div class="mb-6">
-                            <label for="nama" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Kode
-                                Komponen<span class="text-red-600">*</span></label>
+                            <label for="nama" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nama
+                                Event<span class="text-red-600">*</span></label>
                             <input type="text" id="nama"
                                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                         </div>
 
                         <div class="mb-6">
                             <label for="date"
-                                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nama Komponen<span
+                                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Tanggal<span
                                     class="text-red-600">*</span></label>
-                            <input type="text" id="date"
+                            <input type="date" id="date"
                                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                        </div>
-
-                        <div class="mb-6">
-                            <label for="type" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Dapat digunakan Formula<span class="text-red-600">*</span></label>
-                            <input type="checkbox" id="date"
-                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                        </div>
-
-                        <div class="mb-6">
-                            <label for="hitung" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Tipe Hitung<span class="text-red-600">*</span></label>
-                            <select id="hitung"
-                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                                <option disabled selected>Pilih salah satu</option>
-                                <option value="0">Periode</option>
-                                <option value="1">Harian</option>
-                            </select>
                         </div>
 
                         <div class="mb-6">
                             <label for="type" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Tipe
-                                Pembayaran<span class="text-red-600">*</span></label>
+                                Harga<span class="text-red-600">*</span></label>
                             <select id="type"
                                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                 <option disabled selected>Pilih salah satu</option>
-                                <option value="0">Harian</option>
-                                <option value="1">Mingguan</option>
-                                <option value="2">Bulanan</option>
-                                <option value="3">Tahunan</option>
+                                <option value="true">Libur nasional</option>
+                                <option value="false">Cuti bersama</option>
                             </select>
                         </div>
                     </div>
@@ -87,8 +69,6 @@ const router = useRouter();
 const goBack = () => {
     router.back();
 }
-
-
 
 
 </script>

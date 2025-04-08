@@ -10,7 +10,7 @@
           <label class="block mb-2 text-sm font-medium text-gray-900">Pilih Group Gaji</label>
           <select v-model="selectedGroupId"
                   @change="fetchUsersByGroup"
-                  class="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5">
+                  class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
             <option disabled value="">-- Pilih Group --</option>
             <option v-for="group in groups" :key="group.id" :value="group.id">
               {{ group.nama }}
@@ -22,7 +22,7 @@
         <div v-if="selectedGroupId" class="w-full sm:w-2/3 space-y-2">
           <label class="block text-sm font-medium text-gray-900">Tambah User ke Group</label>
           <div class="flex gap-2">
-            <select v-model="selectedUserToAdd" class="w-full border-gray-300 rounded-lg p-2 text-sm">
+            <select v-model="selectedUserToAdd" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
               <option disabled value="">-- Pilih User --</option>
               <option
                 v-for="user in allUsers.filter(u => !isUserInGroup(u.id))"

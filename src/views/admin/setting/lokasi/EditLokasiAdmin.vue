@@ -2,13 +2,12 @@
     <BasePage>
         <div class="space-y-3">
             <div class="mb-10 mt-5 flex justify-between items-start">
-                <p class="text-3xl font-semibold text-slate-800">Tambah Lokasi</p>
+                <p class="text-3xl font-semibold text-slate-800">Edit Lokasi</p>
 
             </div>
 
 
             <div class="flex space-x-3">
-
                 <div class="flex-[7] space-y-3">
                     <div class="p-3 bg-white rounded-md shadow-md">
                         <div class="mb-6">
@@ -86,12 +85,8 @@ import BasePage from '@/layouts/admin/BasePage.vue'
 import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 
+
 const router = useRouter();
-
-const goBack = () => {
-    router.back();
-}
-
 const latitude = ref<number | null>(null)
 const longitude = ref<number | null>(null)
 
@@ -115,6 +110,10 @@ const getCurrentLocation = () => {
             maximumAge: 0
         }
     )
+}
+
+const goBack = () => {
+    router.back();
 }
 
 onMounted(() => {
