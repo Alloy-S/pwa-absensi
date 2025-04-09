@@ -1,9 +1,8 @@
 <template>
-    <div class="w-full h-screen flex bg-slate-100 overflow-hidden">
+    <div class="w-screen h-screen flex bg-slate-100 overflow-hidden">
         <!-- Sidebar -->
-        <div class="w-72 h-screen sticky top-0 bg-white shadow-lg">
+        <div class="min-w-72 h-screen sticky top-0 bg-white shadow-lg">
             <KeepAlive>
-
                 <SideBar />
             </KeepAlive>
         </div>

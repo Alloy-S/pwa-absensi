@@ -163,13 +163,40 @@
                     </ul>
                 </li>
                 <li>
-                    <a href="#"
-                        class="relative flex flex-row items-center h-11 transition duration-150 ease-in-out focus:outline-none hover:bg-gray-50 text-gray-600 hover:text-gray-800 border-l-4 border-transparent hover:border-blue-600 pr-6">
-                        <span class="inline-flex justify-center items-center ml-4">
-                            <i class="fa-solid fa-file-invoice"></i>
-                        </span>
-                        <span class="ml-2 text-sm tracking-wide truncate">Laporan</span>
-                    </a>
+                    <button @click="dropdownLaporan()"
+                        class="relative flex items-center justify-between w-full h-11 transition duration-150 ease-in-out focus:outline-none hover:bg-gray-50 text-gray-600 hover:text-gray-800 border-l-4 border-transparent hover:border-blue-600 pr-6">
+                        <div class="flex items-center">
+                            <span class="inline-flex justify-center items-center ml-4">
+                                <i class="fa-solid fa-money-bills"></i>
+                            </span>
+                            <span class="ml-2 text-sm tracking-wide truncate">Laporan</span>
+                        </div>
+                        <svg sidebar-toggle-item
+                            :class="{ 'rotate-180': sidebarStore.isLaporanOpen, 'rotate-0': !sidebarStore.isLaporanOpen }"
+                            class="w-6 h-6 transition duration-150" fill="currentColor" viewBox="0 0 20 20"
+                            xmlns="http://www.w3.org/2000/svg">
+                            <path fill-rule="evenodd"
+                                d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                                clip-rule="evenodd"></path>
+                        </svg>
+                    </button>
+                    <ul id="dropdown-reimburse" v-show="sidebarStore.isLaporanOpen" class="py-2 space-y-2">
+                        <li>
+                            <RouterLink to="/admin/laporan/rekap-periode"
+                                class="flex items-center w-full p-2 text-base font-normal text-gray-600 transition duration-75  group hover:bg-gray-100 border-l-4 border-transparent hover:border-blue-600 pl-14">
+                                Rekap Periode</RouterLink>
+                        </li>
+                        <li>
+                            <RouterLink to="/admin/laporan/datang-terlambat"
+                                class="flex items-center w-full p-2 text-base font-normal text-gray-600 transition duration-75 group hover:bg-gray-100 border-l-4 border-transparent hover:border-blue-600 pl-14">
+                                Datang Terlambat</RouterLink>
+                        </li>
+                        <li>
+                            <RouterLink to="/admin/laporan/cuti-pribadi"
+                                class="flex items-center w-full p-2 text-base font-normal text-gray-600 transition duration-75 group hover:bg-gray-100 border-l-4 border-transparent hover:border-blue-600 pl-14">
+                                Cuti Pribadi</RouterLink>
+                        </li>
+                    </ul>
                 </li>
                 <li class="px-5">
                     <div class="flex flex-row items-center h-8">
@@ -408,9 +435,9 @@ const dropdownConfig = () => {
 const dropdownConfigGaji = () => {
     sidebarStore.toggleIsConfigGajiOpen();
 }
-// const dropdownLaporan = () => {
-//     sidebarStore.toggleIsLaporanOpen();
-// }
+const dropdownLaporan = () => {
+    sidebarStore.toggleIsLaporanOpen();
+}
 </script>
 
 <style scoped>

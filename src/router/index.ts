@@ -5,6 +5,9 @@ import NotFoundView from '@/views/user/NotFoundView.vue';
 
 // admin
 import NotFound from '@/views/admin/NotFound.vue';
+import RekapPeriode from '@/views/admin/laporan/RekapPeriode.vue';
+import DatangTerlambat from '@/views/admin/laporan/DatangTerlambat.vue';
+import CutiPribadi from '@/views/admin/laporan/CutiPribadi.vue';
 
 const routes = [
   {
@@ -521,6 +524,24 @@ const adminRoutes = [
     path: '/admin/pengaturan/profile-perusahaan',
     name: 'pengaturan profile perusahaan admin',
     component:  () => import('@/views/admin/setting/profilePerusahaan/ProfilePerusahaanAdmin.vue'),
+    // meta: { requiresAuth: true }
+  },
+  {
+    path: '/admin/laporan/rekap-periode',
+    name: 'laporan rekap periode',
+    component:  RekapPeriode,
+    // meta: { requiresAuth: true }
+  },
+  {
+    path: '/admin/laporan/datang-terlambat',
+    name: 'laporan datang terlambat',
+    component:  DatangTerlambat,
+    // meta: { requiresAuth: true }
+  },
+  {
+    path: '/admin/laporan/cuti-pribadi',
+    name: 'laporan cuti pribadi',
+    component:  CutiPribadi,
     // meta: { requiresAuth: true }
   },
   {
