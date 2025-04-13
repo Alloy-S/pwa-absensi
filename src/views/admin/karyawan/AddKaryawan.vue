@@ -10,7 +10,7 @@
                         class="w-full text-white bg-blue-500 hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Simpan</button>
                 </div>
             </div>
-            
+
 
             <div class="flex space-x-3">
 
@@ -156,10 +156,14 @@
                                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                         </div>
 
+
+
                         <div class="mb-6">
+                            <label for="jabatan"
+                                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Jabatan</label>
                             <div class="relative ">
                                 <!-- Input -->
-                                <input type="text" v-model="search" @keydown="handleKeydown" @input="filterResults"
+                                <input type="text" id="jabatan" v-model="search" @input="filterResults"
                                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                     placeholder="Cari jabatan...." />
 
@@ -175,6 +179,13 @@
                                     </li>
                                 </ul>
                             </div>
+                        </div>
+
+                        <div class="mb-6">
+                            <label for="jabatan"
+                                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">PIC
+                                Karyawan</label>
+                            <ModelSelect :options="options" v-model="selected" placeholder="Pilih PIC" />
                         </div>
 
                         <div class=" mb-6">
@@ -246,9 +257,22 @@
 
 <script setup lang="ts">
 import BasePage from '@/layouts/admin/BasePage.vue'
+
 import { ref } from "vue";
 import { onClickOutside } from "@vueuse/core";
 import { useRouter } from "vue-router";
+import "vue-search-select/dist/VueSearchSelect.css";
+import { ModelSelect } from 'vue-search-select'
+
+const selected = ref(null)
+
+const options = [
+    { value: 'Budi', text: 'Budi' },
+    { value: 'Bambang', text: 'Bambang' },
+    { value: 'Bagus', text: 'Bagus' },
+    { value: 'Tono', text: 'Tono' },
+    { value: 'Jono', text: 'Jono' },
+]
 
 const router = useRouter();
 const search = ref("");
@@ -264,7 +288,7 @@ onClickOutside(isDropdownRef, () => {
 
 const goBack = () => {
     router.back();
-};  
+};
 
 const filterResults = () => {
     if (search.value) {
@@ -277,27 +301,6 @@ const filterResults = () => {
     selectedIndex.value = -1; // Reset index saat mengetik
 };
 
-const moveDown = () => {
-    if (selectedIndex.value < filteredItems.value.length - 1) {
-        selectedIndex.value++;
-    }
-};
-
-const moveUp = () => {
-    if (selectedIndex.value > 0) {
-        selectedIndex.value--;
-    }
-};
-
-const handleKeydown = (event: KeyboardEvent) => {
-    if (event.key === "ArrowDown") {
-        moveDown();
-    } else if (event.key === "ArrowUp") {
-        moveUp();
-    } else if (event.key === "Enter") {
-        selectItem();
-    }
-};
 
 const selectItem = (item?: string) => {
     if (item) {

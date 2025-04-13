@@ -69,6 +69,7 @@ const months = ref([
 
 // Filter berdasarkan bulan
 const filteredAbsences = computed(() => {
+    console.log(selectedMonth.value);
     if (!selectedMonth.value) return absences.value;
     return absences.value.filter(absence => absence.date.split('-')[1] === selectedMonth.value);
 });

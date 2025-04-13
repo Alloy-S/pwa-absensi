@@ -6,6 +6,7 @@
                 <DetailItem label="Diajukan Oleh" :value="data.pengaju" />
                 <DetailItem label="Tanggal" :value="data.tanggal" />
                 <DetailItem label="Status" :value="data.status" />
+                <DetailItem label="Status" :value="data.jenis_izin" />
                 <DetailItem label="Deskripsi" :value="data.deskripsi" />
                 
                 <div>
@@ -29,6 +30,7 @@ const data = {
     pengaju: 'Alloysius Steven',
     tanggal: '2025-03-13',
     status: 'Menunggu Persetujuan',
+    jenis_izin: 'Sakit',
     deskripsi: 'Pengajuan izin sakit karena demam',
     persetujaun: {
         oleh: 'Supervisor',

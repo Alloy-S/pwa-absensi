@@ -166,9 +166,27 @@ const routes = [
     // meta: { requiresAuth: true }
   },
   {
-    path: '/menu/approval/:id',
-    name: 'Detail Approval',
-    component: () => import('@/views/user/menu/approval/DetailApproval.vue'),
+    path: '/menu/approval/koreksi/:id',
+    name: 'Detail Approval koreksi',
+    component: () => import('@/views/user/menu/approval/DetailApprovalKoreksi.vue'),
+    // meta: { requiresAuth: true }
+  },
+  {
+    path: '/menu/approval/izin/:id',
+    name: 'Detail Approval izin',
+    component: () => import('@/views/user/menu/approval/DetailApprovalIzin.vue'),
+    // meta: { requiresAuth: true }
+  },
+  {
+    path: '/menu/approval/lembur/:id',
+    name: 'Detail Approval lembur',
+    component: () => import('@/views/user/menu/approval/DetailApprovalLembur.vue'),
+    // meta: { requiresAuth: true }
+  },
+  {
+    path: '/menu/approval/reimburse/:id',
+    name: 'Detail Approval reimburse',
+    component: () => import('@/views/user/menu/approval/DetailApprovalReimburse.vue'),
     // meta: { requiresAuth: true }
   },
   {
@@ -186,7 +204,7 @@ const routes = [
   {
     path: '/profile/kontak',
     name: 'Profile Kontak',
-    component: () => import('@/views/user/ProfileView.vue'),
+    component: () => import('@/views/user/profile/DataKontak.vue'),
     // meta: { requiresAuth: true }
   },
   {

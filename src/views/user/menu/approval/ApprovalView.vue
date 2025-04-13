@@ -52,7 +52,7 @@ const selectedCategory = ref('all');
 const selectedStatus = ref('all');
 
 const requests = ref([
-    { id: 1, category: 'koreksi kehadiran', type: 'Koreksi Absensi', date: '2025-03-13', status: 'pending' },
+    { id: 1, category: 'koreksi', type: 'Koreksi Absensi', date: '2025-03-13', status: 'pending' },
     { id: 3, category: 'borongan', type: 'Reimburse', date: '2025-03-11', status: 'pending' },
     { id: 2, category: 'izin', type: 'Reimburse', date: '2025-03-12', status: 'approved' },
     { id: 3, category: 'lembur', type: 'Reimburse', date: '2025-03-11', status: 'rejected' },
@@ -77,8 +77,14 @@ const statusClass = (status) => {
 const goToDetail = (request) => {
     if (request.category === 'borongan') {
         router.push(`/menu/approval/borongan/${request.id}`);
-    } else {
-        router.push(`/menu/approval/${request.id}`);
+    } else if (request.category === 'reimburse') {
+        router.push(`/menu/approval/reimburse/${request.id}`);
+    } else if (request.category === 'koreksi') {
+        router.push(`/menu/approval/koreksi/${request.id}`);
+    } else if (request.category === 'izin') {
+        router.push(`/menu/approval/izin/${request.id}`);
+    } else if (request.category === 'lembur') {
+        router.push(`/menu/approval/lembur/${request.id}`);
     }
 };
 </script>

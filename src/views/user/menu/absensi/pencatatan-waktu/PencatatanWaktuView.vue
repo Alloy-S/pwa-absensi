@@ -24,7 +24,7 @@
                     <div class="w-full text-center">
                         <p class="text-sm text-gray-600">Jam Pulang</p>
                         <p>{{ jamPulang || "-" }}</p>
-                        <button @click="catatPulang" :disabled="!isMasuk || isPulang"
+                        <button @click="catatPulang" 
                             class="w-full mt-2 px-4 py-2 bg-red-500 text-white rounded-md shadow hover:bg-red-600 disabled:bg-gray-300">
                             Pulang
                         </button>
@@ -49,7 +49,7 @@ const jamMasuk = ref<string | null>(null);
 const jamPulang = ref<string | null>(null);
 const lamaKerja = ref<string | null>("--:--:--");
 const isMasuk = ref<boolean>(false);
-const isPulang = ref<boolean>(false);
+// const isPulang = ref<boolean>(false);
 
 const formattedDate = new Date().toLocaleDateString('id-ID', {
     weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
@@ -62,7 +62,7 @@ const catatMasuk = () => {
 };
 
 const catatPulang = () => {
-    route.push('/menu/absensi/pencatatan-waktu/masuk');
+    route.push('/menu/absensi/pencatatan-waktu/pulang');
     // jamPulang.value = formatDateTime(new Date());
     // isPulang.value = true;
     // hitungLamaKerja();

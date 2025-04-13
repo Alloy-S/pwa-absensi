@@ -18,6 +18,12 @@
                             <input type="text" id="nama"
                                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                         </div>
+
+                        <div class="mb-6">
+                            <label for="jabatan"
+                                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">jabatan Diatasnya</label>
+                            <ModelSelect :options="options" v-model="selected" placeholder="Pilih Jabatan" />
+                        </div>
                     </div>
                     <div class="mt-5 flex justify-end">
 
@@ -41,6 +47,18 @@
 <script setup lang="ts">
 import BasePage from '@/layouts/admin/BasePage.vue'
 import { useRouter } from 'vue-router'
+import "vue-search-select/dist/VueSearchSelect.css"
+import { ModelSelect } from 'vue-search-select'
+import { ref } from 'vue'
+
+const selected = ref(null)
+
+const options = [
+    { value: 'Admin', text: 'Admin' },
+    { value: 'Supervisor', text: 'Supervisor' },
+    { value: 'HR', text: 'HR' },
+    { value: 'Mandor', text: 'Mandor' },
+]
 
 const router = useRouter();
 

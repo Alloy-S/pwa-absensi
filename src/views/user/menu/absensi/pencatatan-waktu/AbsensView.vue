@@ -104,7 +104,6 @@ const submitAttendance = () => {
 
     console.log('Data Absensi:', data);
     absenceStore.setAttendance(data);
-    router.push('/success');
 };
 
 // Inisialisasi lokasi saat komponen dimount
