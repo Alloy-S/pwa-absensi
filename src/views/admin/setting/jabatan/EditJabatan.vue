@@ -12,25 +12,25 @@
                 <div class="flex-[7] space-y-3">
                     <div class="p-3 bg-white rounded-md shadow-md">
                         <div class="mb-6">
-                            <label for="nama"
-                                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nama Jabatan<span
-                                    class="text-red-600">*</span></label>
-                            <input type="text" id="nama"
+                            <label for="nama" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nama
+                                Jabatan<span class="text-red-600">*</span></label>
+                            <input type="text" id="nama" v-model="jabatan.nama"
                                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                         </div>
 
                         <div class="mb-6">
                             <label for="jabatan"
-                                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">jabatan Diatasnya</label>
-                            <ModelSelect :options="options" v-model="selected" placeholder="Pilih Jabatan" />
-                        </div> 
+                                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">jabatan
+                                Diatasnya</label>
+                            <ModelSelect :options="options" v-model="jabatan.parent_id" placeholder="Pilih Jabatan" />
+                        </div>
                     </div>
                     <div class="mt-5 flex justify-end">
 
                         <div class="w-1/3 flex">
                             <button type="button" @click="goBack"
                                 class="w-full text-red-500 hover:text-white border border-red-600 hover:bg-red-500 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 dark:border-red-500 dark:text-red-500 dark:hover:text-white dark:hover:bg-red-500 dark:focus:ring-red-600">Batal</button>
-                            <button type="button"
+                            <button type="button" @click="update"
                                 class="w-full text-white bg-blue-500 hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Simpan</button>
                         </div>
                     </div>
@@ -46,26 +46,67 @@
 
 <script setup lang="ts">
 import BasePage from '@/layouts/admin/BasePage.vue'
-import { useRouter } from 'vue-router'
+import { useRouter, useRoute } from 'vue-router'
 import "vue-search-select/dist/VueSearchSelect.css"
 import { ModelSelect } from 'vue-search-select'
-import { ref } from 'vue'
+import { onMounted, ref } from 'vue'
+import { Jabatan, JabatanAll } from '@/models/jabatanModel'
+import { fetchJabatanAll, fetchJabatanById, updateJabatan } from '@/services/jabatanService'
+import { toast } from 'vue3-toastify'
 
-const selected = ref(null)
-
-const options = [
-    { value: 'Admin', text: 'Admin' },
-    { value: 'Supervisor', text: 'Supervisor' },
-    { value: 'HR', text: 'HR' },
-    { value: 'Mandor', text: 'Mandor' },
-]
+const jabatanList = ref<JabatanAll>({ items: [] })
+const options = ref([])
+const jabatan = ref<Jabatan>({ id: '', nama: '', parent_id: '', parent_name: '' })
 
 const router = useRouter();
+const route = useRoute();
 
 const goBack = () => {
     router.back();
 }
 
+const getAllJabatan = async () => {
+    try {
+        jabatanList.value = await fetchJabatanAll()
+
+        options.value = jabatanList.value.items.map((item) => ({
+            value: item.id,
+            text: item.nama,
+        }))
+    } catch (error) {
+        console.error(error)
+        toast.error(error.response.data.message);
+    }
+}
+const getJabatanById = async () => {
+    try {
+        jabatan.value = await fetchJabatanById(route.params.id as string)
+
+    } catch (error) {
+        console.error(error)
+    }
+}
+
+const update = async () => {
+    console.log(jabatan.value)
+
+    const request = {
+        nama: jabatan.value.nama,
+        parent_id: jabatan.value.parent_id,
+    }
+
+    const response = await updateJabatan(route.params.id as string, request);
+
+    if (response.status === 200) {
+        toast.success("Success Update Jabatan")
+        getJabatanById()
+    }
+}
+
+onMounted(() => {
+    getJabatanById()
+    getAllJabatan()
+})
 
 
 
