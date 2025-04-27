@@ -6,7 +6,7 @@
                 <div class="w-1/3 flex">
                     <button type="button" @click="goBack"
                         class="w-full text-red-500 hover:text-white border border-red-600 hover:bg-red-500 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 dark:border-red-500 dark:text-red-500 dark:hover:text-white dark:hover:bg-red-500 dark:focus:ring-red-600">Batal</button>
-                    <button type="button"
+                    <button type="button" @click="addKaryawan"
                         class="w-full text-white bg-blue-500 hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Simpan</button>
                 </div>
             </div>
@@ -21,19 +21,19 @@
                             <label for="fullname"
                                 class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nama Lengkap<span
                                     class="text-red-600">*</span></label>
-                            <input type="text" id="fullname"
+                            <input type="text" id="fullname" v-model="user.fullname"
                                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                         </div>
                         <div class="mb-6">
                             <label for="username"
                                 class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Username</label>
-                            <input type="text" id="username"
+                            <input type="text" id="username" v-model="user.username"
                                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                         </div>
                         <div class="mb-6">
                             <label for="password"
                                 class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Password</label>
-                            <input type="text" id="password"
+                            <input type="text" id="password" v-model="user.password"
                                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                         </div>
                     </div>
@@ -45,7 +45,7 @@
                             <label for="gender"
                                 class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Jenis
                                 Kelamin<span class="text-red-600">*</span></label>
-                            <select id="gender"
+                            <select id="gender" v-model="user.data_pribadi.gender"
                                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                 <option selected>Pilih salah satu</option>
                                 <option value="laki-laki">Laki-laki</option>
@@ -58,7 +58,7 @@
                                 <label for="tmpt-lahir"
                                     class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Tempat
                                     Lahir<span class="text-red-600">*</span></label>
-                                <input type="text" id="tmpt-lahir"
+                                <input type="text" id="tmpt-lahir" v-model="user.data_pribadi.tmpt_lahir"
                                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                             </div>
 
@@ -66,7 +66,7 @@
                                 <label for="Tgl-lahir"
                                     class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Tanggal
                                     lahir<span class="text-red-600">*</span></label>
-                                <input id="tgl-lahir" type="date"
+                                <input id="tgl-lahir" type="date" v-model="user.data_pribadi.tgl_lahir"
                                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                             </div>
 
@@ -77,7 +77,7 @@
                             <label for="status-kawin"
                                 class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Status Kawin<span
                                     class="text-red-600">*</span></label>
-                            <select id="status-kawin"
+                            <select id="status-kawin" v-model="user.data_pribadi.status_kawin"
                                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                 <option selected>Pilih salah satu</option>
                                 <option value="belum kawin">Belum Kawin</option>
@@ -88,7 +88,7 @@
                             <label for="agama"
                                 class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Agama<span
                                     class="text-red-600">*</span></label>
-                            <select id="agama"
+                            <select id="agama" v-model="user.data_pribadi.agama"
                                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                 <option selected>Pilih salah satu</option>
                                 <option value="kristen">Kristen</option>
@@ -104,7 +104,7 @@
                             <label for="gol-darah"
                                 class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Golongan
                                 Darah</label>
-                            <input type="text" id="gol-darah"
+                            <input type="text" id="gol-darah" v-model="user.data_pribadi.gol_darah"
                                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                         </div>
                     </div>
@@ -114,13 +114,13 @@
                             <label for="telepon"
                                 class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nomor Telepon<span
                                     class="text-red-600">*</span></label>
-                            <input type="text" id="telepon"
+                            <input type="text" id="telepon" v-model="user.data_kontak.no_telepon"
                                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                         </div>
                         <div class="mb-6">
                             <label for="alamat"
                                 class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Alamat</label>
-                            <textarea id="alamat    " rows="4"
+                            <textarea id="alamat" rows="4"  v-model="user.data_kontak.alamat"
                                 class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                 placeholder="Alamat...."></textarea>
                         </div>
@@ -128,21 +128,21 @@
                             <label for="negara"
                                 class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Negara<span
                                     class="text-red-600">*</span></label>
-                            <input type="text" id="negara"
+                            <input type="text" id="negara" v-model="user.data_kontak.negara"
                                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                         </div>
                         <div class="mb-6">
                             <label for="provinsi"
                                 class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Provinsi<span
                                     class="text-red-600">*</span></label>
-                            <input type="text" id="provinsi"
+                            <input type="text" id="provinsi" v-model="user.data_kontak.provinsi"
                                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                         </div>
                         <div class="mb-6">
                             <label for="kota-kab"
                                 class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Kota/Kabupaten<span
                                     class="text-red-600">*</span></label>
-                            <input type="text" id="kota-kab"
+                            <input type="text" id="kota-kab" v-model="user.data_kontak.kota_kabupaten"
                                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                         </div>
                     </div>
@@ -152,7 +152,7 @@
                             <label for="nip"
                                 class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">NIP(Nomor Induk
                                 Pegawai)</label>
-                            <input type="text" id="nip"
+                            <input type="text" id="nip" v-model="user.data_karyawan.nip"
                                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                         </div>
 
@@ -185,22 +185,22 @@
                             <label for="jabatan"
                                 class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">PIC
                                 Karyawan</label>
-                            <ModelSelect :options="options" v-model="selected" placeholder="Pilih PIC" />
+                            <ModelSelect :options="options" v-model="user.data_karyawan.pic_user_id" placeholder="Pilih PIC" />
                         </div>
 
                         <div class=" mb-6">
                             <label for="tgl-gabung"
                                 class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Tanggal
                                 Gabung<span class="text-red-600">*</span></label>
-                            <input id="tgl-gabung" type="date"
+                            <input id="tgl-gabung" type="date" v-model="user.data_karyawan.tgl_gabung"
                                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                         </div>
 
                         <div class="mb-6">
-                            <label for="status-kawin"
+                            <label for="lokasi"
                                 class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Lokasi Kerja<span
                                     class="text-red-600">*</span></label>
-                            <select id="status-kawin"
+                            <select id="lokasi" v-model="user.data_pribadi.status_kawin"
                                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                 <option selected>Pilih salah satu</option>
                                 <option value="site A">Site A</option>
@@ -209,10 +209,10 @@
                         </div>
 
                         <div class="mb-6">
-                            <label for="status-kawin"
+                            <label for="tipe-karyawan"
                                 class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Tipe Pengganjian
                                 Karyawan<span class="text-red-600">*</span></label>
-                            <select id="status-kawin"
+                            <select id="tipe-karyawan" v-model="user.data_karyawan.tipe_karyawan"
                                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                 <option selected>Pilih salah satu</option>
                                 <option value="bulanan">Bulanan</option>
@@ -230,20 +230,20 @@
                                 <label for="nama-kontak"
                                     class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nama
                                     Kontak</label>
-                                <input type="text" id="nama-kontak"
+                                <input type="text" id="nama-kontak" v-model="user.data_kontak.nama_darurat"
                                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                             </div>
                             <div class="mb-6">
                                 <label for="telepon-dar"
                                     class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nomor
                                     Telepon</label>
-                                <input type="text" id="telepon-dar"
+                                <input type="text" id="telepon-dar" v-model="user.data_kontak.no_telepon_darurat"
                                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                             </div>
                             <div class="mb-6">
                                 <label for="relasi"
                                     class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Relasi</label>
-                                <input type="text" id="relasi"
+                                <input type="text" id="relasi" v-model="user.data_kontak.relasi_darurat"
                                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                             </div>
 
@@ -263,8 +263,10 @@ import { onClickOutside } from "@vueuse/core";
 import { useRouter } from "vue-router";
 import "vue-search-select/dist/VueSearchSelect.css";
 import { ModelSelect } from 'vue-search-select'
+import { initUser, User } from "@/models/userModel";
 
 const selected = ref(null)
+const user = ref<User>(initUser())
 
 const options = [
     { value: 'Budi', text: 'Budi' },
@@ -283,7 +285,7 @@ const isDropdownRef = ref(null)
 
 onClickOutside(isDropdownRef, () => {
     filteredItems.value = [];
-    search.value = "";
+    // search.value = "";
 });
 
 const goBack = () => {
@@ -310,4 +312,10 @@ const selectItem = (item?: string) => {
     }
     filteredItems.value = []; // Sembunyikan dropdown setelah memilih
 };
+
+const addKaryawan = () => {
+    user.value.phone = user.value.data_kontak.no_telepon;
+
+    console.log(user.value);
+}
 </script>

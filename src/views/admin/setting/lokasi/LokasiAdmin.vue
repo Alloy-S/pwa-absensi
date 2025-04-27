@@ -13,7 +13,7 @@
                     <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
                         <i class="fa-solid fa-magnifying-glass"></i>
                     </div>
-                    <input type="text" id="simple-search"
+                    <input type="text" id="simple-search" v-model="search"
                         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                         placeholder="Cari..." required />
                 </div>
@@ -36,22 +36,23 @@
                         <th scope="col" class="w-3/4 px-6 py-3">
                             Nama Lokasi
                         </th>
-                        
+
                         <th scope="col" class="px-6 py-3">
                             Action
                         </th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr v-for="n in 10"
+                    <tr v-for="item in lokasiList.items" :key="item.id"
                         class="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700 border-gray-200">
-                        <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                            Site A
-                        </th>
-                      
+                        <td scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                            {{ item.name }}
+                        </td>
+
                         <td class="px-6 py-4 space-x-3">
-                            <a @click="editItem(n)" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
-                            <a href="#" class="font-medium text-red-600 dark:text-red-500 hover:underline">Delete</a>
+                            <a @click="editItem(item.id)"
+                                class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
+                            <a @click="deleteLok(item.id)" class="font-medium text-red-600 dark:text-red-500 hover:underline">Delete</a>
                         </td>
                     </tr>
                 </tbody>
@@ -61,38 +62,33 @@
 
         </div>
         <div class="mb-16 flex justify-end mt-4">
-
-
-            <nav aria-label="Page navigation example">
+            <nav aria-label="Page navigation example" v-if="pages > 1">
                 <ul class="inline-flex -space-x-px text-sm">
+
                     <li>
-                        <a href="#"
-                            class="flex items-center justify-center px-3 h-8 ms-0 leading-tight text-gray-500 bg-white border border-e-0 border-gray-300 rounded-s-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">Previous</a>
+                        <button @click="changePage(page - 1)" :disabled="page === 1"
+                            class="flex items-center justify-center px-3 h-8 ms-0 leading-tight text-gray-500 bg-white border border-e-0 border-gray-300 rounded-s-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
+                            Previous
+                        </button>
                     </li>
+
+                    <li v-for="n in pages" :key="n">
+
+                        <button @click="changePage(n)" :class="[
+                            'flex items-center justify-center px-3 h-8 leading-tight border border-gray-300',
+                            n === page ? 'text-blue-600 bg-blue-50 hover:bg-blue-100 hover:text-blue-700 dark:bg-gray-700 dark:text-white' : 'text-gray-500 bg-white hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white'
+                        ]">
+                            {{ n }}
+                        </button>
+                    </li>
+
                     <li>
-                        <a href="#"
-                            class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">1</a>
+                        <button @click="changePage(page + 1)" :disabled="page === pages"
+                            class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
+                            Next
+                        </button>
                     </li>
-                    <li>
-                        <a href="#"
-                            class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">2</a>
-                    </li>
-                    <li>
-                        <a href="#" aria-current="page"
-                            class="flex items-center justify-center px-3 h-8 text-blue-600 border border-gray-300 bg-blue-50 hover:bg-blue-100 hover:text-blue-700 dark:border-gray-700 dark:bg-gray-700 dark:text-white">3</a>
-                    </li>
-                    <li>
-                        <a href="#"
-                            class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">4</a>
-                    </li>
-                    <li>
-                        <a href="#"
-                            class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">5</a>
-                    </li>
-                    <li>
-                        <a href="#"
-                            class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">Next</a>
-                    </li>
+
                 </ul>
             </nav>
         </div>
@@ -101,8 +97,18 @@
 
 <script setup lang="ts">
 import BasePage from '@/layouts/admin/BasePage.vue'
+import { LokasiPagination } from '@/models/lokasiModel';
+import { deleteLokasi, fetchLokasiPagination } from '@/services/lokasiService';
+import { ref, onMounted, watch } from 'vue';
 import { useRouter } from 'vue-router'
+import { toast } from 'vue3-toastify'
 
+
+const lokasiList = ref<LokasiPagination>({ pages: 1, total: 0, items: [] });
+const pages = ref(1);
+const page = ref(1);
+const search = ref('');
+let debounceTimer: any = null;
 const router = useRouter()
 
 const addItem = () => {
@@ -112,4 +118,57 @@ const addItem = () => {
 const editItem = (id: any) => {
     router.push('lokasi/' + id);
 }
+
+const getLokasi = async () => {
+    try {
+
+        const params = {
+            page: page.value,
+            search: search.value
+        }
+
+        const response = fetchLokasiPagination(params)
+
+        lokasiList.value = (await response);
+        pages.value = Number((await response).pages);
+
+        console.log(lokasiList.value);
+    } catch (error) {
+        console.error(error)
+    }
+}
+
+const deleteLok = async (id: string) => {
+    try {
+        // Perform the delete logic here
+        console.log('Delete item with id:', id);
+
+        const response = await deleteLokasi(id);
+
+        if (response.status === 200) {
+            toast.success("Success Delete Jabatan")
+            getLokasi()
+        }
+    } catch (error) {
+        console.error(error)
+        toast.error(error.response.data.message);
+    }
+}
+
+watch(search, (_newVal, _oldVal) => {
+
+    if (debounceTimer) clearTimeout(debounceTimer);
+
+    debounceTimer = setTimeout(() => {
+
+        page.value = 1
+        getLokasi()
+        console.log('search', search.value)
+
+    }, 1000);
+})
+
+onMounted(() => {
+    getLokasi()
+})
 </script>

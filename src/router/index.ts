@@ -8,6 +8,9 @@ import NotFound from '@/views/admin/NotFound.vue';
 import RekapPeriode from '@/views/admin/laporan/RekapPeriode.vue';
 import DatangTerlambat from '@/views/admin/laporan/DatangTerlambat.vue';
 import CutiPribadi from '@/views/admin/laporan/CutiPribadi.vue';
+import DashbooardView from '@/views/user/DashbooardView.vue';
+import MenuView from '@/views/user/menu/MenuView.vue';
+import ProfileView from '@/views/user/ProfileView.vue';
 
 const routes = [
   {
@@ -18,13 +21,13 @@ const routes = [
   {
     path: '/',
     name: 'Dashboard',
-    component: () => import('@/views/user/DashbooardView.vue'),
+    component: DashbooardView,
     // meta: { requiresAuth: true }
   },
   {
     path: '/menu',
     name: 'Menu',
-    component: () => import('@/views/user/menu/MenuView.vue'),
+    component: MenuView,
     // meta: { requiresAuth: true }
   },
   {
@@ -198,7 +201,7 @@ const routes = [
   {
     path: '/profile',
     name: 'Profile',
-    component: () => import('@/views/user/ProfileView.vue'),
+    component: ProfileView,
     // meta: { requiresAuth: true }
   },
   {
