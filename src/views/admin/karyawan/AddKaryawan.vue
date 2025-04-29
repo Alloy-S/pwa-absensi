@@ -265,7 +265,6 @@ import "vue-search-select/dist/VueSearchSelect.css";
 import { ModelSelect } from 'vue-search-select'
 import { initUser, User } from "@/models/userModel";
 
-const selected = ref(null)
 const user = ref<User>(initUser())
 
 const options = [

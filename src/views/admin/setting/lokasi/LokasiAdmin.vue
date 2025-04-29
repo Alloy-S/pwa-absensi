@@ -119,6 +119,10 @@ const editItem = (id: any) => {
     router.push('lokasi/' + id);
 }
 
+const changePage = (newPage: number) => {
+    page.value = newPage
+    getLokasi()
+}
 const getLokasi = async () => {
     try {
 
