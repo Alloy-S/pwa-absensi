@@ -61,7 +61,6 @@ const toggleDropdown = () => {
 
 onClickOutside(isDropdownRef, () => {
     isDropdownOpen.value = false
-    console.log("clicked outside")
 });
 </script>
 

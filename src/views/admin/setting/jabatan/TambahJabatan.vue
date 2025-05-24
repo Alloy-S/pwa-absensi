@@ -79,29 +79,23 @@ const getAllJabatan = async () => {
 }
 
 const createJabatan = async () => {
-    try {
 
-        // Perform the add jabatan logic here
-        const request = {
-            parent_id: selected.value,
-            nama: nama.value,
-        }
-
-        const response = await addJabatan(request);
-
-        if (response.status === 201) {
-            toast.success("Success Add New Jabatan")
-            setTimeout(() => {
-                router.back();
-            }, 1500);
-        }
-
-        console.log('Jabatan added:', selected.value);
-    } catch (error) {
-        console.error(error)
-        toast.error(error.response.data.message);
-            
+    const request = {
+        parent_id: selected.value,
+        nama: nama.value,
     }
+
+    const response = await addJabatan(request);
+
+    if (response.status === 201) {
+        toast.success("Success Add New Jabatan")
+        setTimeout(() => {
+            router.back();
+        }, 1500);
+    }
+
+    console.log('Jabatan added:', selected.value);
+
 }
 
 onMounted(() => {

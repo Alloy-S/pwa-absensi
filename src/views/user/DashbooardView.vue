@@ -92,7 +92,7 @@
 
 <script setup lang="ts">
 import BasePage from '@/layouts/user/BasePage.vue';
-import ReusableModal from '@/components/user/ReusableModal.vue';
+import ReusableModal from '@/components/ReusableModal.vue';
 import { ref } from 'vue';
 import CardApproval from '@/components/user/CardApproval.vue';
 

@@ -14,3 +14,8 @@ export interface JabatanPagination {
 export interface JabatanAll {
   items: Jabatan[];
 }
+
+export interface JabatanConvert {
+  value: string;
+  text: string;
+}

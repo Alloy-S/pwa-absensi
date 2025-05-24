@@ -1,6 +1,7 @@
 // src/lib/axios.ts
 import axios from 'axios'
 import router from '@/router'
+import { toast } from 'vue3-toastify'
 
 const api = axios.create({
   baseURL: import.meta.env.VITE_API_URL,
@@ -31,13 +32,13 @@ api.interceptors.response.use(
         localStorage.removeItem('token')
         localStorage.removeItem('user')
         router.push('/login')
-      } else if (status === 403) {
-        alert('Akses ditolak.')
+      } else if (status === 400) {
+        toast.error(error.response.data.message);
       } else if (status === 500) {
-        alert('Terjadi kesalahan server.')
+        toast.error("Terjadi kesalahan pada server")
       }
     } else {
-      alert('Tidak dapat terhubung ke server.')
+      toast.error("Tidak dapat terhubung ke server")
     }
 
     return Promise.reject(error)
