@@ -137,14 +137,14 @@
                                 class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Jabatan<span
                                     class="text-red-600">*</span></label>
                             <ModelSelect id="jabatan" :options="jabatanList" v-model="user.data_karyawan.jabatan_id"
-                                placeholder="Pilih Jabatan"/>
+                                placeholder="Pilih Jabatan" />
                         </div>
 
                         <div class="mb-6">
                             <label for="pic" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">PIC
                                 Karyawan<span class="text-red-600">*</span></label>
                             <ModelSelect id="pic" :options="userPosiblePIC" v-model="user.data_karyawan.pic_user_id"
-                                placeholder="Pilih PIC" :isDisabled="isSelectPIC"/>
+                                placeholder="Pilih PIC" :isDisabled="isSelectPIC" />
                         </div>
 
                         <div class=" mb-6">
@@ -159,24 +159,16 @@
                             <label for="lokasi"
                                 class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Lokasi Kerja<span
                                     class="text-red-600">*</span></label>
-                            <select id="lokasi" v-model="user.data_karyawan.lokasi_id" required
-                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                                <option selected>Pilih salah satu</option>
-                                <option value="site A">Site A</option>
-                                <option value="site B">Site B</option>
-                            </select>
+                            <ModelSelect id="lokasi" :options="lokasiList" v-model="user.data_karyawan.lokasi_id"
+                                placeholder="Pilih Lokasi" />
                         </div>
 
                         <div class="mb-6">
                             <label for="jadwal-kerja"
                                 class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Jadwal Kerja<span
                                     class="text-red-600">*</span></label>
-                            <select id="jadwal-kerja" v-model="user.data_karyawan.jadwal_kerja_id" required
-                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                                <option selected>Pilih salah satu</option>
-                                <option value="1">Pagi</option>
-                                <option value="2">Sore</option>
-                            </select>
+                            <ModelSelect id="jadwal-kerja" :options="jadwalKerjaList" v-model="user.data_karyawan.jadwal_kerja_id"
+                                placeholder="Pilih Shift Kerja" />
                         </div>
 
                         <div class="mb-6">
@@ -229,40 +221,28 @@
 import BasePage from '@/layouts/admin/BasePage.vue'
 
 import { onMounted, ref, watch } from "vue";
-import { onClickOutside } from "@vueuse/core";
 import { useRouter } from "vue-router";
 import "vue-search-select/dist/VueSearchSelect.css";
 import { ModelSelect } from 'vue-search-select'
-import { initUser, User, UserPosiblePIC, validateUser } from "@/models/userModel";
+import { initUser, User, validateUser } from "@/models/userModel";
 import { addKaryawan, fetchPosiblePIC } from '@/services/userService';
 import { toast } from 'vue3-toastify';
 import ReusableModal from '@/components/ReusableModal.vue';
 import { fetchJabatanAll } from '@/services/jabatanService';
-import { Jabatan, JabatanAll, JabatanConvert } from '@/models/jabatanModel';
+import { JabatanConvert } from '@/models/jabatanModel';
+import { fetchLokasiAll } from '@/services/lokasiService';
+import { fetchjadwalAll } from '@/services/jadwalKerjaService';
 
 const user = ref<User>(initUser())
 const ModalMandatoryfield = ref(false);
 const errors = ref<String[]>([])
 const jabatanList = ref<JabatanConvert[]>([])
+const lokasiList = ref([])
+const jadwalKerjaList = ref([])
 const userPosiblePIC = ref([]);
 const isSelectPIC = ref(true)
 
-const options = [
-    { value: 'Budi', text: 'Budi' },
-    { value: 'Bambang', text: 'Bambang' },
-    { value: 'Bagus', text: 'Bagus' },
-    { value: 'Tono', text: 'Tono' },
-    { value: 'Jono', text: 'Jono' },
-]
-
 const router = useRouter();
-const filteredItems = ref<string[]>([]);
-const isDropdownRef = ref(null)
-
-onClickOutside(isDropdownRef, () => {
-    filteredItems.value = [];
-    // search.value = "";
-});
 
 const goBack = () => {
     router.back();
@@ -270,6 +250,8 @@ const goBack = () => {
 
 onMounted(() => {
     getJabatan();
+    getLokasi();
+    getJadwalKerja();
 })
 
 watch(() => user.value.data_karyawan.jabatan_id, async (_oldValue, _newValue) => {
@@ -280,7 +262,7 @@ watch(() => user.value.data_karyawan.jabatan_id, async (_oldValue, _newValue) =>
     userPosiblePIC.value = repsonse.map(item => {
         return {
             value: item.id,
-            text: item.fullname
+            text: `${item.fullname} (${item.jabatan})`
         }
     });
 
@@ -309,14 +291,52 @@ const getJabatan = async () => {
     }
 }
 
+const getLokasi = async () => {
+    try {
+
+        const response = await fetchLokasiAll();
+
+        lokasiList.value = response.items.map(item => {
+            return {
+                value: item.id,
+                text: item.name
+            }
+        });
+
+        console.log(lokasiList.value);
+    } catch (error) {
+        console.error(error)
+    }
+}
+
+const getJadwalKerja = async () => {
+    try {
+
+        const response = await fetchjadwalAll();
+
+        jadwalKerjaList.value = response.items.map(item => {
+            return {
+                value: item.id,
+                text: item.shift
+            }
+        });
+
+        console.log(jadwalKerjaList.value);
+    } catch (error) {
+        console.error(error)
+    }
+}
+
 const createKaryawan = async () => {
 
 
     user.value.phone = user.value.data_kontak.no_telepon;
 
 
+
     errors.value = validateUser(user.value)
 
+    console.log("validate user errors:")
     console.log(errors)
 
     if (errors.value.length == 0) {

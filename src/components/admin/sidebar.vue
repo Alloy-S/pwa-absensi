@@ -249,7 +249,7 @@
                                 class="flex items-center w-full p-2 text-base font-normal text-gray-600 transition duration-75 group hover:bg-gray-100 border-l-4 border-transparent hover:border-blue-600 pl-14">
                                 Lembur</RouterLink>
                         </li>
-                        
+
                     </ul>
                 </li>
                 <li class="px-5">
@@ -361,6 +361,24 @@
                     </RouterLink>
                 </li>
                 <li>
+                    <RouterLink to="/admin/user/management"
+                        class="relative flex flex-row items-center h-11 transition duration-150 ease-in-out focus:outline-none hover:bg-gray-50 text-gray-600 hover:text-gray-800 border-l-4 border-transparent hover:border-blue-600 pr-6">
+                        <span class="inline-flex justify-center items-center ml-4">
+                            <i class="fa-solid fa-users-gear"></i>
+                        </span>
+                        <span class="ml-2 text-sm tracking-wide truncate">User Management</span>
+                    </RouterLink>
+                </li>
+                <li>
+                    <RouterLink to="/admin/backup"
+                        class="relative flex flex-row items-center h-11 transition duration-150 ease-in-out focus:outline-none hover:bg-gray-50 text-gray-600 hover:text-gray-800 border-l-4 border-transparent hover:border-blue-600 pr-6">
+                        <span class="inline-flex justify-center items-center ml-4">
+                            <i class="fa-solid fa-file-zipper"></i>
+                        </span>
+                        <span class="ml-2 text-sm tracking-wide truncate">Backup Data</span>
+                    </RouterLink>
+                </li>
+                <li>
                     <RouterLink to="/"
                         class="relative flex flex-row items-center h-11 transition duration-150 ease-in-out focus:outline-none hover:bg-gray-50 text-gray-600 hover:text-gray-800 border-l-4 border-transparent hover:border-blue-600 pr-6">
                         <span class="inline-flex justify-center items-center ml-4">
@@ -376,7 +394,7 @@
                         <span class="ml-2 text-sm tracking-wide truncate">Menuju Aplikasi Absensi</span>
                     </RouterLink>
                 </li>
-                
+
 
             </ul>
             <div class="mb-32"></div>
