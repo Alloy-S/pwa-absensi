@@ -16,6 +16,11 @@ export const updateKaryawan = async (id: string, request: User) => {
   return response;
 };
 
+export const nonActiveKaryawan = async (id: string) => {
+  const response = await api.delete(`/users/${id}`);
+  return response;
+};
+
 export const fetchDetailKaryawan = async (id: string): Promise<User> => {
   const response = await api.get<User>(`/users/${id}`);
   return response.data;
@@ -34,3 +39,12 @@ export const fetchPosiblePIC = async (id: string): Promise<UserPosiblePIC[]> => 
   const response = await api.get<UserPosiblePIC[]>(`/users/posible-pic/${id}`);
   return response.data;
 };
+
+export const resendLoginData = async (id: string) => {
+  const request = {
+    user_id: id,
+  }
+
+  const response = await api.post(`/users/resend-login-data`, request);
+  return response;
+}

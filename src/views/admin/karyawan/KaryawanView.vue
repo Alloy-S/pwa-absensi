@@ -61,14 +61,15 @@
                             {{ item.lokasi }}
                         </td>
                         <td class="px-6 py-4">
-                            {{  item.jabatan }}
+                            {{ item.jabatan }}
                         </td>
                         <td class="px-6 py-4">
                             Aktif
                         </td>
                         <td class="px-6 py-4 space-x-3">
-                            <a @click="goToDetail(item.id)" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
-                            <a class="font-medium text-red-600 dark:text-red-500 hover:underline">Delete</a>
+                            <a @click="goToDetail(item.id)"
+                                class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
+                            <a @click="submitNonActiveKaryawan(item.id)" class="font-medium text-red-600 dark:text-red-500 hover:underline">Non Aktif</a>
                         </td>
                     </tr>
                 </tbody>
@@ -118,10 +119,11 @@ import BasePage from '@/layouts/admin/BasePage.vue'
 import { useRouter } from 'vue-router'
 import { ref, onMounted } from 'vue';
 import { KaryawanPagination } from '@/models/userModel';
-import { fetchKaryawanPagination } from '@/services/userService';
+import { fetchKaryawanPagination, nonActiveKaryawan } from '@/services/userService';
+import { toast } from 'vue3-toastify';
 
 const router = useRouter();
-const karyawanList = ref<KaryawanPagination>({ pages:1, total: 0, items: [] });
+const karyawanList = ref<KaryawanPagination>({ pages: 1, total: 0, items: [] });
 const pages = ref(1);
 const page = ref(1);
 const search = ref('');
@@ -136,22 +138,32 @@ const changePage = (newPage: number) => {
 }
 
 const getKaryawan = async () => {
-    try {
 
-        const params = {
-            page: page.value,
-            search: search.value
-        }
 
-        const response = fetchKaryawanPagination(params)
-
-        karyawanList.value = (await response);
-        pages.value = Number((await response).pages);
-
-        console.log(karyawanList.value);
-    } catch (error) {
-        console.error(error)
+    const params = {
+        page: page.value,
+        search: search.value
     }
+
+    const response = fetchKaryawanPagination(params)
+
+    karyawanList.value = (await response);
+    pages.value = Number((await response).pages);
+
+    console.log(karyawanList.value);
+
+}
+
+const submitNonActiveKaryawan = async (id: string) => {
+    const response = nonActiveKaryawan(id)
+
+    if ((await response).status === 200) {
+        toast.success('Karyawan berhasil dinonaktifkan');
+        getKaryawan();
+    } else {
+        toast.error('Gagal menonaktifkan karyawan');
+    }
+
 }
 
 onMounted(() => {

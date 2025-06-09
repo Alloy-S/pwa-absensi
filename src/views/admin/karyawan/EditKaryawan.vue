@@ -193,6 +193,13 @@
                 </form>
                 <div class="flex-[3]">
                     <div class="space-y-3">
+                        <div class="bg-white p-3 rounded-md shadow-md">
+                            <p class="mt-2 mb-4 text-lg font-semibold">Resend Data Login</p>
+                            <p class="mb-4 text-sm">Noted: <i class="text-red-600">Password akan diperbarui secara
+                                    otomatis dan password lama tidak dapat digunakan</i></p>
+                            <button type="button" @click="hitResendLoginData(user.id)"
+                                class="w-full text-white bg-blue-500 hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Resend</button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -221,13 +228,14 @@ import { ref, onMounted, watch } from "vue";
 import { useRouter, useRoute } from "vue-router";
 import { initUser, User, validateUserField } from '@/models/userModel';
 import { JabatanConvert } from '@/models/jabatanModel';
-import { fetchDetailKaryawan, fetchPosiblePIC, updateKaryawan } from '@/services/userService';
+import { fetchDetailKaryawan, fetchPosiblePIC, updateKaryawan, resendLoginData } from '@/services/userService';
 import { fetchJabatanAll } from '@/services/jabatanService';
 import { fetchLokasiAll } from '@/services/lokasiService';
 import { fetchjadwalAll } from '@/services/jadwalKerjaService';
 import "vue-search-select/dist/VueSearchSelect.css";
 import { ModelSelect } from 'vue-search-select'
 import { toast } from 'vue3-toastify';
+import 'vue3-toastify/dist/index.css';
 
 const router = useRouter();
 const route = useRoute();
@@ -265,6 +273,20 @@ watch(() => user.value.data_karyawan.jabatan_id, async (_oldValue, _newValue) =>
         isSelectPIC.value = true
     }
 });
+
+const hitResendLoginData = async (id: string) => {
+    const toastId = toast.loading("Resend Login Data...");
+    const response = await resendLoginData(id);
+   
+    if (response.status === 200) {
+        toast.update(toastId, {
+            render: "Sukses Resend Login Data!",
+            type: "success",
+            isLoading: false,
+            autoClose: 3000,
+        });
+    }
+}
 
 const getKaryawanById = async () => {
     user.value = await fetchDetailKaryawan(route.params.id as string)
