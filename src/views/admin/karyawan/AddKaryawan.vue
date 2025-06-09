@@ -31,8 +31,8 @@
                             <select id="gender" v-model="user.data_pribadi.gender" required
                                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                 <option selected>Pilih salah satu</option>
-                                <option value="laki-laki">Laki-laki</option>
-                                <option value="perempuan">Perempuan</option>
+                                <option value="Laki-Laki">Laki-laki</option>
+                                <option value="Perempuan">Perempuan</option>
                             </select>
                         </div>
 
@@ -63,8 +63,8 @@
                             <select id="status-kawin" v-model="user.data_pribadi.status_kawin" required
                                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                 <option selected>Pilih salah satu</option>
-                                <option value="belum kawin">Belum Kawin</option>
-                                <option value="kawin">Kawin</option>
+                                <option value="Belum Kawin">Belum Kawin</option>
+                                <option value="Kawin">Kawin</option>
                             </select>
                         </div>
                         <div class="mb-6">
@@ -74,13 +74,12 @@
                             <select id="agama" v-model="user.data_pribadi.agama" required
                                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                 <option selected>Pilih salah satu</option>
-                                <option value="kristen">Kristen</option>
-                                <option value="katolik">Katolik</option>
-                                <option value="islam">Islam</option>
-                                <option value="buddha">Buddha</option>
-                                <option value="konghucu">Konghucu</option>
-                                <option value="hindu">Hindu</option>
-                                <option value="lainnya">Lainnya</option>
+                                <option value="Kristen">Kristen</option>
+                                <option value="Katolik">Katolik</option>
+                                <option value="Islam">Islam</option>
+                                <option value="Buddha">Buddha</option>
+                                <option value="Konghucu">Konghucu</option>
+                                <option value="Hindu">Hindu</option>
                             </select>
                         </div>
                         <div class="mb-6">
@@ -143,7 +142,7 @@
                         <div class="mb-6">
                             <label for="pic" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">PIC
                                 Karyawan<span class="text-red-600">*</span></label>
-                            <ModelSelect id="pic" :options="userPosiblePIC" v-model="user.data_karyawan.pic_user_id"
+                            <ModelSelect id="pic" :options="userPosiblePIC" v-model="user.data_karyawan.user_pic_id"
                                 placeholder="Pilih PIC" :isDisabled="isSelectPIC" />
                         </div>
 
@@ -167,8 +166,8 @@
                             <label for="jadwal-kerja"
                                 class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Jadwal Kerja<span
                                     class="text-red-600">*</span></label>
-                            <ModelSelect id="jadwal-kerja" :options="jadwalKerjaList" v-model="user.data_karyawan.jadwal_kerja_id"
-                                placeholder="Pilih Shift Kerja" />
+                            <ModelSelect id="jadwal-kerja" :options="jadwalKerjaList"
+                                v-model="user.data_karyawan.jadwal_kerja_id" placeholder="Pilih Shift Kerja" />
                         </div>
 
                         <div class="mb-6">
@@ -224,7 +223,7 @@ import { onMounted, ref, watch } from "vue";
 import { useRouter } from "vue-router";
 import "vue-search-select/dist/VueSearchSelect.css";
 import { ModelSelect } from 'vue-search-select'
-import { initUser, User, validateUser } from "@/models/userModel";
+import { initUser, User, validateUserField } from "@/models/userModel";
 import { addKaryawan, fetchPosiblePIC } from '@/services/userService';
 import { toast } from 'vue3-toastify';
 import ReusableModal from '@/components/ReusableModal.vue';
@@ -328,17 +327,13 @@ const getJadwalKerja = async () => {
 }
 
 const createKaryawan = async () => {
-
-
     user.value.phone = user.value.data_kontak.no_telepon;
 
-
-
-    errors.value = validateUser(user.value)
+    errors.value = validateUserField(user.value)
 
     console.log("validate user errors:")
     console.log(errors)
-
+    console.log(user.value)
     if (errors.value.length == 0) {
         const response = await addKaryawan(user.value);
 
@@ -348,10 +343,8 @@ const createKaryawan = async () => {
                 router.back();
             }, 1500);
         }
+    } else {
+        ModalMandatoryfield.value = true;
     }
-
-    ModalMandatoryfield.value = true;
-
-
 }
 </script>

@@ -10,7 +10,7 @@ export interface DataKaryawan {
   jadwal_kerja: string;
   lokasi_id: string;
   lokasi: string;
-  pic_user_id: string;
+  user_pic_id: string;
   pic: string;
 }
 
@@ -52,6 +52,22 @@ export interface UserPosiblePIC {
   jabatan: string;
 }
 
+export interface KaryawanPagination {
+  pages: number;
+  total: number;
+  items: Karyawan[];
+}
+
+export interface Karyawan {
+  id: string;
+  username: string;
+  fullname: string;
+  lokasi: string;
+  jabatan: string;
+  status: string;
+  role: string;
+}
+
 export function initUser(): User {
   return {
     id: "",
@@ -73,7 +89,7 @@ export function initUser(): User {
       jadwal_kerja: "",
       lokasi_id: "",
       lokasi: "",
-      pic_user_id: "",
+      user_pic_id: "",
       pic: "",
     },
     data_pribadi: {
@@ -96,7 +112,7 @@ export function initUser(): User {
   };
 }
 
-export function validateUser(user: User) {
+export function validateUserField(user: User) {
     const errors:String[] = [];
 
     // Validasi umum

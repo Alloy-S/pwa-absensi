@@ -52,22 +52,22 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr v-for="n in 10"
+                    <tr v-for="item in karyawanList.items" :key="item.id"
                         class="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700 border-gray-200">
                         <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                            Bambang
+                            {{ item.fullname }}
                         </th>
                         <td class="px-6 py-4">
-                            Kandang A
+                            {{ item.lokasi }}
                         </td>
                         <td class="px-6 py-4">
-                            Staff
+                            {{  item.jabatan }}
                         </td>
                         <td class="px-6 py-4">
                             Aktif
                         </td>
                         <td class="px-6 py-4 space-x-3">
-                            <a @click="goToDetail(n)" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
+                            <a @click="goToDetail(item.id)" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
                             <a class="font-medium text-red-600 dark:text-red-500 hover:underline">Delete</a>
                         </td>
                     </tr>
@@ -80,36 +80,33 @@
         <div class="mb-16 flex justify-end mt-4">
 
 
-            <nav aria-label="Page navigation example">
+            <nav aria-label="Page navigation example" v-if="pages > 1">
                 <ul class="inline-flex -space-x-px text-sm">
+
                     <li>
-                        <a href="#"
-                            class="flex items-center justify-center px-3 h-8 ms-0 leading-tight text-gray-500 bg-white border border-e-0 border-gray-300 rounded-s-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">Previous</a>
+                        <button @click="changePage(page - 1)" :disabled="page === 1"
+                            class="flex items-center justify-center px-3 h-8 ms-0 leading-tight text-gray-500 bg-white border border-e-0 border-gray-300 rounded-s-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
+                            Previous
+                        </button>
                     </li>
+
+                    <li v-for="n in pages" :key="n">
+
+                        <button @click="changePage(n)" :class="[
+                            'flex items-center justify-center px-3 h-8 leading-tight border border-gray-300',
+                            n === page ? 'text-blue-600 bg-blue-50 hover:bg-blue-100 hover:text-blue-700 dark:bg-gray-700 dark:text-white' : 'text-gray-500 bg-white hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white'
+                        ]">
+                            {{ n }}
+                        </button>
+                    </li>
+
                     <li>
-                        <a href="#"
-                            class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">1</a>
+                        <button @click="changePage(page + 1)" :disabled="page === pages"
+                            class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
+                            Next
+                        </button>
                     </li>
-                    <li>
-                        <a href="#"
-                            class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">2</a>
-                    </li>
-                    <li>
-                        <a href="#" aria-current="page"
-                            class="flex items-center justify-center px-3 h-8 text-blue-600 border border-gray-300 bg-blue-50 hover:bg-blue-100 hover:text-blue-700 dark:border-gray-700 dark:bg-gray-700 dark:text-white">3</a>
-                    </li>
-                    <li>
-                        <a href="#"
-                            class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">4</a>
-                    </li>
-                    <li>
-                        <a href="#"
-                            class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">5</a>
-                    </li>
-                    <li>
-                        <a href="#"
-                            class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">Next</a>
-                    </li>
+
                 </ul>
             </nav>
         </div>
@@ -119,10 +116,45 @@
 <script setup lang="ts">
 import BasePage from '@/layouts/admin/BasePage.vue'
 import { useRouter } from 'vue-router'
+import { ref, onMounted } from 'vue';
+import { KaryawanPagination } from '@/models/userModel';
+import { fetchKaryawanPagination } from '@/services/userService';
 
 const router = useRouter();
+const karyawanList = ref<KaryawanPagination>({ pages:1, total: 0, items: [] });
+const pages = ref(1);
+const page = ref(1);
+const search = ref('');
 
 const goToDetail = (id: any) => {
     router.push(`karyawan/${id}`);
 }
+
+const changePage = (newPage: number) => {
+    page.value = newPage
+    getKaryawan()
+}
+
+const getKaryawan = async () => {
+    try {
+
+        const params = {
+            page: page.value,
+            search: search.value
+        }
+
+        const response = fetchKaryawanPagination(params)
+
+        karyawanList.value = (await response);
+        pages.value = Number((await response).pages);
+
+        console.log(karyawanList.value);
+    } catch (error) {
+        console.error(error)
+    }
+}
+
+onMounted(() => {
+    getKaryawan()
+})
 </script>

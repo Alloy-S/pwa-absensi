@@ -2,7 +2,7 @@
     <BasePage>
         <div class="space-y-3">
             <div class="mb-10 mt-5 flex justify-between items-start">
-                <p class="text-3xl font-semibold text-slate-800">Edit Jadwal Kerja</p>
+                <p class="text-3xl font-semibold text-slate-800">Edit Hari Libur</p>
 
             </div>
 
@@ -28,7 +28,7 @@
 
                         <div class="mb-6">
                             <label for="type" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Tipe
-                                Harga<span class="text-red-600">*</span></label>
+                                Libur<span class="text-red-600">*</span></label>
                             <select id="type"
                                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                 <option disabled selected>Pilih salah satu</option>
