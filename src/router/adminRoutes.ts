@@ -3,77 +3,79 @@ import RekapPeriode from "@/views/admin/laporan/RekapPeriode.vue";
 import DatangTerlambat from "@/views/admin/laporan/DatangTerlambat.vue";
 import CutiPribadi from "@/views/admin/laporan/CutiPribadi.vue";
 
+const adminRoles = ["admin", "HRD"];
+
 export const adminRoutes = [
   {
     path: "/admin",
     name: "Admin Dashboard",
     component: () => import("@/views/admin/Dasboard.vue"),
-    meta: { requiresAuth: true, roles: ["admin", "HRD"] },
+    meta: { requiresAuth: true, roles: adminRoles },
   },
   {
     path: "/admin/karyawan",
     name: "List Karyawan",
     component: () => import("@/views/admin/karyawan/KaryawanView.vue"),
-    meta: { requiresAuth: true, roles: ["admin", "HRD"] },
+    meta: { requiresAuth: true, roles: adminRoles },
   },
   {
     path: "/admin/karyawan/add",
     name: "Add Karyawan",
     component: () => import("@/views/admin/karyawan/AddKaryawan.vue"),
-    meta: { requiresAuth: true },
+    meta: { requiresAuth: true, roles: adminRoles },
   },
   {
     path: "/admin/karyawan/:id",
     name: "Edit Karyawan",
     component: () => import("@/views/admin/karyawan/EditKaryawan.vue"),
-    meta: { requiresAuth: true },
+    meta: { requiresAuth: true, roles: adminRoles },
   },
   {
     path: "/admin/riwayat/absensi",
     name: "riwayat absensi admin",
     component: () =>
       import("@/views/admin/riwayat/absensi/RiwayatAbsensiAdmin.vue"),
-    meta: { requiresAuth: true },
+    meta: { requiresAuth: true, roles: adminRoles },
   },
   {
     path: "/admin/riwayat/absensi/:id",
     name: "detail riwayat absensi admin",
     component: () =>
       import("@/views/admin/riwayat/absensi/DetailRiwayatAbsensi.vue"),
-    meta: { requiresAuth: true },
+    meta: { requiresAuth: true, roles: adminRoles },
   },
   {
     path: "/admin/riwayat/izin",
     name: "riwayat izin admin",
     component: () => import("@/views/admin/riwayat/izin/RiwayatIzinAdmin.vue"),
-    meta: { requiresAuth: true },
+    meta: { requiresAuth: true, roles: adminRoles },
   },
   {
     path: "/admin/riwayat/izin/:id",
     name: "detail riwayat izin admin",
     component: () => import("@/views/admin/riwayat/izin/DetailRiwayatIzin.vue"),
-    meta: { requiresAuth: true },
+    meta: { requiresAuth: true, roles: adminRoles },
   },
   {
     path: "/admin/riwayat/lembur",
     name: "riwayat lembur admin",
     component: () =>
       import("@/views/admin/riwayat/lembur/RiwayatLemburAdmin.vue"),
-    meta: { requiresAuth: true },
+    meta: { requiresAuth: true, roles: adminRoles },
   },
   {
     path: "/admin/riwayat/lembur/:id",
     name: "detail riwayat lembur admin",
     component: () =>
       import("@/views/admin/riwayat/lembur/DetailRiwayatLembur.vue"),
-    meta: { requiresAuth: true },
+    meta: { requiresAuth: true, roles: adminRoles },
   },
   {
     path: "/admin/riwayat/harian-borongan",
     name: "riwayat harian borongan admin",
     component: () =>
       import("@/views/admin/riwayat/harianBorongan/RiwayatBoronganAdmin.vue"),
-    meta: { requiresAuth: true },
+    meta: { requiresAuth: true, roles: adminRoles },
   },
   {
     path: "/admin/riwayat/harian-borongan/:id",
@@ -82,21 +84,21 @@ export const adminRoutes = [
       import(
         "@/views/admin/riwayat/harianBorongan/DetailRiwayatBoronganAdmin.vue"
       ),
-    meta: { requiresAuth: true },
+    meta: { requiresAuth: true, roles: adminRoles },
   },
   {
     path: "/admin/approval/absensi",
     name: "approval absensi admin",
     component: () =>
       import("@/views/admin/approval/absensi/ApprovalAbsensiAdmin.vue"),
-    meta: { requiresAuth: true },
+    meta: { requiresAuth: true, roles: adminRoles },
   },
   {
     path: "/admin/approval/absensi/:id",
     name: "approval detail absensi admin",
     component: () =>
       import("@/views/admin/approval/absensi/ApprovalDetailAbsensiAdmin.vue"),
-    meta: { requiresAuth: true },
+    meta: { requiresAuth: true, roles: adminRoles },
   },
   {
     path: "/admin/approval/harian-borongan",
@@ -105,7 +107,7 @@ export const adminRoutes = [
       import(
         "@/views/admin/approval/harianBorongan/ApprovalHarianBoronganAdmin.vue"
       ),
-    meta: { requiresAuth: true },
+    meta: { requiresAuth: true, roles: adminRoles },
   },
   {
     path: "/admin/approval/harian-borongan/:id",
@@ -114,119 +116,119 @@ export const adminRoutes = [
       import(
         "@/views/admin/approval/harianBorongan/ApprovalDetailHarianBoronganAdmin.vue"
       ),
-    meta: { requiresAuth: true },
+    meta: { requiresAuth: true, roles: adminRoles },
   },
   {
     path: "/admin/approval/izin",
     name: "approval izin admin",
     component: () =>
       import("@/views/admin/approval/izin/ApprovalIzinAdmin.vue"),
-    meta: { requiresAuth: true },
+    meta: { requiresAuth: true, roles: adminRoles },
   },
   {
     path: "/admin/approval/izin/:id",
     name: "approval detail izin admin",
     component: () =>
       import("@/views/admin/approval/izin/ApprovalDetailIzinAdmin.vue"),
-    meta: { requiresAuth: true },
+    meta: { requiresAuth: true, roles: adminRoles },
   },
   {
     path: "/admin/approval/lembur",
     name: "approval lembur admin",
     component: () =>
       import("@/views/admin/approval/lembur/ApprovalLemburAdmin.vue"),
-    meta: { requiresAuth: true },
+    meta: { requiresAuth: true, roles: adminRoles },
   },
   {
     path: "/admin/approval/lembur/:id",
     name: "approval detail lembur admin",
     component: () =>
       import("@/views/admin/approval/lembur/ApprovalDetailLemburAdmin.vue"),
-    meta: { requiresAuth: true },
+    meta: { requiresAuth: true, roles: adminRoles },
   },
   {
     path: "/admin/pengumuman",
     name: "pengumuman admin",
     component: () => import("@/views/admin/pengumuman/PengumumanAdmin.vue"),
-    meta: { requiresAuth: true },
+    meta: { requiresAuth: true, roles: adminRoles },
   },
   {
     path: "/admin/pengumuman/add",
     name: "tambah pengumuman admin",
     component: () =>
       import("@/views/admin/pengumuman/TambahPengumumanAdmin.vue"),
-    meta: { requiresAuth: true },
+    meta: { requiresAuth: true, roles: adminRoles },
   },
   {
     path: "/admin/pengumuman/:id",
     name: "edit pengumuman admin",
     component: () => import("@/views/admin/pengumuman/EditPengumumanAdmin.vue"),
-    meta: { requiresAuth: true },
+    meta: { requiresAuth: true, roles: adminRoles },
   },
   {
     path: "/admin/reimburse",
     name: "reimburse admin",
     component: () => import("@/views/admin/reimburse/ReimburseView.vue"),
-    meta: { requiresAuth: true },
+    meta: { requiresAuth: true, roles: adminRoles },
   },
   {
     path: "/admin/reimburse/:id",
     name: "reimburse admin detail",
     component: () => import("@/views/admin/reimburse/DetailReimburseAdmin.vue"),
-    meta: { requiresAuth: true },
+    meta: { requiresAuth: true, roles: adminRoles },
   },
   {
     path: "/admin/approval/reimburse",
     name: "approval reimburse admin",
     component: () =>
       import("@/views/admin/approval/reimburse/ApprovalReimbruseAdmin.vue"),
-    meta: { requiresAuth: true },
+    meta: { requiresAuth: true, roles: adminRoles },
   },
   {
     path: "/admin/approval/reimburse/:id",
     name: "detail approval reimburse admin",
     component: () =>
       import("@/views/admin/approval/reimburse/ApprovalDetailReimburse.vue"),
-    meta: { requiresAuth: true },
+    meta: { requiresAuth: true, roles: adminRoles },
   },
   {
     path: "/admin/pengaturan/jadwal-kerja",
     name: "pengaturan jadwal kerja",
     component: () =>
       import("@/views/admin/setting/jadwalKerja/JadwalKerjaAdmin.vue"),
-    meta: { requiresAuth: true },
+    meta: { requiresAuth: true, roles: adminRoles },
   },
   {
     path: "/admin/pengaturan/jadwal-kerja/add",
     name: "pengaturan tambah jadwal kerja",
     component: () =>
       import("@/views/admin/setting/jadwalKerja/TambahJadwalKerja.vue"),
-    meta: { requiresAuth: true },
+    meta: { requiresAuth: true, roles: adminRoles },
   },
   {
     path: "/admin/pengaturan/jadwal-kerja/:id",
     name: "pengaturan edit jadwal kerja",
     component: () =>
       import("@/views/admin/setting/jadwalKerja/EditJadwalKerja.vue"),
-    meta: { requiresAuth: true },
+    meta: { requiresAuth: true, roles: adminRoles },
   },
   {
     path: "/admin/pengaturan/lokasi",
     name: "pengaturan lokasi",
     component: () => import("@/views/admin/setting/lokasi/LokasiAdmin.vue"),
-    meta: { requiresAuth: true },
+    meta: { requiresAuth: true, roles: adminRoles },
   },
   {
     path: "/admin/pengaturan/lokasi/add",
     name: "pengaturan tambah lokasi",
     component: () => import("@/views/admin/setting/lokasi/TambahLokasi.vue"),
-    meta: { requiresAuth: true },
+    meta: { requiresAuth: true, roles: adminRoles },
   },
   {
     path: "/admin/pengaturan/lokasi/:id",
     name: "pengaturan edit lokasi",
     component: () => import("@/views/admin/setting/lokasi/EditLokasiAdmin.vue"),
-    meta: { requiresAuth: true },
+    meta: { requiresAuth: true, roles: adminRoles },
   },
   {
     path: "/admin/pengaturan/harga-harian-borongan",
@@ -235,7 +237,7 @@ export const adminRoutes = [
       import(
         "@/views/admin/setting/hargaHarianBorongan/HargaHarianBorongan.vue"
       ),
-    meta: { requiresAuth: true },
+    meta: { requiresAuth: true, roles: adminRoles },
   },
   {
     path: "/admin/pengaturan/harga-harian-borongan/add",
@@ -244,7 +246,7 @@ export const adminRoutes = [
       import(
         "@/views/admin/setting/hargaHarianBorongan/TambahHarianBorongan.vue"
       ),
-    meta: { requiresAuth: true },
+    meta: { requiresAuth: true, roles: adminRoles },
   },
   {
     path: "/admin/pengaturan/harga-harian-borongan/:id",
@@ -253,102 +255,102 @@ export const adminRoutes = [
       import(
         "@/views/admin/setting/hargaHarianBorongan/EditHarianBorongan.vue"
       ),
-    meta: { requiresAuth: true },
+    meta: { requiresAuth: true, roles: adminRoles },
   },
   {
     path: "/admin/pengaturan/jabatan",
     name: "pengaturan jabatan",
     component: () => import("@/views/admin/setting/jabatan/jabatanAdmin.vue"),
-    meta: { requiresAuth: true },
+    meta: { requiresAuth: true, roles: adminRoles },
   },
   {
     path: "/admin/pengaturan/jabatan/add",
     name: "pengaturan tambah jabatan",
     component: () => import("@/views/admin/setting/jabatan/TambahJabatan.vue"),
-    meta: { requiresAuth: true },
+    meta: { requiresAuth: true, roles: adminRoles },
   },
   {
     path: "/admin/pengaturan/jabatan/:id",
     name: "pengaturan edit jabatan",
     component: () => import("@/views/admin/setting/jabatan/EditJabatan.vue"),
-    meta: { requiresAuth: true },
+    meta: { requiresAuth: true, roles: adminRoles },
   },
   {
     path: "/admin/pengaturan/kuota-cuti",
     name: "pengaturan kuota cuti",
     component: () =>
       import("@/views/admin/setting/kuotaCuti/KuotaCutiAdmin.vue"),
-    meta: { requiresAuth: true },
+    meta: { requiresAuth: true, roles: adminRoles },
   },
   {
     path: "/admin/pengaturan/hari-libur",
     name: "pengaturan hari libur",
     component: () =>
       import("@/views/admin/setting/hariLibur/HariLiburAdmin.vue"),
-    meta: { requiresAuth: true },
+    meta: { requiresAuth: true, roles: adminRoles },
   },
   {
     path: "/admin/pengaturan/hari-libur/add",
     name: "pengaturan tambah hari libur",
     component: () =>
       import("@/views/admin/setting/hariLibur/TambahHariLibur.vue"),
-    meta: { requiresAuth: true },
+    meta: { requiresAuth: true, roles: adminRoles },
   },
   {
     path: "/admin/pengaturan/hari-libur/:id",
     name: "pengaturan edit hari libur",
     component: () =>
       import("@/views/admin/setting/hariLibur/EditHariLibur.vue"),
-    meta: { requiresAuth: true },
+    meta: { requiresAuth: true, roles: adminRoles },
   },
   {
     path: "/admin/pengaturan/gaji/komponen-gaji",
     name: "pengaturan komponen gaji",
     component: () =>
       import("@/views/admin/setting/gaji/komponenGaji/KomponenGaji.vue"),
-    meta: { requiresAuth: true },
+    meta: { requiresAuth: true, roles: adminRoles },
   },
   {
     path: "/admin/pengaturan/gaji/komponen-gaji/add",
     name: "pengaturan tambah komponen gaji",
     component: () =>
       import("@/views/admin/setting/gaji/komponenGaji/TambahKomponenGaji.vue"),
-    meta: { requiresAuth: true },
+    meta: { requiresAuth: true, roles: adminRoles },
   },
   {
     path: "/admin/pengaturan/gaji/komponen-gaji/:id",
     name: "pengaturan edit komponen gaji",
     component: () =>
       import("@/views/admin/setting/gaji/komponenGaji/EditKomponenGaji.vue"),
-    meta: { requiresAuth: true },
+    meta: { requiresAuth: true, roles: adminRoles },
   },
   {
     path: "/admin/pengaturan/gaji/group-gaji",
     name: "pengaturan group gaji",
     component: () =>
       import("@/views/admin/setting/gaji/groupGaji/GroupGaji.vue"),
-    meta: { requiresAuth: true },
+    meta: { requiresAuth: true, roles: adminRoles },
   },
   {
     path: "/admin/pengaturan/gaji/group-gaji/add",
     name: "pengaturan tambah group gaji",
     component: () =>
       import("@/views/admin/setting/gaji/groupGaji/TambahGroupGaji.vue"),
-    meta: { requiresAuth: true },
+    meta: { requiresAuth: true, roles: adminRoles },
   },
   {
     path: "/admin/pengaturan/gaji/group-gaji/:id",
     name: "pengaturan edit group gaji",
     component: () =>
       import("@/views/admin/setting/gaji/groupGaji/EditGroupGaji.vue"),
-    meta: { requiresAuth: true },
+    meta: { requiresAuth: true, roles: adminRoles },
   },
   {
     path: "/admin/pengaturan/gaji/group-gaji-karyawan",
     name: "pengaturan group gaji karyawan",
     component: () =>
       import("@/views/admin/setting/gaji/groupGaji/GroupGajiKaryawan.vue"),
-    meta: { requiresAuth: true },
+    meta: { requiresAuth: true, roles: adminRoles },
   },
   {
     path: "/admin/pengaturan/profile-perusahaan",
@@ -357,25 +359,25 @@ export const adminRoutes = [
       import(
         "@/views/admin/setting/profilePerusahaan/ProfilePerusahaanAdmin.vue"
       ),
-    meta: { requiresAuth: true },
+    meta: { requiresAuth: true, roles: adminRoles },
   },
   {
     path: "/admin/laporan/rekap-periode",
     name: "laporan rekap periode",
     component: RekapPeriode,
-    meta: { requiresAuth: true },
+    meta: { requiresAuth: true, roles: adminRoles },
   },
   {
     path: "/admin/laporan/datang-terlambat",
     name: "laporan datang terlambat",
     component: DatangTerlambat,
-    meta: { requiresAuth: true },
+    meta: { requiresAuth: true, roles: adminRoles },
   },
   {
     path: "/admin/laporan/cuti-pribadi",
     name: "laporan cuti pribadi",
     component: CutiPribadi,
-    meta: { requiresAuth: true },
+    meta: { requiresAuth: true, roles: adminRoles },
   },
   {
     path: "/admin/:pathMatch(.*)*",

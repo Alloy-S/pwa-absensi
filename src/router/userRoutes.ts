@@ -2,12 +2,13 @@ import DashbooardView from '@/views/user/DashbooardView.vue';
 import MenuView from '@/views/user/menu/MenuView.vue';
 import ProfileView from '@/views/user/ProfileView.vue';
 import NotFoundView from '@/views/user/NotFoundView.vue';
+import LoginView from '@/views/LoginView.vue';
 
 export const userRoutes = [
   {
     path: '/login',
     name: 'Login',
-    component: () => import('@/views/LoginView.vue')
+    component: LoginView
   },
   {
     path: '/',
