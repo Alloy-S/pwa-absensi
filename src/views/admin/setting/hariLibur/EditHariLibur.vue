@@ -14,7 +14,7 @@
                         <div class="mb-6">
                             <label for="nama" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nama
                                 Event<span class="text-red-600">*</span></label>
-                            <input type="text" id="nama"
+                            <input type="text" id="nama" v-model="libur.description"
                                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                         </div>
 
@@ -22,14 +22,14 @@
                             <label for="date"
                                 class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Tanggal<span
                                     class="text-red-600">*</span></label>
-                            <input type="date" id="date"
+                            <input type="date" id="date" v-model="libur.date"
                                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                         </div>
 
                         <div class="mb-6">
                             <label for="type" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Tipe
                                 Libur<span class="text-red-600">*</span></label>
-                            <select id="type"
+                            <select id="type" v-model="libur.is_holiday"
                                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                 <option disabled selected>Pilih salah satu</option>
                                 <option value="true">Libur nasional</option>
@@ -44,7 +44,7 @@
                         <div class="w-1/3 flex">
                             <button type="button" @click="goBack"
                                 class="w-full text-red-500 hover:text-white border border-red-600 hover:bg-red-500 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 dark:border-red-500 dark:text-red-500 dark:hover:text-white dark:hover:bg-red-500 dark:focus:ring-red-600">Batal</button>
-                            <button type="button"
+                            <button type="button" @click="hitUpdateLibur"
                                 class="w-full text-white bg-blue-500 hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Simpan</button>
                         </div>
                     </div>
@@ -62,13 +62,44 @@
 
 <script setup lang="ts">
 import BasePage from '@/layouts/admin/BasePage.vue'
-import { useRouter } from 'vue-router'
+import { useRouter, useRoute } from 'vue-router'
+import { onMounted, ref } from 'vue'
+import { initLibur, Libur } from '@/models/liburModel';
+import { toast } from 'vue3-toastify'
+import { fetchLiburById, updateLibur } from '@/services/liburService';
 
 const router = useRouter();
+const route = useRoute();
+const libur = ref<Libur>(initLibur());
+
+onMounted(() => {
+    getLiburById();
+})
 
 const goBack = () => {
     router.back();
 }
 
+const getLiburById = async () => {
+
+    libur.value = await fetchLiburById(route.params.id as string)
+
+}
+
+const hitUpdateLibur = async () => {
+
+    const request = {
+        date: libur.value.date,
+        is_holiday: libur.value.is_holiday,
+        description: libur.value.description
+    }
+
+    const response = await updateLibur(route.params.id as string, request);
+
+    if (response.status === 200) {
+        toast.success("Success Update Hari Libur")
+        getLiburById()
+    }
+}
 
 </script>
