@@ -91,7 +91,7 @@
 import TopAbsensiNavigation from '@/components/user/TopAbsensiNavigation.vue';
 import TopHeader from '@/components/user/TopHeader.vue';
 import BasePageNoNav from '@/layouts/user/BasePageNoNav.vue';
-import { ref, computed } from 'vue';
+import { ref, computed, watch } from 'vue';
 import { useRouter } from 'vue-router';
 
 const router = useRouter();
@@ -110,6 +110,11 @@ const itemsPerPage = 5;
 const currentPage = ref(1);
 
 const totalPages = computed(() => Math.ceil(riwayatAbsensi.value.length / itemsPerPage));
+
+watch(selectedMonth, (_newVal, _oldVal) => {
+    
+    console.log("Selected month changed:", _newVal); 
+})
 
 const paginatedData = computed(() => {
     const start = (currentPage.value - 1) * itemsPerPage;

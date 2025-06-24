@@ -6,8 +6,13 @@
 
             <!-- Pilih Tanggal -->
             <div class="mb-4">
-                <label for="tanggal" class="block text-sm font-medium">Tanggal Izin</label>
-                <input id="tanggal" type="date" v-model="form.tanggal" class="w-full p-2 border rounded-md" />
+                <label for="tanggal-mulai" class="block text-sm font-medium">Tanggal Izin Mulai</label>
+                <input id="tanggal-mulai" type="date" v-model="form.tanggal" class="w-full p-2 border rounded-md" />
+            </div>
+
+            <div class="mb-4">
+                <label for="tanggal-selesai" class="block text-sm font-medium">Tanggal Izin Selesai</label>
+                <input id="tanggal-selesai" type="date" v-model="form.tanggal" class="w-full p-2 border rounded-md" />
             </div>
 
             <!-- Jenis Izin -->

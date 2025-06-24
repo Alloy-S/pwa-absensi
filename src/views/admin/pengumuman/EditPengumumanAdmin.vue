@@ -20,7 +20,7 @@
                         <div>
                             <label class="block mb-2 text-sm font-medium text-gray-900">Isi Pengumuman<span
                                     class="text-red-600">*</span></label>
-                            <QuillEditor v-model:content="form.isi" contentType="html" theme="snow" class="bg-white" />
+                            <Editor v-model="form.isi" editorStyle="height: 320px" />
                         </div>
 
                         <div class="flex justify-end pt-4 space-x-2">
@@ -48,9 +48,8 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import BasePage from '@/layouts/admin/BasePage.vue'
-import { QuillEditor } from '@vueup/vue-quill'
-import '@vueup/vue-quill/dist/vue-quill.snow.css'
 import { useRouter } from "vue-router";
+import Editor from 'primevue/editor';
 
 const router = useRouter();
 

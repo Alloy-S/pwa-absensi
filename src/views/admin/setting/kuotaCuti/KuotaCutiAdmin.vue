@@ -5,35 +5,26 @@
             <p class="text-3xl font-semibold text-slate-800">Kuota Cuti</p>
         </div>
 
-        <div class="w-1/2 p-3 bg-white rounded-md shadow-md">
+        <div class="p-3 bg-white rounded-md shadow-md">
 
-            <div class="mb-6">
-                <label for="nama" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Cuti
-                    Melahirkan<span class="text-red-600">*</span></label>
-                <input type="number" id="nama"
-                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-            </div>
+            <DataTable :value="customers" paginator :rows="5" :rowsPerPageOptions="[5, 10, 20, 50]" @page="onPage"
+                :totalRecords="100" tableStyle="min-width: 50rem">
+                <Column field="name" header="Name" style="width: 25%"></Column>
+                <Column field="tahun" header="Tahun" style="width: 25%"></Column>
+                <Column field="used_cuti" header="Cuti Terpakai" style="width: 25%"></Column>
+                <Column header="options">
+                    <template #body="slotProps">
+                        <div class="px-6 space-x-3">
+                            <a @click="detailItem(slotProps.data.id)"
+                                class="font-medium text-blue-600 hover:underline cursor-pointer">Edit</a>
+                        </div>
+                    </template>
+                </Column>
 
-            <div class="mb-6">
-                <label for="nama" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Cuti Sakit<span
-                        class="text-red-600">*</span></label>
-                <input type="number" id="nama"
-                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-            </div>
 
-            <div class="mb-6">
-                <label for="nama" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Cuti Keluarga
-                    Meninggal<span class="text-red-600">*</span></label>
-                <input type="number" id="nama"
-                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-            </div>
-            <div class="mt-5 flex justify-end">
+            </DataTable>
 
-                <div class="w-1/3 flex">
-                    <button type="button"
-                        class="w-full text-white bg-blue-500 hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Simpan</button>
-                </div>
-            </div>
+
         </div>
 
 
@@ -42,5 +33,36 @@
 
 <script setup lang="ts">
 import BasePage from '@/layouts/admin/BasePage.vue'
+import DataTable from 'primevue/datatable';
+import Column from 'primevue/column';
+import { ref } from 'vue';
+
+const onPage = (event: any) => {
+    console.log('Page changed:', event);
+};
+
+const detailItem = (id: string) => {
+    console.log('Detail item with ID:', id);
+};
+
+const customers = ref([
+    {
+        id: 1000,
+        name: 'Bamboo Watch',
+        used_cuti: "12/20",
+        tahun: '2025',
+    }, {
+        id: 1000,
+        name: 'Bamboo Watch',
+        used_cuti: "12/20",
+        tahun: '2025',
+    }, {
+        id: 1000,
+        name: 'Bamboo Watch',
+        used_cuti: "12/20",
+        tahun: '2025',
+    },
+
+]);
 
 </script>

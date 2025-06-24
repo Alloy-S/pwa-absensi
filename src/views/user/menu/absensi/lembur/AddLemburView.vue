@@ -6,14 +6,20 @@
 
             <!-- Pilih Tanggal -->
             <div class="mb-4">
-                <label for="tanggal" class="block text-sm font-medium">Tanggal Lembur</label>
-                <input id="tanggal" type="date" v-model="form.tanggal" class="w-full p-2 border rounded-md" />
+                <label for="tanggal-mulai" class="block text-sm font-medium">Tanggal Mulai Lembur</label>
+                <input id="tanggal-mulai" type="date" v-model="form.tanggal" class="w-full p-2 border rounded-md" />
             </div>
 
             <!-- Waktu Mulai Lembur -->
             <div class="mb-4">
                 <label for="waktuMulai" class="block text-sm font-medium">Waktu Mulai</label>
                 <input id="waktuMulai" type="time" v-model="form.waktuMulai" class="w-full p-2 border rounded-md" />
+            </div>
+
+            <!-- Pilih Tanggal -->
+            <div class="mb-4">
+                <label for="tanggal-selesai" class="block text-sm font-medium">Tanggal Selesai Lembur</label>
+                <input id="tanggal-selesai" type="date" v-model="form.tanggal" class="w-full p-2 border rounded-md" />
             </div>
 
             <!-- Waktu Selesai Lembur -->

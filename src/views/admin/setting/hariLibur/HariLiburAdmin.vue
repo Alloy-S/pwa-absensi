@@ -73,8 +73,7 @@
         </div>
         <div class="mb-16 flex justify-end mt-4">
 
-
-            <nav aria-label="Page navigation example" v-if="pages > 1">
+            <nav aria-label="Page navigation example" v-if="pages >= 1">
                 <ul class="inline-flex -space-x-px text-sm">
 
                     <li>

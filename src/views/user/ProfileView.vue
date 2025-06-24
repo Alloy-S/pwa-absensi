@@ -71,7 +71,10 @@ const goToAdmin = () => router.push('/admin');
 const goToChangePassword = () => router.push('/profile/change-password');
 const logout = () => {
     console.log('Logging out...');
-    router.push('/login');
+
+    localStorage.removeItem('access_token');
+    localStorage.removeItem('user_role');
+    router.replace('/login');
 };
 </script>
 
