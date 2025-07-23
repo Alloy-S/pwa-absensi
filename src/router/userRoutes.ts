@@ -227,6 +227,12 @@ export const userRoutes = [
     meta: { requiresAuth: true }
   },
   {
+    path: '/profile/face-registration',
+    name: 'Register Face',
+    component: () => import('@/views/user/registerFace/RegisterFaceView.vue'),
+    meta: { requiresAuth: true }
+  },
+  {
     path: '/:pathMatch(.*)*',
     name: 'Not Found User',
     component: NotFoundView

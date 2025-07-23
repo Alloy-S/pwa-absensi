@@ -123,7 +123,7 @@ export default {
            reloadCamInterval: null,
        }
    },
-   emits: ['clear','stop','start','pause','resume', 'error', 'unsupported', 'init', 'photoTaken', 'fullscreen'],
+   emits: ['clear','stop','start','pause','resume', 'error', 'unsupported', 'init', 'photoTaken', 'fullscreen', 'close'],
    beforeUnmount() {
        if (this.reloadCamInterval) {
            clearInterval(this.reloadCamInterval)
@@ -172,7 +172,7 @@ export default {
        },
        toggleFullscreen() {
         
-        this.$router.back();
+        this.$emit('close');
        },
        exit() {
            this.$refs.webcam.stop()

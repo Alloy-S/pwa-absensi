@@ -74,6 +74,15 @@ export interface ResetPasswordRequest {
   verify_pass: string;
 }
 
+export interface registerFaceRequest {
+  image: string;
+}
+
+export interface CheckFaceStatusResponse {
+  username: string;
+  face_registration_status: boolean;
+}
+
 export function initUser(): User {
   return {
     id: "",

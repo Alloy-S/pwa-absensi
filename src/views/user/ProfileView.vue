@@ -29,6 +29,13 @@
                 </div>
                 <i class="fa-solid fa-angle-right"></i>
             </button>
+            <button class="w-full flex items-center justify-between p-4 bg-white text-slate-800 hover:bg-slate-100" @click="goToFaceRegistration">
+                <div>
+                    <i class="fa-regular fa-face-smile w-6 h-6 mr-3"></i>
+                    <span>Pendaftaran Wajah</span>
+                </div>
+                <i class="fa-solid fa-angle-right"></i>
+            </button>
 
             <button class="w-full flex items-center justify-between p-4 bg-white text-slate-800 hover:bg-slate-100 "
                 @click="goToAdmin">
@@ -69,6 +76,7 @@ const goToDetailProfile = () => router.push('/profile/kontak');
 const goToCompanyProfile = () => router.push('/perusahaan');
 const goToAdmin = () => router.push('/admin');
 const goToChangePassword = () => router.push('/profile/change-password');
+const goToFaceRegistration = () => router.push('/profile/face-registration');
 const logout = () => {
     console.log('Logging out...');
 
