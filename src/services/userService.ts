@@ -1,5 +1,5 @@
 import api from "@/lib/axios";
-import { DataKaryawan, DataKontak, DataPribadi, KaryawanPagination, User, UserPosiblePIC } from "@/models/userModel";
+import { DataKaryawan, DataKontak, DataPribadi, KaryawanPagination, ResetPasswordRequest, User, UserPosiblePIC } from "@/models/userModel";
 
 export interface KaryawanParams {
   page?: number;
@@ -73,4 +73,9 @@ export const updateDataPribadi = async (request: DataPribadi) => {
 export const fetchDataKaryawan = async (): Promise<DataKaryawan> => {
   const response = await api.get<DataKaryawan>(`/users/data-karyawan`);
   return response.data;
+};
+
+export const changePassword = async (request: ResetPasswordRequest) => {
+  const response = await api.post("/users/change-password", request);  
+  return response;
 };

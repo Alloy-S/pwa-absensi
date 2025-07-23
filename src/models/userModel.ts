@@ -68,6 +68,12 @@ export interface Karyawan {
   role: string;
 }
 
+export interface ResetPasswordRequest {
+  old_pass: string;
+  new_pass: string;
+  verify_pass: string;
+}
+
 export function initUser(): User {
   return {
     id: "",
@@ -152,6 +158,7 @@ export function initDataKaryawan(): DataKaryawan{
     user_pic_name: "",
   };
 }
+
 
 export function validateUserField(user: User) {
     const errors:String[] = [];

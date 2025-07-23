@@ -5,21 +5,25 @@
         <div class="p-4 space-y-4">
 
             <h2 class="text-lg font-semibold mb-4">Ganti Password</h2>
-            <form @submit.prevent="changePassword">
-                <div class="mb-4">
-                    <label class="block text-sm font-medium">Password Lama</label>
-                    <input v-model="oldPassword" type="password" class="w-full mt-1 p-2 border rounded-lg" required />
+            <form @submit.prevent="hitChangePassword" class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700">Password Lama</label>
+                    <input v-model="oldPassword" type="text"
+                        class="mt-1 w-full px-3 py-2 border border-gray-300 rounded-md" required />
                 </div>
-                <div class="mb-4">
-                    <label class="block text-sm font-medium">Password Baru</label>
-                    <input v-model="newPassword" type="password" class="w-full mt-1 p-2 border rounded-lg" required />
+                <div>
+                    <label class="block text-sm font-medium text-gray-700">Password Baru</label>
+                    <input v-model="newPassword" type="text"
+                        class="mt-1 w-full px-3 py-2 border border-gray-300 rounded-md" required />
                 </div>
-                <div class="mb-4">
-                    <label class="block text-sm font-medium">Konfirmasi Password Baru</label>
-                    <input v-model="confirmPassword" type="password" class="w-full mt-1 p-2 border rounded-lg"
-                        required />
+                <div>
+                    <label class="block text-sm font-medium text-gray-700">Konfirmasi Password Baru</label>
+                    <input v-model="confirmPassword" type="text"
+                        class="mt-1 w-full px-3 py-2 border border-gray-300 rounded-md" required />
                 </div>
-                <button type="submit" class="w-full bg-green-500 text-white py-2 rounded-lg hover:bg-green-600">Simpan</button>
+                <div class="pt-4">
+                    <button type="submit" class="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700">Reset Password</button>
+                </div>
             </form>
 
         </div>
@@ -30,25 +34,30 @@
 import { ref } from 'vue';
 import BasePageNoNav from '@/layouts/user/BasePageNoNav.vue';
 import TopHeader from '@/components/user/TopHeader.vue';
+import { toast } from 'vue3-toastify';
+import { changePassword } from '@/services/userService';
 
 const oldPassword = ref('');
 const newPassword = ref('');
 const confirmPassword = ref('');
 
-const changePassword = () => {
+const hitChangePassword = async () => {
     if (newPassword.value !== confirmPassword.value) {
-        alert("Password baru dan konfirmasi tidak cocok!");
+        toast.error("Password baru dan konfirmasi tidak cocok!");
         return;
     }
 
-    // Kirim permintaan perubahan password ke server
-    console.log("Password berhasil diubah!");
+    const response = await changePassword({
+        old_pass: oldPassword.value,
+        new_pass: newPassword.value,
+        verify_pass: confirmPassword.value
+    });
+
+    if (response.status === 200) {
+        toast.success("Password berhasil diubah!");
+        oldPassword.value = '';
+        newPassword.value = '';
+        confirmPassword.value = '';
+    }
 };
 </script>
-
-<style scoped>
-input,
-textarea {
-    border: 1px solid #ddd;
-}
-</style>
