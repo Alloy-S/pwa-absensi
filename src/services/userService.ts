@@ -1,5 +1,5 @@
 import api from "@/lib/axios";
-import { KaryawanPagination, User, UserPosiblePIC } from "@/models/userModel";
+import { DataKaryawan, DataKontak, DataPribadi, KaryawanPagination, User, UserPosiblePIC } from "@/models/userModel";
 
 export interface KaryawanParams {
   page?: number;
@@ -48,3 +48,29 @@ export const resendLoginData = async (id: string) => {
   const response = await api.post(`/users/resend-login-data`, request);
   return response;
 }
+
+
+export const fetchDataKontak = async (): Promise<DataKontak> => {
+  const response = await api.get<DataKontak>(`/users/data-kontak`);
+  return response.data;
+};
+
+export const updateDataKontak = async (request: DataKontak) => {
+  const response = await api.put("/users/data-kontak", request);  
+  return response;
+};
+
+export const fetchDataPribadi = async (): Promise<DataPribadi> => {
+  const response = await api.get<DataPribadi>(`/users/data-pribadi`);
+  return response.data;
+};
+
+export const updateDataPribadi = async (request: DataPribadi) => {
+  const response = await api.put("/users/data-pribadi", request);  
+  return response;
+};
+
+export const fetchDataKaryawan = async (): Promise<DataKaryawan> => {
+  const response = await api.get<DataKaryawan>(`/users/data-karyawan`);
+  return response.data;
+};

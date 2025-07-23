@@ -3,7 +3,7 @@ import RekapPeriode from "@/views/admin/laporan/RekapPeriode.vue";
 import DatangTerlambat from "@/views/admin/laporan/DatangTerlambat.vue";
 import CutiPribadi from "@/views/admin/laporan/CutiPribadi.vue";
 
-const adminRoles = ["admin", "HRD"];
+const adminRoles = ["Admin", "HRD"];
 
 export const adminRoutes = [
   {

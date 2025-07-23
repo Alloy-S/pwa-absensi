@@ -340,7 +340,7 @@ const createKaryawan = async () => {
         if (response.status === 201) {
             toast.success("Success Add New Karyawan")
             setTimeout(() => {
-                router.back();
+                router.replace('/admin/karyawan');
             }, 1500);
         }
     } else {

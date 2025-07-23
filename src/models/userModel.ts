@@ -11,7 +11,7 @@ export interface DataKaryawan {
   lokasi_id: string;
   lokasi: string;
   user_pic_id: string;
-  pic: string;
+  user_pic_name: string;
 }
 
 export interface DataPribadi {
@@ -90,7 +90,7 @@ export function initUser(): User {
       lokasi_id: "",
       lokasi: "",
       user_pic_id: "",
-      pic: "",
+      user_pic_name: "",
     },
     data_pribadi: {
       id: "",
@@ -109,6 +109,47 @@ export function initUser(): User {
       no_telepon_darurat: "",
       relasi_darurat: "",
     },
+  };
+}
+
+export function initDataKontak(): DataKontak {
+  return {
+    id: "",
+    alamat: "",
+    no_telepon: "",
+    nama_darurat: "",
+    no_telepon_darurat: "",
+    relasi_darurat: "",
+  };
+}
+
+export function initDataPribadi(): DataPribadi {
+  return{
+    id: "",
+    gender: "",
+    tgl_lahir: "",
+    tmpt_lahir: "",
+    status_kawin: "",
+    agama: "",
+    gol_darah: "",
+  } 
+}
+
+export function initDataKaryawan(): DataKaryawan{
+  return {
+    id: "",
+    nip: "",
+    tgl_gabung: "",
+    lokasi_kerja: "",
+    tipe_karyawan: "",
+    jabatan_id: "",
+    jabatan: "",
+    jadwal_kerja_id: "",
+    jadwal_kerja: "",
+    lokasi_id: "",
+    lokasi: "",
+    user_pic_id: "",
+    user_pic_name: "",
   };
 }
 

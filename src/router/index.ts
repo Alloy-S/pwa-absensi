@@ -21,7 +21,7 @@ router.beforeEach((to, _from, next) => {
     if (userRole && requiredRoles.includes(userRole)) {
       next();
     } else {
-      if (requiredRoles.includes("admin") || requiredRoles.includes("HRD")) {
+      if (requiredRoles.includes("Admin") || requiredRoles.includes("HRD")) {
         next({ name: "Not Found Admin" });
       } else {
         next({ name: "Not Found User" });
