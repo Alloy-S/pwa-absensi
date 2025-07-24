@@ -2,7 +2,6 @@ export interface JadwalKerja {
     id: string;
     kode: string;
     shift: string;
-    is_same_hour: boolean;
     detail_jadwal_kerja: DetailJadwalKerja[];
 }
 
@@ -13,6 +12,7 @@ export interface DetailJadwalKerja {
     time_out: string;
     toler_in: number;
     toler_out: number;
+    is_active: boolean;
 }
 
 export interface JadwalKerjaPagination {
@@ -30,7 +30,6 @@ export function initJadwalKerja(): JadwalKerja {
     id: "",
     kode: "",
     shift: "",
-    is_same_hour: false,
     detail_jadwal_kerja: [],
   };
 }
