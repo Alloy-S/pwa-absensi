@@ -277,23 +277,51 @@ export const adminRoutes = [
   },
   {
     path: "/admin/pengaturan/jenis-izin",
-    name: "pengaturan kuota cuti",
+    name: "pengaturan jenis cuti",
     component: () =>
       import("@/views/admin/setting/jenisIzin/JenisIzinView.vue"),
     meta: { requiresAuth: true, roles: adminRoles },
   },
   {
     path: "/admin/pengaturan/jenis-izin/add",
-    name: "pengaturan Tambah kuota cuti",
+    name: "pengaturan Tambah jenis cuti",
     component: () =>
       import("@/views/admin/setting/jenisIzin/AddJenisIzinView.vue"),
     meta: { requiresAuth: true, roles: adminRoles },
   },
   {
     path: "/admin/pengaturan/jenis-izin/:id",
-    name: "pengaturan Edit kuota cuti",
+    name: "pengaturan Edit jenis cuti",
     component: () =>
       import("@/views/admin/setting/jenisIzin/EditJenisIzinView.vue"),
+    meta: { requiresAuth: true, roles: adminRoles },
+  },
+  {
+    path: "/admin/pengaturan/kuota-cuti",
+    name: "pengaturan kuota cuti",
+    component: () =>
+      import("@/views/admin/setting/kuotaIzin/KuotaCutiView.vue"),
+    meta: { requiresAuth: true, roles: adminRoles },
+  },
+  {
+    path: "/admin/pengaturan/kuota-cuti/:id",
+    name: "pengaturan kuota cuti detail user",
+    component: () =>
+      import("@/views/admin/setting/kuotaIzin/DetailKuotaCutiView.vue"),
+    meta: { requiresAuth: true, roles: adminRoles },
+  },
+  {
+    path: "/admin/pengaturan/kuota-cuti/:id/add",
+    name: "pengaturan add kuota cuti detail user",
+    component: () =>
+      import("@/views/admin/setting/kuotaIzin/AddKuotaCutiView.vue"),
+    meta: { requiresAuth: true, roles: adminRoles },
+  },
+  {
+    path: "/admin/pengaturan/kuota-cuti/:id/:kuota_id/edit",
+    name: "pengaturan edit kuota cuti detail user",
+    component: () =>
+      import("@/views/admin/setting/kuotaIzin/EditKuotaCutiView.vue"),
     meta: { requiresAuth: true, roles: adminRoles },
   },
   {

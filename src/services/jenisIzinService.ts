@@ -1,5 +1,5 @@
 import api from "@/lib/axios";
-import { JenisIzin, JenisIzinPagination, JenisIzinParams, JenisIzinReq } from "@/models/jenisIzinModel";
+import { JenisIzin, JenisIzinAll, JenisIzinPagination, JenisIzinParams, JenisIzinReq } from "@/models/jenisIzinModel";
 
 export const fetchJenisIzinPagination = async (
     params: JenisIzinParams
@@ -29,4 +29,9 @@ export const fetchJenisIzinPagination = async (
   export const updateJenisIzin = async (id: string, request: JenisIzin) => {
     const response = await api.put(`/jenis-izin/${id}`, request);
     return response;
+  };
+
+  export const fetchJenisAll = async (): Promise<JenisIzinAll> => {
+    const response = await api.get<JenisIzinAll>(`/jenis-izin/all`);
+    return response.data;
   };

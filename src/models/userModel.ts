@@ -58,6 +58,19 @@ export interface KaryawanPagination {
   items: Karyawan[];
 }
 
+export interface KaryawanKuotaCutiPagination {
+  pages: number;
+  total: number;
+  items: KaryawanKuota[];
+}
+
+export interface KaryawanKuota {
+  id: string;
+  fullname: string;
+  sisa_cuti_tahunan: number;
+  total_cuti_tahunan: number;
+}
+
 export interface Karyawan {
   id: string;
   username: string;
@@ -66,6 +79,8 @@ export interface Karyawan {
   jabatan: string;
   status: string;
   role: string;
+  sisa_cuti_tahunan: number;
+  total_kuota_tahunan: number;
 }
 
 export interface ResetPasswordRequest {
@@ -139,7 +154,7 @@ export function initDataKontak(): DataKontak {
 }
 
 export function initDataPribadi(): DataPribadi {
-  return{
+  return {
     id: "",
     gender: "",
     tgl_lahir: "",
@@ -147,10 +162,10 @@ export function initDataPribadi(): DataPribadi {
     status_kawin: "",
     agama: "",
     gol_darah: "",
-  } 
+  };
 }
 
-export function initDataKaryawan(): DataKaryawan{
+export function initDataKaryawan(): DataKaryawan {
   return {
     id: "",
     nip: "",
@@ -168,11 +183,10 @@ export function initDataKaryawan(): DataKaryawan{
   };
 }
 
-
 export function validateUserField(user: User) {
-    const errors:String[] = [];
+  const errors: String[] = [];
 
-    // Validasi umum
+  // Validasi umum
   if (!user.fullname.trim()) errors.push("Nama lengkap tidak boleh kosong");
   // if (!user.username.trim()) errors.push("Username tidak boleh kosong");
   if (!user.phone.trim()) errors.push("Nomor telepon tidak boleh kosong");
@@ -182,19 +196,25 @@ export function validateUserField(user: User) {
   // Validasi data_karyawan
   const karyawan = user.data_karyawan;
   // if (!karyawan.nip.trim()) errors.push("NIP tidak boleh kosong");
-  if (!karyawan.tgl_gabung.trim()) errors.push("Tanggal gabung tidak boleh kosong");
+  if (!karyawan.tgl_gabung.trim())
+    errors.push("Tanggal gabung tidak boleh kosong");
   // if (!karyawan.lokasi_kerja.trim()) errors.push("Lokasi kerja tidak boleh kosong");
-  if (!karyawan.tipe_karyawan.trim()) errors.push("Tipe karyawan tidak boleh kosong");
+  if (!karyawan.tipe_karyawan.trim())
+    errors.push("Tipe karyawan tidak boleh kosong");
   if (!karyawan.jabatan_id.trim()) errors.push("Jabatan harus dipilih");
-  if (!karyawan.jadwal_kerja_id.trim()) errors.push("Jadwal kerja harus dipilih");
+  if (!karyawan.jadwal_kerja_id.trim())
+    errors.push("Jadwal kerja harus dipilih");
   if (!karyawan.lokasi_id.trim()) errors.push("Lokasi harus dipilih");
 
   // Validasi data_pribadi
   const pribadi = user.data_pribadi;
   if (!pribadi.gender.trim()) errors.push("Jenis kelamin tidak boleh kosong");
-  if (!pribadi.tgl_lahir.trim()) errors.push("Tanggal lahir tidak boleh kosong");
-  if (!pribadi.tmpt_lahir.trim()) errors.push("Tempat lahir tidak boleh kosong");
-  if (!pribadi.status_kawin.trim()) errors.push("Status kawin tidak boleh kosong");
+  if (!pribadi.tgl_lahir.trim())
+    errors.push("Tanggal lahir tidak boleh kosong");
+  if (!pribadi.tmpt_lahir.trim())
+    errors.push("Tempat lahir tidak boleh kosong");
+  if (!pribadi.status_kawin.trim())
+    errors.push("Status kawin tidak boleh kosong");
   if (!pribadi.agama.trim()) errors.push("Agama tidak boleh kosong");
 
   // Validasi data_kontak

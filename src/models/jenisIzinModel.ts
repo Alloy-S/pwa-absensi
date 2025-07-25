@@ -24,3 +24,7 @@ export interface JenisIzinReq {
   periode_reset: string;
   berlaku_setelah_bulan: number;
 }
+
+export interface JenisIzinAll {
+    items: JenisIzin[];
+}

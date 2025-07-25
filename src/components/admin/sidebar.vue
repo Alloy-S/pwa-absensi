@@ -309,6 +309,11 @@
                                 Jenis Izin</RouterLink>
                         </li>
                         <li>
+                            <RouterLink to="/admin/pengaturan/kuota-cuti"
+                                class="flex items-center w-full p-2 text-base font-normal text-gray-600 transition duration-75 group hover:bg-gray-100 border-l-4 border-transparent hover:border-blue-600 pl-14">
+                                kuota Izin</RouterLink>
+                        </li>
+                        <li>
                             <RouterLink to="/admin/pengaturan/hari-libur"
                                 class="flex items-center w-full p-2 text-base font-normal text-gray-600 transition duration-75 group hover:bg-gray-100 border-l-4 border-transparent hover:border-blue-600 pl-14">
                                 Hari Libur/Cuti Bersama</RouterLink>

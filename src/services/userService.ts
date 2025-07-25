@@ -1,5 +1,5 @@
 import api from "@/lib/axios";
-import { CheckFaceStatusResponse, DataKaryawan, DataKontak, DataPribadi, KaryawanPagination, registerFaceRequest, ResetPasswordRequest, User, UserPosiblePIC } from "@/models/userModel";
+import { CheckFaceStatusResponse, DataKaryawan, DataKontak, DataPribadi, KaryawanKuotaCutiPagination, KaryawanPagination, registerFaceRequest, ResetPasswordRequest, User, UserPosiblePIC } from "@/models/userModel";
 
 export interface KaryawanParams {
   page?: number;
@@ -30,6 +30,15 @@ export const fetchKaryawanPagination = async (
   params: KaryawanParams
 ): Promise<KaryawanPagination> => {
   const response = await api.get<KaryawanPagination>("/users", {
+    params,
+  });
+  return response.data;
+};
+
+export const fetchKaryawanKuotaPagination = async (
+  params: KaryawanParams
+): Promise<KaryawanKuotaCutiPagination> => {
+  const response = await api.get<KaryawanKuotaCutiPagination>("/users/kuota-cuti", {
     params,
   });
   return response.data;
