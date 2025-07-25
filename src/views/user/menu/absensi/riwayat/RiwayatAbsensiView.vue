@@ -159,4 +159,8 @@ onMounted(() => {
 :deep(.p-paginator) {
     @apply bg-transparent mt-4 justify-center;
 }
+
+:deep(.p-dataview-content) {
+    @apply bg-transparent;
+}
 </style>

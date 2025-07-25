@@ -10,6 +10,7 @@ import "vue3-toastify/dist/index.css";
 import PrimeVue from "primevue/config";
 import Aura from "@primeuix/themes/aura";
 import { definePreset } from '@primeuix/themes';
+import ConfirmationService from 'primevue/confirmationservice';
 
 const updateSW = registerSW({
   onNeedRefresh() {
@@ -57,4 +58,5 @@ app.use(PrimeVue, {
     },
   },
 });
+app.use(ConfirmationService);
 app.mount("#app");

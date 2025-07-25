@@ -1,5 +1,5 @@
 import api from "@/lib/axios";
-import { Absensi, RiwayatAbsensiPagination, RiwayatAbsensiParams } from "@/models/absensiModel";
+import { Absensi, AbsensiByDate, RiwayatAbsensiByDateParams, RiwayatAbsensiPagination, RiwayatAbsensiParams } from "@/models/absensiModel";
 
 
 export const fetchRiwayatAbsensiPagination = async (
@@ -15,3 +15,9 @@ export const fetchRiwayatAbsensiPagination = async (
     const response = await api.get<Absensi>(`/absensi/${id}`);
     return response.data;
   };
+
+  export const fetchAbsensiByDate = async (params: RiwayatAbsensiByDateParams): Promise<AbsensiByDate> => {
+    const response = await api.get<AbsensiByDate>(`/absensi/by-date`, {params});
+    return response.data;
+  };
+   

@@ -33,5 +33,16 @@ export interface Absensi {
     search?: string;
   }
 
+  export interface RiwayatAbsensiByDateParams {
+    date?: string;
+  }
+
+  export interface AbsensiByDate {
+    date: string;
+    absensi_id?: string;
+    time_in?: string;
+    time_out?: string;
+  }
+
 
 
