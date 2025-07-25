@@ -276,10 +276,24 @@ export const adminRoutes = [
     meta: { requiresAuth: true, roles: adminRoles },
   },
   {
-    path: "/admin/pengaturan/kuota-cuti",
+    path: "/admin/pengaturan/jenis-izin",
     name: "pengaturan kuota cuti",
     component: () =>
-      import("@/views/admin/setting/kuotaCuti/KuotaCutiAdmin.vue"),
+      import("@/views/admin/setting/jenisIzin/JenisIzinView.vue"),
+    meta: { requiresAuth: true, roles: adminRoles },
+  },
+  {
+    path: "/admin/pengaturan/jenis-izin/add",
+    name: "pengaturan Tambah kuota cuti",
+    component: () =>
+      import("@/views/admin/setting/jenisIzin/AddJenisIzinView.vue"),
+    meta: { requiresAuth: true, roles: adminRoles },
+  },
+  {
+    path: "/admin/pengaturan/jenis-izin/:id",
+    name: "pengaturan Edit kuota cuti",
+    component: () =>
+      import("@/views/admin/setting/jenisIzin/EditJenisIzinView.vue"),
     meta: { requiresAuth: true, roles: adminRoles },
   },
   {
