@@ -1,48 +1,39 @@
 <template>
     <BasePage>
-        
+
         <ConfirmDialog></ConfirmDialog>
 
         <div class="mt-5 mb-10 flex justify-between items-center">
             <p class="text-3xl font-semibold text-slate-800">Pengaturan Jenis Izin</p>
         </div>
 
-        <div class="p-3 bg-white rounded-md shadow-md">
-            <div class="flex justify-between mb-5">
-                
-                <div class="flex items-center max-w-md">
-                    <div class="relative w-full">
-                        <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
-                            <i class="fa-solid fa-magnifying-glass"></i>
-                        </div>
-                        <input type="text" v-model="search"
-                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5"
-                            placeholder="Cari berdasarkan nama..." />
+
+        <div class="flex justify-between mb-5">
+
+            <div class="flex items-center max-w-md">
+                <div class="relative w-full">
+                    <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+                        <i class="fa-solid fa-magnifying-glass"></i>
                     </div>
-                </div>
-                
-                <div>
-                    <button type="button" @click="addItem"
-                        class="flex items-center space-x-2 text-white bg-blue-700 hover:bg-blue-800 font-medium rounded-lg text-sm px-5 py-2.5">
-                        <i class="fa-solid fa-plus"></i>
-                        <span>Tambah Jenis Izin</span>
-                    </button>
+                    <input type="text" v-model="search"
+                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5"
+                        placeholder="Cari berdasarkan nama..." />
                 </div>
             </div>
 
-            
-            <DataTable 
-                :value="records" 
-                lazy 
-                paginator 
-                :rows="lazyParams.rows" 
-                :rowsPerPageOptions="[5, 10, 20, 50]"
-                :totalRecords="totalRecords"
-                :loading="loading"
-                @page="onPage"
-                v-model:first="lazyParams.first"
-                tableStyle="min-width: 50rem"
-            >
+            <div>
+                <button type="button" @click="addItem"
+                    class="flex items-center space-x-2 text-white bg-blue-700 hover:bg-blue-800 font-medium rounded-lg text-sm px-5 py-2.5">
+                    <i class="fa-solid fa-plus"></i>
+                    <span>Tambah Jenis Izin</span>
+                </button>
+            </div>
+        </div>
+
+        <div class="p-3 bg-white rounded-md shadow-md">
+            <DataTable :value="records" lazy paginator :rows="lazyParams.rows" :rowsPerPageOptions="[5, 10, 20, 50]"
+                :totalRecords="totalRecords" :loading="loading" @page="onPage" v-model:first="lazyParams.first"
+                tableStyle="min-width: 50rem">
                 <Column field="nama" header="Nama Izin" style="width: 25%"></Column>
                 <Column field="kuota_default" header="Kuota Default (Hari)" style="width: 15%"></Column>
                 <Column field="periode_reset" header="Periode Reset" style="width: 20%"></Column>
