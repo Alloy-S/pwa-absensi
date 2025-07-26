@@ -1,6 +1,6 @@
 import api from "@/lib/axios";
 import { PaginationParams } from "@/models/generalModel";
-import { HargaGrupList, HargaHarianBorongan, HargaPagination } from "@/models/hargaHarianBorongan";
+import { HargaHarianBorongan, HargaPagination } from "@/models/hargaHarianBorongan";
 
 export interface HargaHarianBoronganReq {
   nama: string;

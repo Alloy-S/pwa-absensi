@@ -3,78 +3,178 @@
         <TopHeader title="Lembur" />
         <TopAbsensiNavigation />
         <div class="p-4">
-            <!-- Tombol Ajukan Lembur -->
             <button class="w-full bg-blue-500 text-white py-2 px-4 rounded-lg shadow hover:bg-blue-600 transition"
-                @click="ajukanLembur">
+                @click="tambahLembur">
                 Ajukan Lembur
             </button>
 
-            <!-- Daftar Pengajuan Lembur -->
             <div class="mt-4">
-
-                <div class="mt-3">
-                    <label for="month-picker" class="text-sm font-semibold text-gray-700">Periode Berdasarkan
-                        Bulan</label>
-                    <input type="month" v-model="selectedMonth" id="month-picker"
-                        class="w-full border border-gray-300 rounded-md px-4 py-2 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all" />
+                <div class="grid grid-cols-2 gap-3 mt-3">
+                    <div>
+                        <label for="month-picker" class="text-sm font-semibold text-gray-700">Periode Berdasarkan
+                            Bulan</label>
+                        <input type="month" v-model="selectedMonth" id="month-picker"
+                            class="w-full border border-gray-300 rounded-md px-4 py-2 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all" />
+                    </div>
+                    <div>
+                        <label for="status-filter" class="text-sm font-semibold text-gray-700">Filter Status</label>
+                        <select v-model="selectedStatus" id="status-filter" class="w-full border-slate-300 p-2 rounded-md bg-white">
+                            <option value="All">Semua</option>
+                            <option value="Menunggu Persetujuan">Menunggu Persetujuan</option>
+                            <option value="Disetujui">Disetujui</option>
+                            <option value="Ditolak">Ditolak</option>
+                        </select>
+                    </div>
                 </div>
 
-                <div class="mt-3">
-                    <label class="block">Filter Status:</label>
-                    <select v-model="selectedStatus" class="w-full border-slate-300 p-2 rounded-md">
-                        <option value="all">Semua</option>
-                        <option value="pending">Menunggu Persetujuan</option>
-                        <option value="approved">Disetujui</option>
-                        <option value="rejected">Ditolak</option>
-                    </select>
-                </div>
-
-                <div class="mt-3" v-if="pengajuanLembur.length > 0">
-                    <p class="text-lg font-semibold text-gray-700">Riwayat Pengajuan Lembur</p>
-                    <button v-for="(lembur, index) in pengajuanLembur" :key="index" @click="detailLembur(lembur.id)"
-                        class="w-full flex justify-between bg-white p-4 rounded-lg shadow mb-3 border-l-4 border-blue-500">
-                        <div class="flex flex-col items-start">
-                            <p class="font-semibold">{{ lembur.tanggal }}</p>
-                            <p class="text-sm text-gray-600">{{ lembur.jamMulai }} - {{ lembur.jamSelesai }}</p>
+                <DataView
+                    :value="lemburList"
+                    :lazy="true"
+                    :paginator="true"
+                    :rows="lazyParams.rows"
+                    :totalRecords="totalRecords"
+                    :loading="loading"
+                    @page="onPage"
+                    paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink RowsPerPageDropdown"
+                    :rowsPerPageOptions="[5, 10, 20, 50]"
+                    class="mt-3"
+                >
+                    
+                    <template #list="slotProps">
+                        <div class="grid grid-cols-1 gap-3">
+                            <div v-for="(lembur, index) in slotProps.items" :key="index">
+                                <button
+                                    class="w-full flex justify-between items-center bg-white p-4 rounded-lg shadow border-l-4 text-left"
+                                    :class="statusColor(lembur.status)" @click="detailLembur(lembur.id)">
+                                    <div class="flex flex-col items-start">
+                                        <p class="text-sm font-semibold">Tanggal: {{ formatDate(lembur.created_date) }}</p>
+                                        
+                                    </div>
+                                    <div class="text-sm font-semibold" :class="statusTextColor(lembur.status)">{{ lembur.status }}</div>
+                                </button>
+                            </div>
                         </div>
-                        <div class="text-sm font-semibold" :class="statusClass(lembur.status)">
-                            {{ lembur.status }}
+                    </template>
+                    <template #empty>
+                        <div class="text-center p-8 text-gray-500">
+                            Belum ada pengajuan lembur untuk periode ini.
                         </div>
-                    </button>
-                </div>
-                <p v-else class="text-gray-500 text-center">Belum ada pengajuan lembur.</p>
+                    </template>
+                </DataView>
             </div>
         </div>
     </BasePageNoNav>
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, onMounted, watch } from 'vue';
 import TopAbsensiNavigation from '@/components/user/TopAbsensiNavigation.vue';
 import TopHeader from '@/components/user/TopHeader.vue';
 import BasePageNoNav from '@/layouts/user/BasePageNoNav.vue';
 import { useRouter } from 'vue-router';
+import DataView from 'primevue/dataview';
+import { Lembur, LemburParams } from '@/models/lemburModel';
+import { fetchApprovalLemburPagination } from '@/services/lemburService';
 
 const router = useRouter();
-const selectedMonth = ref(null);
-const selectedStatus = ref('pending');
 
-const pengajuanLembur = ref([
-    {id: "1", tanggal: "15 Mar 2025", jamMulai: "18:00", jamSelesai: "21:00", status: "Disetujui" },
-    {id: "1", tanggal: "10 Mar 2025", jamMulai: "17:30", jamSelesai: "20:00", status: "Menunggu" },
-]);
 
-const statusClass = (status: string) => {
-    return status === "Disetujui" ? "text-green-500" : status === "Ditolak" ? "text-red-500" : "text-yellow-500";
+const loading = ref(true);
+const lemburList = ref<Lembur[]>([]);
+const totalRecords = ref(0);
+const selectedMonth = ref(new Date().toISOString().slice(0, 7));
+const selectedStatus = ref('Menunggu Persetujuan');
+let debounceTimer: any = null;
+
+const lazyParams = ref({
+    first: 0,
+    rows: 5,
+    page: 1,
+});
+
+
+const getLemburList = async () => {
+    loading.value = true;
+    try {
+        const params: LemburParams = {
+            page: lazyParams.value.page,
+            size: lazyParams.value.rows,
+            'filter-month': selectedMonth.value,
+            'filter-status': selectedStatus.value
+        };
+        const response = await fetchApprovalLemburPagination(params);
+        lemburList.value = response.items;
+        totalRecords.value = Number(response.total);
+    } catch (error) {
+        console.error("Gagal memuat daftar lembur:", error);
+    } finally {
+        loading.value = false;
+    }
 };
 
-const ajukanLembur = () => {
-   router.push('lembur/add');
+
+const statusColor = (status: string) => {
+    const s = status.toLowerCase();
+    if (s.includes('Menunggu')) return 'border-yellow-500';
+    if (s.includes('Disetujui')) return 'border-green-500';
+    if (s.includes('Ditolak')) return 'border-red-500';
+    return 'border-gray-500';
+};
+
+const statusTextColor = (status: string) => {
+    const s = status.toLowerCase();
+    if (s.includes('Menunggu')) return 'text-yellow-600';
+    if (s.includes('Disetujui')) return 'text-green-600';
+    if (s.includes('Ditolak')) return 'text-red-600';
+    return 'text-gray-600';
+};
+
+const formatDate = (dateStr: string) => {
+    return new Date(dateStr).toLocaleDateString('id-ID', {
+        day: '2-digit', month: 'long', year: 'numeric'
+    });
+};
+
+
+const tambahLembur = () => {
+    router.push('/menu/absensi/lembur/add');
 };
 
 const detailLembur = (id: string) => {
-    router.push(`lembur/${id}`);
+    router.push('/menu/absensi/lembur/' + id);
 };
+
+
+const onPage = (event: any) => {
+    lazyParams.value.page = event.page + 1;
+    lazyParams.value.rows = event.rows;
+    lazyParams.value.first = event.first;
+    getLemburList();
+};
+
+
+watch([selectedMonth, selectedStatus], () => {
+    if (debounceTimer) clearTimeout(debounceTimer);
+    debounceTimer = setTimeout(() => {
+        lazyParams.value.page = 1;
+        lazyParams.value.first = 0;
+        getLemburList();
+    }, 500);
+});
+
+
+onMounted(() => {
+    getLemburList();
+});
 </script>
 
-<style scoped></style>
+<style scoped>
+
+:deep(.p-paginator) {
+    @apply bg-transparent mt-4 justify-center;
+}
+
+:deep(.p-dataview-content) {
+    @apply bg-transparent;
+}
+</style>
