@@ -98,6 +98,18 @@ export interface CheckFaceStatusResponse {
   face_registration_status: boolean;
 }
 
+export interface UserByPic {
+  items: UserByPicItem[];
+}
+
+export interface UserByPicItem {
+  id: string;
+  fullname: string;
+  nip: string;
+  tgl_gabung: string;
+}
+
+
 export function initUser(): User {
   return {
     id: "",

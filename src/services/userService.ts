@@ -1,5 +1,5 @@
 import api from "@/lib/axios";
-import { CheckFaceStatusResponse, DataKaryawan, DataKontak, DataPribadi, KaryawanKuotaCutiPagination, KaryawanPagination, registerFaceRequest, ResetPasswordRequest, User, UserPosiblePIC } from "@/models/userModel";
+import { CheckFaceStatusResponse, DataKaryawan, DataKontak, DataPribadi, KaryawanKuotaCutiPagination, KaryawanPagination, registerFaceRequest, ResetPasswordRequest, User, UserByPic, UserPosiblePIC } from "@/models/userModel";
 
 export interface KaryawanParams {
   page?: number;
@@ -97,4 +97,9 @@ export const checkFaceStatus = async (): Promise<CheckFaceStatusResponse> => {
 export const registerFaceApi = async (request: registerFaceRequest) => {
   const response = await api.post("/face-recognition/register", request);
   return response;
+};
+
+export const fetchUserbyPic = async (): Promise<UserByPic> => {
+  const response = await api.get<UserByPic>(`/users/users-by-pic`);
+  return response.data;
 };

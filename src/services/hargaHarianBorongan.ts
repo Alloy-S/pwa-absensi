@@ -1,6 +1,6 @@
 import api from "@/lib/axios";
 import { PaginationParams } from "@/models/generalModel";
-import { HargaHarianBorongan, HargaPagination } from "@/models/hargaHarianBorongan";
+import { HargaAll, HargaHarianBorongan, HargaPagination } from "@/models/hargaHarianBorongan";
 
 export interface HargaHarianBoronganReq {
   nama: string;
@@ -39,4 +39,9 @@ export const fetchHargaPagination = async (
   export const deleteHarga = async (id: string) => {
     const response = await api.delete("/harga-harian-borongan/" + id);
     return response;
+  };
+
+  export const fetchAllHarga = async (): Promise<HargaAll> => {
+    const response = await api.get<HargaAll>("/harga-harian-borongan/all");
+    return response.data;
   };

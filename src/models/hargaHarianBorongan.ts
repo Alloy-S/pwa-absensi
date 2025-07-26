@@ -18,6 +18,10 @@ export interface HargaPagination {
   items: HargaHarianBorongan[];
 }
 
+export interface HargaAll {
+  items: HargaHarianBorongan[];
+}
+
 export interface HargaGrupList {
   grup: string[];
 }
