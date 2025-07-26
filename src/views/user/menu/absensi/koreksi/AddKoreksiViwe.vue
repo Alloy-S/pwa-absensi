@@ -1,50 +1,56 @@
 <template>
     <BasePageNoNav>
-        <TopHeader title="Koreksi Kehadiran" />
+        <TopHeader title="Koreksi Kehadiran" :show-back-button="true" />
         <div class="p-4">
-            <h2 class="text-xl font-semibold mb-4 text-slate-800">Ajukan Koreksi Kehadiran</h2>
+            <h2 class="text-xl font-bold text-slate-800 mb-1">Formulir Koreksi Kehadiran</h2>
+            <p class="text-sm text-slate-500 mb-6">Pilih tanggal untuk mengisi data absensi atau perbaiki data yang sudah ada.</p>
 
-            <form @submit.prevent="submitKoreksi" class="bg-white p-4 rounded-lg shadow-md space-y-4">
+            <form @submit.prevent="submitKoreksi" class="space-y-5">
                 
-                <div class="mb-4">
-                    <label for="tanggal" class="block text-sm font-medium text-gray-700">Tanggal Kehadiran<span class="text-red-600">*</span></label>
+                
+                <div class="relative">
+                    <label for="tanggal" class="block mb-2 text-sm font-medium text-gray-700">Tanggal Kehadiran</label>
+                    <div class="absolute inset-y-0 start-0 top-8 flex items-center ps-3.5 pointer-events-none">
+                        <i class="fa-regular fa-calendar-days text-gray-500"></i>
+                    </div>
                     <input id="tanggal" type="date" v-model="form.date" @change="checkExistingAttendance" required
-                        class="mt-1 w-full p-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500" />
+                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5" />
                 </div>
 
                 
-                <div class="grid grid-cols-2 gap-4">
-                    <div>
-                        <label for="waktuMasuk" class="block text-sm font-medium text-gray-700">Waktu Masuk<span class="text-red-600">*</span></label>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                    <div class="relative">
+                        <label for="waktuMasuk" class="block mb-2 text-sm font-medium text-gray-700">Waktu Masuk</label>
+                        <div class="absolute inset-y-0 start-0 top-8 flex items-center ps-3.5 pointer-events-none">
+                            <i class="fa-regular fa-clock text-gray-500"></i>
+                        </div>
                         <input id="waktuMasuk" type="datetime-local" v-model="form.time_in" required
-                            class="mt-1 w-full p-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500" />
+                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5" />
                     </div>
-                    <div>
-                        <label for="waktuPulang" class="block text-sm font-medium text-gray-700">Waktu Pulang<span class="text-red-600">*</span></label>
+                    <div class="relative">
+                        <label for="waktuPulang" class="block mb-2 text-sm font-medium text-gray-700">Waktu Pulang</label>
+                        <div class="absolute inset-y-0 start-0 top-8 flex items-center ps-3.5 pointer-events-none">
+                            <i class="fa-regular fa-clock text-gray-500"></i>
+                        </div>
                         <input id="waktuPulang" type="datetime-local" v-model="form.time_out" required
-                            class="mt-1 w-full p-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500" />
+                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5" />
                     </div>
                 </div>
 
                 
-                <div class="mb-4">
-                    <label for="catatan" class="block text-sm font-medium text-gray-700">Catatan Pengajuan</label>
-                    <textarea id="catatan" v-model="form.catatan_pengajuan" class="w-full min-h-[100px] p-2 border border-gray-300 rounded-md"
-                        placeholder="Masukkan catatan jika diperlukan"></textarea>
+                <div>
+                    <label for="catatan" class="block mb-2 text-sm font-medium text-gray-700">Catatan Pengajuan (Opsional)</label>
+                    <textarea id="catatan" v-model="form.catatan_pengajuan"
+                        class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 min-h-[120px]"
+                        placeholder="Contoh: Lupa melakukan absensi pulang."></textarea>
                 </div>
 
                 
-                <div class="flex justify-end space-x-3">
-                    <button type="button" @click="router.back()"
-                        class="px-4 py-2 bg-gray-200 text-gray-800 rounded-md hover:bg-gray-300">
-                        Batal
-                    </button>
-                    <button type="submit" :disabled="loading"
-                        class="px-4 py-2 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 disabled:bg-blue-300">
-                        <span v-if="loading">Mengirim...</span>
-                        <span v-else>Ajukan Koreksi</span>
-                    </button>
-                </div>
+                <button type="submit" :disabled="isSubmitting"
+                    class="w-full flex justify-center items-center p-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition-colors disabled:bg-blue-300">
+                    <i v-if="isSubmitting" class="fa-solid fa-spinner animate-spin mr-2"></i>
+                    <span>{{ isSubmitting ? 'Mengirim...' : 'Ajukan Koreksi' }}</span>
+                </button>
             </form>
         </div>
     </BasePageNoNav>
@@ -61,10 +67,9 @@ import { CreateKoreksiApi } from '@/services/koreksiService';
 import { fetchAbsensiByDate } from '@/services/absensiService';
 
 const router = useRouter();
-const loading = ref(false);
+const isSubmitting = ref(false);
 
 const form = ref<KoreksiReq>(initKoreksiReq());
-
 
 const checkExistingAttendance = async () => {
     if (!form.value.date) return;
@@ -73,10 +78,8 @@ const checkExistingAttendance = async () => {
         const params = { date: form.value.date };
         const existingData = await fetchAbsensiByDate(params);
         
-        
         if (existingData) {
-            toast.info("Data absensi ditemukan untuk tanggal ini. Form akan diisi otomatis.");
-            
+            toast.info("Data absensi ditemukan. Form diisi otomatis.");
             if (existingData.time_in) {
                 form.value.time_in = existingData.time_in.replace(' ', 'T').substring(0, 16);
             }
@@ -86,33 +89,27 @@ const checkExistingAttendance = async () => {
             form.value.absensi_id = existingData.absensi_id;
         }
     } catch (error: any) {
-        
         if (error.response && error.response.status === 404) {
-            
-            toast.info("Tidak ada data absensi untuk tanggal ini.");
-            form.value.absensi_id = null;
-            form.value.time_in = '';
-            form.value.time_out = '';
+            toast.info("Tidak ada data absensi untuk tanggal ini. Silakan isi secara manual.");
         } else {
-            
-            console.error("Gagal memeriksa absensi yang ada:", error);
-            form.value.absensi_id = null;
-            form.value.time_in = '';
-            form.value.time_out = '';
+            console.error("Gagal memeriksa absensi:", error);
+            toast.error("Gagal memeriksa data absensi.");
         }
+        
+        form.value.absensi_id = null;
+        form.value.time_in = '';
+        form.value.time_out = '';
     }
 };
 
 const submitKoreksi = async () => {
-    
-    if (!form.value.date || !form.value.time_in || !form.value.time_out) {
-        toast.error("Tanggal, waktu masuk, dan waktu pulang wajib diisi.");
+    if (form.value.time_in && form.value.time_out && new Date(form.value.time_out) <= new Date(form.value.time_in)) {
+        toast.error("Waktu pulang harus setelah waktu masuk.");
         return;
     }
     
-    loading.value = true;
+    isSubmitting.value = true;
     try {
-        
         const payload: KoreksiReq = {
             ...form.value,
             time_in: form.value.time_in.replace('T', ' '),
@@ -127,8 +124,9 @@ const submitKoreksi = async () => {
         }
     } catch (error) {
         console.error("Gagal mengajukan koreksi:", error);
+        toast.error("Gagal mengajukan koreksi. Silakan coba lagi.");
     } finally {
-        loading.value = false;
+        isSubmitting.value = false;
     }
 };
 </script>
