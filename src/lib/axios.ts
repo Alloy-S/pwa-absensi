@@ -11,7 +11,7 @@ const api = axios.create({
   },
 })
 
-// Intercept request → Tambahkan Bearer token
+
 api.interceptors.request.use((config) => {
   const token = localStorage.getItem('access_token')
   if (token) {
@@ -20,7 +20,7 @@ api.interceptors.request.use((config) => {
   return config
 })
 
-// Intercept response → Global error handler
+
 api.interceptors.response.use(
   (response) => response,
   (error) => {
@@ -28,7 +28,7 @@ api.interceptors.response.use(
       const status = error.response.status
 
       if (status === 401) {
-        // Auto logout if unauthorized
+        
         localStorage.removeItem('token')
         localStorage.removeItem('user')
         router.push('/login')
