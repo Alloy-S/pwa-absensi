@@ -1,103 +1,165 @@
 <template>
     <BasePage>
+        <ConfirmDialog></ConfirmDialog>
 
         <div class="mt-5 mb-5 flex justify-between items-center">
             <p class="text-3xl font-semibold text-slate-800">Pengumuman</p>
-            <div class="flex items-center max-w-md">
-                <label for="simple-search" class="sr-only">Search</label>
-                <div class="relative w-full mr-3">
-                    <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
-                        <i class="fa-solid fa-magnifying-glass"></i>
-                    </div>
-                    <input type="text" id="simple-search"
-                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                        placeholder="Cari..." required />
+
+        </div>
+
+
+        <div class="flex justify-between mb-4">
+            <div class="relative w-full max-w-md">
+                <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+                    <i class="fa-solid fa-magnifying-glass"></i>
                 </div>
+                <input type="text" v-model="search"
+                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5"
+                    placeholder="Cari Judul Pengumuman..." />
             </div>
+            <button type="button" @click="goToAdd"
+                class="flex items-center space-x-2 text-white bg-blue-700 hover:bg-blue-800 font-medium rounded-lg text-sm px-5 py-2.5">
+                <i class="fa-solid fa-plus"></i>
+                <span>Tambah Pengumuman</span>
+            </button>
         </div>
-
-        <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
-
-            <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-                <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-                    <tr>
-                        <th scope="col" class="px-6 py-3">
-                            Judul
-                        </th>
-                        <th scope="col" class="px-6 py-3">
-                            Created at
-                        </th>
-                        <th scope="col" class="px-6 py-3">
-                            Action
-                        </th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr v-for="n in 10"
-                        class="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700 border-gray-200">
-                        <th scope="row" class=" px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                            Pengumuman Libur
-                        </th>
-                        <td class="px-6 py-4">
-                            01-04-2025
-                        </td>
-                        <td class="w-1/4 px-6 py-4 space-x-3">
-                            <a @click="goToDetail(n)" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
-                            <a href="#" class="font-medium text-red-600 dark:text-red-500 hover:underline">Delete</a>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+        <div class="bg-white p-4 rounded-lg shadow-md">
 
 
+            <DataTable :value="pengumumanList" lazy paginator :rows="lazyParams.rows"
+                :rowsPerPageOptions="[5, 10, 20, 50]" :totalRecords="totalRecords" :loading="loading" @page="onPage"
+                v-model:first="lazyParams.first" tableStyle="min-width: 50rem">
 
+                <Column field="judul" header="Judul" style="width: 40%"></Column>
+                <Column field="date_created" header="Dibuat Pada" style="width: 25%">
+                    <template #body="slotProps">
+                        {{ formatDate(slotProps.data.date_created) }}
+                    </template>
+                </Column>
+                <Column field="is_active" header="Status" style="width: 15%">
+                    <template #body="slotProps">
+                        <span class="px-2 py-1 text-xs font-medium rounded-full"
+                            :class="slotProps.data.is_active ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800'">
+                            {{ slotProps.data.is_active ? 'Aktif' : 'Tidak Aktif' }}
+                        </span>
+                    </template>
+                </Column>
+                <Column header="Action" style="width: 20%">
+                    <template #body="slotProps">
+                        <div class="space-x-3">
+                            <a @click="goToDetail(slotProps.data.id)"
+                                class="font-medium text-blue-600 hover:underline cursor-pointer">Edit</a>
+                            <a @click="confirmDelete(slotProps.data.id)"
+                                class="font-medium text-red-600 hover:underline cursor-pointer">Delete</a>
+                        </div>
+                    </template>
+                </Column>
+            </DataTable>
         </div>
-        <div class="mb-16 flex justify-end mt-4">
-
-
-            <nav aria-label="Page navigation example">
-                <ul class="inline-flex -space-x-px text-sm">
-                    <li>
-                        <a href="#"
-                            class="flex items-center justify-center px-3 h-8 ms-0 leading-tight text-gray-500 bg-white border border-e-0 border-gray-300 rounded-s-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">Previous</a>
-                    </li>
-                    <li>
-                        <a href="#"
-                            class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">1</a>
-                    </li>
-                    <li>
-                        <a href="#"
-                            class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">2</a>
-                    </li>
-                    <li>
-                        <a href="#" aria-current="page"
-                            class="flex items-center justify-center px-3 h-8 text-blue-600 border border-gray-300 bg-blue-50 hover:bg-blue-100 hover:text-blue-700 dark:border-gray-700 dark:bg-gray-700 dark:text-white">3</a>
-                    </li>
-                    <li>
-                        <a href="#"
-                            class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">4</a>
-                    </li>
-                    <li>
-                        <a href="#"
-                            class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">5</a>
-                    </li>
-                    <li>
-                        <a href="#"
-                            class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">Next</a>
-                    </li>
-                </ul>
-            </nav>
-        </div>
+        <div class="mb-16"></div>
     </BasePage>
 </template>
 
 <script setup lang="ts">
-import BasePage from '@/layouts/admin/BasePage.vue'
-import { useRouter } from 'vue-router'
+import { ref, onMounted, watch } from 'vue';
+import { useRouter } from 'vue-router';
+import BasePage from '@/layouts/admin/BasePage.vue';
+import DataTable from 'primevue/datatable';
+import Column from 'primevue/column';
+import { useConfirm } from "primevue/useconfirm";
+import ConfirmDialog from 'primevue/confirmdialog';
+import { toast } from 'vue3-toastify';
+import { fetchPengumumanAdmin, deletePengumuman } from '@/services/pengumumanService';
+import { Pengumuman, PengumumanParams } from '@/models/PengumumanModel';
 
-const router = useRouter()
+const router = useRouter();
+const confirm = useConfirm();
 
-const goToDetail = (n: any) => {
-    router.push('pengumuman/' + n);
-}
+const pengumumanList = ref<Pengumuman[]>([]);
+const loading = ref(false);
+const totalRecords = ref(0);
+const search = ref('');
+let debounceTimer: any = null;
+
+const lazyParams = ref({
+    first: 0,
+    rows: 10,
+    page: 1,
+});
+
+const getPengumuman = async () => {
+    loading.value = true;
+    try {
+        const params: PengumumanParams = {
+            page: lazyParams.value.page,
+            size: lazyParams.value.rows,
+            search: search.value
+        };
+        const response = await fetchPengumumanAdmin(params);
+        pengumumanList.value = response.items;
+        totalRecords.value = response.total;
+    } catch (error) {
+        console.error("Gagal memuat data pengumuman:", error);
+        toast.error("Gagal memuat data pengumuman.");
+    } finally {
+        loading.value = false;
+    }
+};
+
+const onPage = (event: any) => {
+    lazyParams.value.page = event.page + 1;
+    lazyParams.value.rows = event.rows;
+    lazyParams.value.first = event.first;
+    getPengumuman();
+};
+
+const goToAdd = () => {
+    router.push('/admin/pengumuman/add');
+};
+
+const goToDetail = (id: string) => {
+    router.push(`/admin/pengumuman/${id}`);
+};
+
+const confirmDelete = (id: string) => {
+    confirm.require({
+        message: 'Apakah Anda yakin ingin menghapus pengumuman ini?',
+        header: 'Konfirmasi Hapus',
+        icon: 'fa-solid fa-triangle-exclamation',
+        acceptLabel: 'Ya, Hapus',
+        rejectLabel: 'Batal',
+        acceptClass: 'p-button-danger',
+        accept: () => submitDelete(id),
+    });
+};
+
+const submitDelete = async (id: string) => {
+    try {
+        await deletePengumuman(id);
+        toast.success("Pengumuman berhasil dihapus.");
+        getPengumuman();
+    } catch (error) {
+        console.error("Gagal menghapus pengumuman:", error);
+        toast.error("Gagal menghapus pengumuman.");
+    }
+};
+
+const formatDate = (dateString: string) => {
+    if (!dateString) return '-';
+    const options: Intl.DateTimeFormatOptions = { year: 'numeric', month: 'long', day: 'numeric' };
+    return new Date(dateString).toLocaleDateString('id-ID', options);
+};
+
+watch(search, () => {
+    if (debounceTimer) clearTimeout(debounceTimer);
+    debounceTimer = setTimeout(() => {
+        lazyParams.value.page = 1;
+        lazyParams.value.first = 0;
+        getPengumuman();
+    }, 500);
+});
+
+onMounted(() => {
+    getPengumuman();
+});
 </script>
