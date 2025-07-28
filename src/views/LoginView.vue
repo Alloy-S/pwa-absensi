@@ -1,15 +1,15 @@
 <template>
   <BasePageNoNav>
     <div class="min-h-screen flex flex-col items-center  bg-white px-4">
-      <!-- Logo -->
+      
       <div class="mb-6">
         <img src="@/assets/logo.png" alt="Logo Perusahaan" class="h-72 w-auto" />
       </div>
 
-      <!-- Judul -->
+      
       <h1 class="text-2xl font-bold text-gray-800 mb-4">Masuk ke Akun Anda</h1>
 
-      <!-- Form Login -->
+      
       <form @submit.prevent="handleLogin" class="w-full max-w-sm space-y-4">
         <div>
           <label class="block text-sm font-medium text-gray-700">Username</label>
@@ -62,10 +62,19 @@ const handleLogin = async () => {
     
     const accessToken = response.token;
     const userRole = response.role;
+    const username = response.username;
+    const fullname = response.fullname;
+
+    const userData = {
+      userRole,
+      username,
+      fullname
+    }
 
     if (accessToken && userRole) {
       localStorage.setItem('access_token', accessToken);
       localStorage.setItem('user_role', userRole);
+      localStorage.setItem('user_data', JSON.stringify(userData));
 
       toast.remove(toastId);
 

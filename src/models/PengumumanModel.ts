@@ -23,3 +23,7 @@ export interface PengumumanParams {
     size?: number;
     search?: string;
 }
+
+export interface LatestPengumumanList {
+    items: Pengumuman[];
+}

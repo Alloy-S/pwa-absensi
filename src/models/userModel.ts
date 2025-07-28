@@ -109,6 +109,12 @@ export interface UserByPicItem {
   tgl_gabung: string;
 }
 
+export interface UserData {
+  fullname: string;
+  username: string;
+  userRole: string;
+}
+
 
 export function initUser(): User {
   return {
