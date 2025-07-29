@@ -1,5 +1,5 @@
 import api from "@/lib/axios";
-import { CheckFaceStatusResponse, DataKaryawan, DataKontak, DataPribadi, KaryawanKuotaCutiPagination, KaryawanPagination, registerFaceRequest, ResetPasswordRequest, User, UserByPic, UserPosiblePIC } from "@/models/userModel";
+import { CheckFaceStatusResponse, DataKaryawan, DataKontak, DataPribadi, KaryawanKuotaCutiPagination, KaryawanPagination, registerFaceRequest, ResetPasswordRequest, UpdateFCMTokenRequest, User, UserByPic, UserPosiblePIC } from "@/models/userModel";
 
 export interface KaryawanParams {
   page?: number;
@@ -102,4 +102,9 @@ export const registerFaceApi = async (request: registerFaceRequest) => {
 export const fetchUserbyPic = async (): Promise<UserByPic> => {
   const response = await api.get<UserByPic>(`/users/users-by-pic`);
   return response.data;
+};
+
+export const updateFCMToken = async (request: UpdateFCMTokenRequest) => {
+  const response = await api.post("/users/update-fcm-token", request);  
+  return response;
 };

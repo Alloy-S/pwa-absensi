@@ -89,6 +89,10 @@ export interface ResetPasswordRequest {
   verify_pass: string;
 }
 
+export interface UpdateFCMTokenRequest {
+  fcm_token: string;
+}
+
 export interface registerFaceRequest {
   image: string;
 }

@@ -45,13 +45,26 @@ import { LoginRequest } from '@/models/authModel';
 import { hitLogin } from '@/services/authService';
 import { toast } from 'vue3-toastify';
 import 'vue3-toastify/dist/index.css';
+import { getMessaging, getToken, onMessage } from "firebase/messaging";
 
 const router = useRouter();
+const messaging = getMessaging();
 
 const request = ref<LoginRequest>({
   username: '',
   password: ''
 })
+const fcmToken = ref<string | null>(null);
+
+getToken(messaging, { vapidKey: import.meta.env.VITE_FIREBASE_VAPID_KEY }).then((currentToken) => {
+  if (currentToken) {
+    request.value.fcm_token = currentToken;
+  } else {
+    console.log('No registration token available. Request permission to generate one.');
+  }
+}).catch((err) => {
+  console.log('An error occurred while retrieving token. ', err);
+});
 
 const handleLogin = async () => {
 
