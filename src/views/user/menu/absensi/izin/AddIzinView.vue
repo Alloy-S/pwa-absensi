@@ -104,7 +104,6 @@ const submitIzin = async () => {
         router.back();
     } catch (error) {
         console.error("Gagal mengirim pengajuan izin:", error);
-        toast.error("Gagal mengirim pengajuan izin. Silakan coba lagi.");
     } finally {
         isSubmitting.value = false;
     }
