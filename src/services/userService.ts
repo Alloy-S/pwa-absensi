@@ -1,5 +1,5 @@
 import api from "@/lib/axios";
-import { CheckFaceStatusResponse, DataKaryawan, DataKontak, DataPribadi, KaryawanKuotaCutiPagination, KaryawanPagination, registerFaceRequest, ResetPasswordRequest, UpdateFCMTokenRequest, User, UserByPic, UserPosiblePIC } from "@/models/userModel";
+import { AllApprovalPagination, AllApprovalParams, CheckFaceStatusResponse, DataKaryawan, DataKontak, DataPribadi, KaryawanKuotaCutiPagination, KaryawanPagination, registerFaceRequest, ResetPasswordRequest, UpdateFCMTokenRequest, User, UserByPic, UserPosiblePIC } from "@/models/userModel";
 
 export interface KaryawanParams {
   page?: number;
@@ -107,4 +107,9 @@ export const fetchUserbyPic = async (): Promise<UserByPic> => {
 export const updateFCMToken = async (request: UpdateFCMTokenRequest) => {
   const response = await api.post("/users/update-fcm-token", request);  
   return response;
+};
+
+export const fetchAllApprovalWaitingStatus = async (params: AllApprovalParams) : Promise<AllApprovalPagination> => {
+  const response = await api.get<AllApprovalPagination>("/users/all-approval-by-approval-user", {params});  
+  return response.data;
 };

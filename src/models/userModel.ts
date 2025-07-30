@@ -1,3 +1,5 @@
+import { ApprovalItem } from "./dashboardUserModel";
+
 export interface DataKaryawan {
   id: string;
   nip: string;
@@ -117,6 +119,22 @@ export interface UserData {
   fullname: string;
   username: string;
   userRole: string;
+}
+
+export interface AllApprovalPagination {
+  pages: number;
+  total: number;
+  items: ApprovalPICItem[];
+}
+
+export interface ApprovalPICItem extends ApprovalItem {
+  user: string;
+}
+
+export interface AllApprovalParams {
+  page?: number;
+  size?: number;
+  "filter-tipe-approval": string;
 }
 
 

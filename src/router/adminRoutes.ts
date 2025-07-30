@@ -87,17 +87,17 @@ export const adminRoutes = [
     meta: { requiresAuth: true, roles: adminRoles },
   },
   {
-    path: "/admin/approval/absensi",
-    name: "approval absensi admin",
+    path: "/admin/approval/koreksi-kehadiran",
+    name: "approval koreksi admin",
     component: () =>
-      import("@/views/admin/approval/absensi/ApprovalAbsensiAdmin.vue"),
+      import("@/views/admin/approval/koreksi/ApprovalKoreksiKehadiranAdmin.vue"),
     meta: { requiresAuth: true, roles: adminRoles },
   },
   {
-    path: "/admin/approval/absensi/:id",
-    name: "approval detail absensi admin",
+    path: "/admin/approval/koreksi-kehadiran/:id",
+    name: "approval detail koreksi admin",
     component: () =>
-      import("@/views/admin/approval/absensi/ApprovalDetailAbsensiAdmin.vue"),
+      import("@/views/admin/approval/koreksi/ApprovalDetailKoreksiKehadiranAdmin.vue"),
     meta: { requiresAuth: true, roles: adminRoles },
   },
   {

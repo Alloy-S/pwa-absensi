@@ -3,7 +3,7 @@ export interface LatestApprovalUsers {
 }
 
 export interface ApprovalItem {
-    id: string;
+    approval_id: string;
     tanggal_pengajuan: string;
     tipe_approval: string;
     status: string;

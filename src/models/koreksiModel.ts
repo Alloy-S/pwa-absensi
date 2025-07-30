@@ -1,14 +1,31 @@
+import { JadwalKerja } from "./jadwalModel";
+
 export interface Koreksi {
   id: string;
   absensi_date: string;
   status: string;
   metode: string;
   user_id: string;
+  user: User;
   absensi_id: string;
   catatan_pengajuan: string;
   detail_approval: DetailKoreksi[];
   approval_user_id: string;
   approval_user: ApprovalUser;
+}
+
+export interface ApprovalKoreksi {
+  id: string;
+  absensi_date: string;
+  status: string;
+  metode: string;
+  user: User;
+  absensi_id: string;
+  catatan_pengajuan: string;
+  detail_approval: DetailKoreksi[];
+  approval_user_id: string;
+  approval_user: ApprovalUser;
+  jadwal_kerja: JadwalKerja;
 }
 
 export interface KoreksiPagination {
@@ -34,6 +51,13 @@ export interface DetailKoreksi {
 export interface ApprovalUser {
   id: string;
   fullname: string;
+}
+
+export interface User {
+  id: string;
+  fullname: string;
+  jabatan: string;
+  lokasi: string;
 }
 
 export interface KoreksiReq {

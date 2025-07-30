@@ -1,90 +1,158 @@
 <template>
     <BasePageNoNav>
-        <TopHeader title="Daftar Pengajuan" />
+        <TopHeader title="Daftar Pengajuan" :show-back-button="true" />
         <div class="p-4 space-y-4">
-            <h1 class="text-lg font-semibold">Daftar Pengajuan untuk Disetujui</h1>
+            <h1 class="text-xl font-bold text-slate-800">Daftar Pengajuan untuk Disetujui</h1>
 
-            <label class="block">Filter Kategori:</label>
-            <select v-model="selectedCategory" class="w-full border-slate-300 p-2 rounded-md">
-                <option value="all">Semua</option>
-                <option value="koreksi kehadiran">Koreksi Kehadiran</option>
-                <option value="izin">Izin</option>
-                <option value="lembur">Lembur</option>
-                <option value="reimburse">Reimburse</option>
-            </select>
+            
+            <div class="bg-white p-4 rounded-lg shadow-md space-y-3">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700">Filter Kategori:</label>
+                    <select v-model="selectedCategory" class="w-full border-slate-300 p-2 rounded-md">
+                        <option value="all">Semua Kategori</option>
+                        <option value="Koreksi Kehadiran">Koreksi Kehadiran</option>
+                        <option value="Izin">Izin</option>
+                        <option value="Lembur">Lembur</option>
+                        <option value="Reimburse">Reimburse</option>
+                        <option value="Absensi Borongan">Absensi Borongan</option>
+                    </select>
+                </div>
+            </div>
 
-            <!-- Filter Status -->
-            <label class="block">Filter Status:</label>
-            <select v-model="selectedStatus" class="w-full border-slate-300 p-2 rounded-md">
-                <option value="all">Semua</option>
-                <option value="pending">Menunggu Persetujuan</option>
-                <option value="approved">Disetujui</option>
-                <option value="rejected">Ditolak</option>
-            </select>
-
-            <!-- Daftar Pengajuan -->
+            
             <div class="mt-3">
-                <button v-for="(request, index) in filteredRequests" :key="index" @click="goToDetail(request)"
-                    class="w-full flex space-x-4 justify-between bg-white p-4 rounded-lg shadow mb-3 border-l-4 border-blue-500">
-                    <div class="flex flex-col justify-center items-start text-sm text-slate-800">
-                        <p class="text-lg font-semibold">{{ request.category }}</p>
-                        <p>Tanggal: <span class="font-semibold">{{ request.date }}</span></p>
-                        <p>Status: <span class="font-semibold" :class="statusClass(request.status)">{{ request.status
-                                }}</span></p>
-                    </div>
-                    <div class="flex flex-col justify-center">
-                        <i class="fa-solid fa-angle-right"></i>
-                    </div>
-                </button>
+                <DataView :value="approvalList" :layout="'list'" :paginator="true" :rows="lazyParams.rows"
+                    :totalRecords="totalRecords" :lazy="true" @page="onPage" :loading="loading">
+                    <template #list="slotProps">
+                        <div class="grid grid-cols-1 gap-3">
+                            <div v-for="item in slotProps.items" :key="item.approval_id">
+                                <button @click="goToDetail(item)"
+                                    class="w-full flex justify-between items-center text-left bg-white p-4 rounded-lg shadow mb-3 border-l-4 transition hover:shadow-md"
+                                    :class="statusBorderClass(item.status)">
+                                    <div class="flex flex-col justify-center text-sm text-slate-800">
+                                        <p class="text-lg font-semibold">{{ item.tipe_approval }}</p>
+                                        <p class="font-medium">{{ item.user }}</p>
+                                        <p class="text-xs text-slate-500">{{ formatDate(item.tanggal_pengajuan) }}</p>
+                                    </div>
+                                    <div class="flex flex-col items-end space-y-2">
+                                         <span class="px-2 py-1 text-xs font-medium rounded-full" :class="statusBadgeClass(item.status)">
+                                            {{ item.status }}
+                                        </span>
+                                        <i class="fa-solid fa-angle-right text-slate-500"></i>
+                                    </div>
+                                </button>
+                            </div>
+                        </div>
+                    </template>
+                    <template #empty>
+                        <div class="text-center text-gray-500 py-5">
+                            Tidak ada data pengajuan.
+                        </div>
+                    </template>
+                </DataView>
             </div>
         </div>
     </BasePageNoNav>
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue';
+import { ref, onMounted, watch } from 'vue';
+import { useRouter } from 'vue-router';
 import BasePageNoNav from '@/layouts/user/BasePageNoNav.vue';
 import TopHeader from '@/components/user/TopHeader.vue';
-import { useRouter } from 'vue-router';
+import DataView from 'primevue/dataview';
+import { toast } from 'vue3-toastify';
+import { AllApprovalParams, ApprovalPICItem } from '@/models/userModel';
+import { fetchAllApprovalWaitingStatus } from '@/services/userService';
+
 
 const router = useRouter();
+
+const approvalList = ref<ApprovalPICItem[]>([]);
+const loading = ref(true);
+const totalRecords = ref(0);
+
 const selectedCategory = ref('all');
-const selectedStatus = ref('all');
 
-const requests = ref([
-    { id: 1, category: 'koreksi', type: 'Koreksi Absensi', date: '2025-03-13', status: 'pending' },
-    { id: 3, category: 'borongan', type: 'Reimburse', date: '2025-03-11', status: 'pending' },
-    { id: 2, category: 'izin', type: 'Reimburse', date: '2025-03-12', status: 'approved' },
-    { id: 3, category: 'lembur', type: 'Reimburse', date: '2025-03-11', status: 'rejected' },
-    { id: 4, category: 'reimburse', type: 'Koreksi Absensi', date: '2025-03-10', status: 'pending' },
-]);
-
-const filteredRequests = computed(() => {
-    if (selectedStatus.value === 'all' && selectedCategory.value === 'all') {
-        return requests.value;
-    } else if (selectedStatus.value === 'all') {
-        return requests.value.filter(req => req.category === selectedCategory.value);
-    } else if (selectedCategory.value === 'all') {
-        return requests.value.filter(req => req.status === selectedStatus.value);
-    }
-    return requests.value.filter(req => (req.status === selectedStatus.value && req.category === selectedCategory.value));
+const lazyParams = ref({
+    page: 1,
+    rows: 10,
 });
 
-const statusClass = (status) => {
-    return status === 'pending' ? 'text-yellow-500' : status === 'approved' ? 'text-green-500' : 'text-red-500';
-};
-
-const goToDetail = (request) => {
-    if (request.category === 'borongan') {
-        router.push(`/menu/approval/borongan/${request.id}`);
-    } else if (request.category === 'reimburse') {
-        router.push(`/menu/approval/reimburse/${request.id}`);
-    } else if (request.category === 'koreksi') {
-        router.push(`/menu/approval/koreksi/${request.id}`);
-    } else if (request.category === 'izin') {
-        router.push(`/menu/approval/izin/${request.id}`);
-    } else if (request.category === 'lembur') {
-        router.push(`/menu/approval/lembur/${request.id}`);
+const getApprovals = async () => {
+    loading.value = true;
+    try {
+        const params: AllApprovalParams = {
+            page: lazyParams.value.page,
+            size: lazyParams.value.rows,
+            "filter-tipe-approval": selectedCategory.value,
+        };
+        const response = await fetchAllApprovalWaitingStatus(params);
+        approvalList.value = response.items;
+        totalRecords.value = response.total;
+    } catch (error) {
+        toast.error("Gagal memuat daftar pengajuan.");
+    } finally {
+        loading.value = false;
     }
 };
+
+const onPage = (event: any) => {
+    lazyParams.value.page = event.page + 1;
+    lazyParams.value.rows = event.rows;
+    getApprovals();
+};
+
+watch(selectedCategory, () => {
+    lazyParams.value.page = 1;
+    getApprovals();
+});
+
+const statusBorderClass = (status: string) => {
+    const s = status.toLowerCase();
+    if (s.includes('menunggu')) return 'border-yellow-500';
+    if (s.includes('disetujui')) return 'border-green-500';
+    if (s.includes('ditolak')) return 'border-red-500';
+    return 'border-gray-400';
+};
+
+const statusBadgeClass = (status: string) => {
+    const s = status.toLowerCase();
+    if (s.includes('menunggu')) return 'bg-yellow-100 text-yellow-800';
+    if (s.includes('disetujui')) return 'bg-green-100 text-green-800';
+    if (s.includes('ditolak')) return 'bg-red-100 text-red-800';
+    return 'bg-gray-100 text-gray-800';
+};
+
+const formatDate = (dateString: string) => new Date(dateString).toLocaleString('id-ID', { day: 'numeric', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit' });
+
+const goToDetail = (request: ApprovalPICItem) => {
+    const type = request.tipe_approval.toLowerCase();
+    const id = request.approval_id;
+
+    if (type.includes('borongan')) {
+        router.push(`/menu/approval/absensi-borongan/${id}`);
+    } else if (type.includes('reimburse')) {
+        router.push(`/menu/approval/reimburse/${id}`);
+    } else if (type.includes('koreksi')) {
+        router.push(`/menu/approval/koreksi/${id}`);
+    } else if (type.includes('izin')) {
+        router.push(`/menu/approval/izin/${id}`);
+    } else if (type.includes('lembur')) {
+        router.push(`/menu/approval/lembur/${id}`);
+    }
+};
+
+onMounted(getApprovals);
 </script>
+
+<style scoped>
+
+:deep(.p-paginator) {
+    @apply bg-transparent mt-4 justify-center;
+}
+
+:deep(.p-dataview-content) {
+    @apply bg-transparent;
+}
+</style>

@@ -230,7 +230,7 @@
                     </button>
                     <ul id="dropdown-reimburse" v-show="sidebarStore.isApprovalOpen" class="py-2 space-y-2">
                         <li>
-                            <RouterLink to="/admin/approval/absensi"
+                            <RouterLink to="/admin/approval/koreksi-kehadiran"
                                 class="flex items-center w-full p-2 text-base font-normal text-gray-600 transition duration-75  group hover:bg-gray-100 border-l-4 border-transparent hover:border-blue-600 pl-14">
                                 Koreksi Absensi</RouterLink>
                         </li>
