@@ -68,6 +68,7 @@
 
 <script setup lang="ts">
 import BasePage from '@/layouts/user/BasePage.vue';
+import { hitLogout } from '@/services/authService';
 import { useRouter } from 'vue-router';
 
 const router = useRouter();
@@ -77,11 +78,12 @@ const goToCompanyProfile = () => router.push('/perusahaan');
 const goToAdmin = () => router.push('/admin');
 const goToChangePassword = () => router.push('/profile/change-password');
 const goToFaceRegistration = () => router.push('/profile/face-registration');
-const logout = () => {
+const logout = async () => {
     console.log('Logging out...');
 
-    localStorage.removeItem('access_token');
-    localStorage.removeItem('user_role');
+    await hitLogout()
+
+    localStorage.clear();
     router.replace('/login');
 };
 </script>

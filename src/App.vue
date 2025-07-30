@@ -41,7 +41,6 @@ onMounted(() => {
     console.log('Message received. ', payload);
     if (payload.data && payload.data.action === 'FORCE_LOGOUT') {
       localStorage.clear();
-      toast.warn("Anda telah logout karena login di perangkat lain.");
       router.push('/login');
 
     } else if (payload.notification) {

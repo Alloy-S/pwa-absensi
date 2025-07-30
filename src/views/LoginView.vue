@@ -1,15 +1,15 @@
 <template>
   <BasePageNoNav>
     <div class="min-h-screen flex flex-col items-center  bg-white px-4">
-      
+
       <div class="mb-6">
         <img src="@/assets/logo.png" alt="Logo Perusahaan" class="h-72 w-auto" />
       </div>
 
-      
+
       <h1 class="text-2xl font-bold text-gray-800 mb-4">Masuk ke Akun Anda</h1>
 
-      
+
       <form @submit.prevent="handleLogin" class="w-full max-w-sm space-y-4">
         <div>
           <label class="block text-sm font-medium text-gray-700">Username</label>
@@ -45,7 +45,7 @@ import { LoginRequest } from '@/models/authModel';
 import { hitLogin } from '@/services/authService';
 import { toast } from 'vue3-toastify';
 import 'vue3-toastify/dist/index.css';
-import { getMessaging, getToken, onMessage } from "firebase/messaging";
+import { getMessaging, getToken } from "firebase/messaging";
 
 const router = useRouter();
 const messaging = getMessaging();
@@ -54,7 +54,6 @@ const request = ref<LoginRequest>({
   username: '',
   password: ''
 })
-const fcmToken = ref<string | null>(null);
 
 getToken(messaging, { vapidKey: import.meta.env.VITE_FIREBASE_VAPID_KEY }).then((currentToken) => {
   if (currentToken) {
@@ -72,7 +71,7 @@ const handleLogin = async () => {
 
   try {
     const response = await hitLogin(request.value);
-    
+
     const accessToken = response.token;
     const userRole = response.role;
     const username = response.username;
@@ -92,8 +91,6 @@ const handleLogin = async () => {
       toast.remove(toastId);
 
       router.replace('/');
-    } else {
-      throw new Error("Respons login dari server tidak valid.");
     }
   } catch (error: any) {
     toast.remove(toastId);
