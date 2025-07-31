@@ -1,69 +1,72 @@
 export interface AbsensiBorongan {
-    id: string;
-    created_date: string;
-    status: string;
-    approval_user_id: string;
-    user_id: string;
-    date_start: string;
-    date_end: string;
-    keterangan: string;
-  }
+  id: string;
+  date: string;
+  status: string;
+  total: number;
+  user: User;
+  detail_absensi_borongan: DetailBorongan[];
+}
 
-  export interface AbsensiBoronganParams {
-    page?: number;
-    size?: number;
-    "filter-month"?: string;
-    "filter-status"?: string;
-  }
-  
-  export interface ApprovalAbsensiBoronganPagination {
-    pages: number;
-    total: number;
-    items: AbsensiBorongan[];
-  }
+export interface User {
+  id: string;
+  fullname: string;
+  jabatan: string;
+  lokasi: string;
+}
 
-  export interface AbsensiBoronganReq {
-    date: string;
-    details: ItemBorongan[];
-  }
+export interface AbsensiBoronganParams {
+  page?: number;
+  size?: number;
+  "filter-month"?: string;
+  "filter-status"?: string;
+}
 
-  export interface ItemBorongan {
-    ton_normal: number;
-    ton_lembur: number;
-    type: string;
-    user_id: string;
-    harga_id: string;
-  }
+export interface ApprovalAbsensiBoronganPagination {
+  pages: number;
+  total: number;
+  items: AbsensiBorongan[];
+}
 
-  export interface ApprovalBorongan {
-    id: string;
-    date: string;
-    status: string;
-    approval_user: UserApproval;
-    total: number;
-    details: Borongan[];
-  }
+export interface AbsensiBoronganReq {
+  date: string;
+  details: ItemBorongan[];
+}
 
-  export interface UserApproval {
-    id: string;
-    fullname: string;
-  }
+export interface ItemBorongan {
+  ton_normal: number;
+  ton_lembur: number;
+  type: string;
+  user_id: string;
+  harga_id: string;
+}
 
-  export interface Borongan {
-    id: string;
-    ton_normal: number;
-    ton_lembur: number;
-    tipe: string;
-    total: number;
-    harga: HargaBorongan;
-    user_name: string;
-  }
+export interface ApprovalBorongan {
+  id: string;
+  date: string;
+  status: string;
+  approval_user: UserApproval;
+  user: User;
+  absensi_borongan: AbsensiBorongan;
+}
 
-  export interface HargaBorongan {
-    id: string;
-    name: string;
-    harga_normal: number;
-    harga_lembur: number;
-  }
+export interface UserApproval {
+  id: string;
+  fullname: string;
+}
 
-  
+export interface DetailBorongan {
+  id: string;
+  ton_normal: number;
+  ton_lembur: number;
+  tipe: string;
+  total: number;
+  harga: HargaBorongan;
+  user_name: string;
+}
+
+export interface HargaBorongan {
+  id: string;
+  name: string;
+  harga_normal: number;
+  harga_lembur: number;
+}

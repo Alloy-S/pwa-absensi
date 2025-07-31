@@ -34,9 +34,9 @@
                     <h3 class="font-semibold text-slate-800 mb-3">Rincian</h3>
                     <div class="space-y-3 text-sm">
                         <DetailItem icon="fa-solid fa-calendar-alt" label="Tanggal Absensi"
-                            :value="formatDate(absenceDetail.date)" />
+                            :value="formatDate(absenceDetail.absensi_borongan.date)" />
                         <DetailItem icon="fa-solid fa-calendar-alt" label="Total Biaya"
-                            :value="formatCurrency(absenceDetail.total)" />
+                            :value="formatCurrency(absenceDetail.absensi_borongan.total)" />
                         <DetailItem icon="fa-solid fa-user-check" label="Dibuat / Disetujui Oleh"
                             :value="absenceDetail.approval_user?.fullname || '-'" />
                     </div>
@@ -45,7 +45,7 @@
                 
                 <div class="bg-white p-4 rounded-lg shadow-md">
                     <h3 class="font-semibold text-slate-800 mb-3">Daftar Karyawan</h3>
-                    <DataTable :value="absenceDetail.details" responsiveLayout="scroll">
+                    <DataTable :value="absenceDetail.absensi_borongan.detail_absensi_borongan" responsiveLayout="scroll">
                         <Column field="user_name" header="Nama Karyawan"></Column>
                         <Column field="harga.nama" header="Jenis Borongan">
                             <template #body="slotProps">
@@ -123,7 +123,6 @@ const getAbsenceDetail = async () => {
         absenceDetail.value = await fetchDetailApprovalBorongan(id);
     } catch (error) {
         console.error("Gagal memuat detail absensi borongan:", error);
-        toast.error("Gagal memuat detail.");
     } finally {
         loading.value = false;
     }
@@ -150,7 +149,6 @@ const cancelAbsence = async () => {
         router.back();
     } catch (error) {
         console.error("Gagal membatalkan pengajuan:", error);
-        toast.error("Gagal membatalkan pengajuan.");
     } finally {
         isCancelling.value = false;
     }

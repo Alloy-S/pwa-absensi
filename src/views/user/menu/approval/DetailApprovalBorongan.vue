@@ -1,80 +1,158 @@
 <template>
     <BasePageNoNav>
-        <TopHeader title="Detail Approval Absensi Borongan" />
-        <div class="p-4 space-y-4">
-            <h1 class="text-lg font-semibold">Detail Pengajuan Absensi Borongan</h1>
+        <TopHeader title="Approval Absensi Borongan" :show-back-button="true" />
+        <ConfirmDialog></ConfirmDialog>
 
-            <div class="bg-white p-4 space-y-2 rounded-lg shadow">
-                <p><strong>Nama Pengaju:</strong> {{ approvalData.namaPengaju }}</p>
-                <p><strong>Tanggal:</strong> {{ approvalData.tanggal }}</p>
-                <p><strong>Status:</strong> <span :class="statusClass">{{ approvalData.status }}</span></p>
-                <p><strong>Keterangan:</strong> {{ approvalData.keterangan }}</p>
+        <div class="p-4">
+            <div v-if="loading" class="text-center py-20">
+                <i class="fa-solid fa-spinner fa-spin text-4xl text-gray-400"></i>
+                <p class="mt-3 text-gray-500">Memuat detail...</p>
             </div>
 
-            <!-- Daftar Absensi -->
-            <div class="bg-white p-4 rounded-lg shadow">
-                <h2 class="text-md font-semibold">Detail Absensi</h2>
-                <div class="overflow-x-auto">
-                    <table class="w-full border-collapse">
-                        <thead class="bg-gray-100">
-                            <tr>
-                                <th class="border p-2">Karyawan</th>
-                                <th class="border p-2">Barang</th>
-                                <th class="border p-2">Ton Normal</th>
-                                <th class="border p-2">Ton Lembur</th>
-                                <th class="border p-2">Total Harga</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr v-for="(entry, index) in approvalData.absensi" :key="index">
-                                <td class="border p-2">{{ entry.worker.name }}</td>
-                                <td class="border p-2">{{ entry.item.name }}</td>
-                                <td class="border p-2">{{ entry.tonNormal }}</td>
-                                <td class="border p-2">{{ entry.tonLembur }}</td>
-                                <td class="border p-2 font-semibold text-blue-500">Rp{{ (entry.hargaSatuan * (entry.tonNormal + entry.tonLembur)).toLocaleString() }}</td>
-                            </tr>
-                        </tbody>
-                    </table>
+            <div v-else-if="absensiDetail" class="space-y-4">
+                
+                <div class="grid grid-cols-1 gap-4">
+                    <div class="bg-white p-4 rounded-lg shadow-md border-l-4" :class="statusColor(absensiDetail.status)">
+                        <h3 class="text-sm text-gray-500">Status</h3>
+                        <p class="text-xl font-bold text-slate-800">{{ absensiDetail.status }}</p>
+                    </div>
+                    <div class="bg-white p-4 rounded-lg shadow-md">
+                        <h3 class="text-sm text-gray-500">Diajukan oleh (PIC)</h3>
+                        <p class="text-xl font-semibold text-slate-800">{{ absensiDetail.user.fullname }}</p>
+                        <p class="text-sm text-slate-600">{{ absensiDetail.user.jabatan }} - {{ absensiDetail.user.lokasi }}</p>
+                    </div>
+                </div>
+
+                
+                <div class="bg-white p-4 rounded-lg shadow-md">
+                    <h3 class="font-semibold text-slate-800 mb-4">Rincian Pengajuan</h3>
+                    <div class="space-y-3 text-sm">
+                        <DetailItem icon="fa-solid fa-calendar-alt" label="Tanggal Absensi" :value="formatDate(absensiDetail.absensi_borongan.date)" />
+                        <DetailItem icon="fa-solid fa-user-check" label="Ditujukan Kepada" :value="absensiDetail.approval_user?.fullname || '-'" />
+                        <DetailItem icon="fa-solid fa-money-bill-wave" label="Total Biaya" :value="formatCurrency(absensiDetail.absensi_borongan.total)" />
+                    </div>
+                </div>
+
+                
+                <div class="bg-white p-4 rounded-lg shadow-md">
+                    <h3 class="font-semibold text-slate-800 mb-3">Detail Pekerjaan Karyawan</h3>
+                    <DataTable :value="absensiDetail.absensi_borongan.detail_absensi_borongan" responsiveLayout="scroll">
+                        <Column field="user_name" header="Nama"></Column>
+                        <Column field="harga.nama" header="Pekerjaan"></Column>
+                        <Column field="total" header="Subtotal" headerClass="text-right" bodyClass="text-right">
+                             <template #body="slotProps">
+                                <span class="font-semibold">{{ formatCurrency(slotProps.data.total) }}</span>
+                            </template>
+                        </Column>
+                    </DataTable>
+                </div>
+
+                
+                <div v-if="absensiDetail.status.toLowerCase().includes('menunggu')" class="bg-white p-4 rounded-lg shadow-md space-y-3">
+                  
+                    <div class="flex justify-end space-x-3 pt-2">
+                        <button @click="confirmAction('reject')" :disabled="isSubmitting"
+                            class="w-full py-2 bg-red-600 text-white font-semibold rounded-lg hover:bg-red-700 disabled:bg-red-300">
+                            Tolak
+                        </button>
+                        <button @click="confirmAction('approve')" :disabled="isSubmitting"
+                            class="w-full py-2 bg-green-600 text-white font-semibold rounded-lg hover:bg-green-700 disabled:bg-green-300 flex justify-center items-center">
+                            <i v-if="isSubmitting" class="fa-solid fa-spinner animate-spin mr-2"></i>
+                            Setujui
+                        </button>
+                    </div>
                 </div>
             </div>
-
-            <!-- Input Catatan Approval -->
-            <textarea v-model="approvalNote" class="w-full border-slate-300 p-2 rounded-md" placeholder="Tambahkan catatan..."></textarea>
-
-            <!-- Tombol Action -->
-            <div class="flex space-x-4">
-                <button @click="approve" class="w-full px-4 py-2 text-white bg-green-500 rounded-md hover:bg-green-700">Setujui</button>
-                <button @click="reject" class="w-full px-4 py-2 text-white bg-red-500 rounded-md hover:bg-red-700">Tolak</button>
+            
+            <div v-else class="text-center py-20">
+                 <i class="fa-solid fa-file-circle-question text-4xl text-gray-400"></i>
+                <p class="mt-3 text-gray-500">Detail approval tidak ditemukan.</p>
             </div>
         </div>
+        <div class="mb-20"></div>
     </BasePageNoNav>
 </template>
 
-<script setup>
-import { ref } from 'vue';
+<script setup lang="ts">
+import { ref, onMounted } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
 import BasePageNoNav from '@/layouts/user/BasePageNoNav.vue';
 import TopHeader from '@/components/user/TopHeader.vue';
+import DetailItem from '@/components/user/DetailItem.vue';
+import { toast } from 'vue3-toastify';
+import ConfirmDialog from 'primevue/confirmdialog';
+import { useConfirm } from "primevue/useconfirm";
+import DataTable from 'primevue/datatable';
+import Column from 'primevue/column';
+import { ApprovalBorongan } from '@/models/absensiBoronganModel';
+import { approveAbsensiBoronganApi, fetchDetailAbsensiBoronganPIC, rejectAbsensiBoronganApi } from '@/services/absensiBoronganService';
 
-const approvalData = ref({
-    namaPengaju: 'Budi Santoso',
-    tanggal: '2025-03-15',
-    status: 'Menunggu Persetujuan',
-    keterangan: 'Absensi borongan untuk proyek A',
-    absensi: [
-        { worker: { name: 'Doni' }, item: { name: 'Ayam Hidup' }, tonNormal: 10, tonLembur: 2, hargaSatuan: 50000 },
-        { worker: { name: 'Ani' }, item: { name: 'Telur' }, tonNormal: 8, tonLembur: 1, hargaSatuan: 30000 }
-    ]
-});
 
+const route = useRoute();
+const router = useRouter();
+const confirm = useConfirm();
+const loading = ref(true);
+const isSubmitting = ref(false);
+const absensiDetail = ref<ApprovalBorongan | null>(null);
 const approvalNote = ref('');
 
-const approve = () => {
-    console.log('Disetujui:', approvalNote.value);
-    approvalData.value.status = 'Disetujui';
+const getAbsensiDetail = async () => {
+    try {
+        const id = route.params.id as string;
+        absensiDetail.value = await fetchDetailAbsensiBoronganPIC(id);
+    } catch (error) {
+        toast.error("Gagal memuat detail approval.");
+    } finally {
+        loading.value = false;
+    }
 };
 
-const reject = () => {
-    console.log('Ditolak:', approvalNote.value);
-    approvalData.value.status = 'Ditolak';
+const confirmAction = (action: 'approve' | 'reject') => {
+    if (action === 'reject' && !approvalNote.value.trim()) {
+        toast.warn("Catatan wajib diisi untuk menolak pengajuan.");
+        return;
+    }
+    const isApprove = action === 'approve';
+    confirm.require({
+        message: `Apakah Anda yakin ingin ${isApprove ? 'menyetujui' : 'menolak'} pengajuan ini?`,
+        header: `Konfirmasi ${isApprove ? 'Persetujuan' : 'Penolakan'}`,
+        icon: 'fa-solid fa-triangle-exclamation',
+        acceptLabel: `Ya, ${isApprove ? 'Setujui' : 'Tolak'}`,
+        rejectLabel: 'Batal',
+        acceptClass: isApprove ? 'p-button-success' : 'p-button-danger',
+        accept: () => handleAction(action),
+    });
 };
+
+const handleAction = async (action: 'approve' | 'reject') => {
+    isSubmitting.value = true;
+    try {
+        const id = route.params.id as string;
+        
+        if (action === 'approve') {
+            await approveAbsensiBoronganApi(id);
+            toast.success("Pengajuan berhasil disetujui.");
+        } else {
+            await rejectAbsensiBoronganApi(id);
+            toast.warn("Pengajuan berhasil ditolak.");
+        }
+        router.push('/menu/approval');
+    } catch (error: any) {
+        toast.error(error.response?.data?.message || `Gagal ${action === 'approve' ? 'menyetujui' : 'menolak'} pengajuan.`);
+    } finally {
+        isSubmitting.value = false;
+    }
+};
+
+const formatDate = (dateString: string) => new Date(dateString).toLocaleDateString('id-ID', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+const formatCurrency = (value: number) => new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(value || 0);
+const statusColor = (status: string) => {
+    const s = status.toLowerCase();
+    if (s.includes('menunggu')) return 'border-yellow-500';
+    if (s.includes('disetujui')) return 'border-green-500';
+    if (s.includes('ditolak')) return 'border-red-500';
+    return 'border-gray-500';
+};
+
+onMounted(getAbsensiDetail);
 </script>

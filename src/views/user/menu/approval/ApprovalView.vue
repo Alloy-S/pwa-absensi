@@ -131,7 +131,7 @@ const goToDetail = (request: ApprovalPICItem) => {
     const id = request.approval_id;
 
     if (type.includes('borongan')) {
-        router.push(`/menu/approval/absensi-borongan/${id}`);
+        router.push(`/menu/approval/borongan/${id}`);
     } else if (type.includes('reimburse')) {
         router.push(`/menu/approval/reimburse/${id}`);
     } else if (type.includes('koreksi')) {
