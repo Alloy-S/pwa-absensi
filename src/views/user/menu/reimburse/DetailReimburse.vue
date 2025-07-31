@@ -38,7 +38,7 @@
                         <DetailItem icon="fa-solid fa-user-check" label="Akan Disetujui Oleh"
                             :value="reimburseDetail.approval_user?.fullname || '-'" />
                         <DetailItem icon="fa-solid fa-user-check" label="Total Diajukan"
-                            :value="formatCurrency(totalAmount) || '-'" />
+                            :value="formatCurrency(reimburseDetail.reimburse.total) || '-'" />
 
                     </div>
                 </div>
@@ -110,11 +110,6 @@ const confirm = useConfirm();
 const loading = ref(true);
 const isCancelling = ref(false);
 const reimburseDetail = ref<ApprovalReimburse | null>(null);
-
-const totalAmount = computed(() => {
-    if (!reimburseDetail.value) return 0;
-    return reimburseDetail.value.reimburse.detail_reimburse.reduce((sum, item) => sum + (item.harga * Number(item.jumlah)), 0);
-});
 
 const canCancel = computed(() => {
     return reimburseDetail.value?.status.toLowerCase().includes('menunggu');

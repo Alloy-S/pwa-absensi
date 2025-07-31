@@ -4,6 +4,7 @@ import { ApprovalUser } from "./koreksiModel";
     id: string;
     date: string;
     status: string;
+    total: number;
     photo: Photo;
     detail_reimburse: ReimburseDetail[];
   }
@@ -12,6 +13,7 @@ import { ApprovalUser } from "./koreksiModel";
     id: string;
     created_date: string;
     status: string;
+    total: number;
   }
 
 
@@ -48,10 +50,18 @@ import { ApprovalUser } from "./koreksiModel";
     jumlah: number;
   }
 
+  export interface User {
+    id: string;
+    fullname: string;
+    jabatan: string;
+    lokasi: string;
+  }
+
   export interface ApprovalReimburse {
     id: string;
     created_date: string;
     status: string;
+    user: User;
     approval_user: ApprovalUser
     reimburse: Reimburse;
   }

@@ -82,7 +82,6 @@ const confirm = useConfirm();
 const loading = ref(true);
 const isSubmitting = ref(false);
 const lemburDetail = ref<ApprovalLembur | null>(null);
-const approvalNote = ref('');
 
 const getLemburDetail = async () => {
     try {

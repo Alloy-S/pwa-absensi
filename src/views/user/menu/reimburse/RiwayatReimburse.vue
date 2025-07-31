@@ -18,7 +18,7 @@
                     <div>
                         <label for="status-filter" class="text-sm font-semibold text-gray-700">Filter Status</label>
                         <select v-model="selectedStatus" id="status-filter" class="w-full border-slate-300 p-2 rounded-md bg-white">
-                            <option value="All">Semua</option>
+                            <option value="all">Semua</option>
                             <option value="Menunggu Persetujuan">Menunggu Persetujuan</option>
                             <option value="Disetujui">Disetujui</option>
                             <option value="Ditolak">Ditolak</option>

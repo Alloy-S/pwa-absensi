@@ -9,7 +9,7 @@ import {
 export const fetchApprovalReimbursePagination = async (
   params: ReimburseParams
 ): Promise<ReimburseApprovalPagination> => {
-  const response = await api.get<ReimburseApprovalPagination>("/reimburse/approval", {
+  const response = await api.get<ReimburseApprovalPagination>("/reimburse", {
     params,
   });
   return response.data;
@@ -18,16 +18,42 @@ export const fetchApprovalReimbursePagination = async (
 export const fetchDetailReimburse = async (
   id: string
 ): Promise<ApprovalReimburse> => {
-  const response = await api.get<ApprovalReimburse>(`/reimburse/approval/${id}`);
+  const response = await api.get<ApprovalReimburse>(`/reimburse/${id}`);
   return response.data;
 };
 
 export const createReimburseApi = async (request: ReimburseReq) => {
-  const response = await api.post(`/reimburse/approval`, request);
+  const response = await api.post(`/reimburse`, request);
   return response;
 };
 
 export const cancelReimburseApi = async (aprovalId: string) => {
-  const response = await api.delete(`/reimburse/approval/${aprovalId}`);
+  const response = await api.delete(`/reimburse/${aprovalId}`);
   return response;
+};
+
+export const approveReimburseApi = async (id: string) => {
+  const response = await api.post(`/reimburse/approval/${id}/approve`);
+  return response;
+};
+
+export const rejectReimburseApi = async (id: string) => {
+  const response = await api.post(`/reimburse/approval/${id}/reject`);
+  return response;
+};
+
+export const fetchDetailReimbursePIC = async (
+  id: string
+): Promise<ApprovalReimburse> => {
+  const response = await api.get<ApprovalReimburse>(`/reimburse/approval/${id}`);
+  return response.data;
+};
+
+export const fetchReimburseAdmin = async (
+  params: ReimburseParams
+): Promise<ReimburseApprovalPagination> => {
+  const response = await api.get<ReimburseApprovalPagination>("/reimburse/approval", {
+    params,
+  });
+  return response.data;
 };
