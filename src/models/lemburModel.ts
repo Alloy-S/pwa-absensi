@@ -5,7 +5,7 @@ import { ApprovalUser } from "./koreksiModel";
     created_date: string;
     status: string;
     approval_user_id: string;
-    user_id: string;
+    user: User;
     date_start: string;
     date_end: string;
     keterangan: string;
@@ -33,6 +33,13 @@ import { ApprovalUser } from "./koreksiModel";
     keterangan: string;
   }
 
+  export interface User {
+    id: string;
+    fullname: string;
+    jabatan: string;
+    lokasi: string;
+  }
+
   export interface ApprovalLembur {
     id: string;
     created_date: string;
@@ -40,6 +47,7 @@ import { ApprovalUser } from "./koreksiModel";
     approval_user: ApprovalUser
     user_id: string;
     lembur: Lembur;
+    user: User;
   }
 
   export interface UserApproval {
