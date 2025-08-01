@@ -366,12 +366,12 @@
                     </RouterLink>
                 </li>
                 <li>
-                    <RouterLink to="/admin/user/management"
+                    <RouterLink to="/admin/role-management"
                         class="relative flex flex-row items-center h-11 transition duration-150 ease-in-out focus:outline-none hover:bg-gray-50 text-gray-600 hover:text-gray-800 border-l-4 border-transparent hover:border-blue-600 pr-6">
                         <span class="inline-flex justify-center items-center ml-4">
                             <i class="fa-solid fa-users-gear"></i>
                         </span>
-                        <span class="ml-2 text-sm tracking-wide truncate">User Management</span>
+                        <span class="ml-2 text-sm tracking-wide truncate">Role Management</span>
                     </RouterLink>
                 </li>
                 <li>

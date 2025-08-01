@@ -1,5 +1,4 @@
 import { createRouter, createWebHistory } from "vue-router";
-// import ForgotPassword from '@/views/ForgotPassword.vue';
 import { userRoutes } from "./userRoutes";
 import { adminRoutes } from "./adminRoutes";
 
@@ -13,22 +12,32 @@ router.beforeEach((to, _from, next) => {
   const requiredRoles = to.meta.roles as string[];
 
   const isAuthenticated = !!localStorage.getItem("access_token");
-  const userRole = localStorage.getItem("user_role");
+  const userRoleString = localStorage.getItem("user_role");
 
   if (requiresAuth && !isAuthenticated) {
     next("/login");
   } else if (requiresAuth && requiredRoles && requiredRoles.length > 0) {
-    if (userRole && requiredRoles.includes(userRole)) {
-      next();
-    } else {
-      if (requiredRoles.includes("Admin") || requiredRoles.includes("HRD")) {
-        next({ name: "Not Found Admin" });
+    
+    if (userRoleString) {  
+      const userRoles = userRoleString.split(',').map(role => role.trim());
+
+      const hasRequiredRole = requiredRoles.some(requiredRole => userRoles.includes(requiredRole));
+
+      if (hasRequiredRole) {
+        next(); 
       } else {
-        next({ name: "Not Found User" });
+        if (requiredRoles.includes("Admin") || requiredRoles.includes("HRD")) {
+          next({ name: "Not Found Admin" });
+        } else {
+          next({ name: "Not Found User" });
+        }
       }
+    } else {
+      next({ name: "Not Found User" });
     }
+
   } else {
-    next();
+    next(); 
   }
 });
 

@@ -1,5 +1,5 @@
 import api from "@/lib/axios";
-import { AllApprovalPagination, AllApprovalParams, CheckFaceStatusResponse, DataKaryawan, DataKontak, DataPribadi, KaryawanKuotaCutiPagination, KaryawanPagination, registerFaceRequest, ResetPasswordRequest, UpdateFCMTokenRequest, User, UserByPic, UserPosiblePIC } from "@/models/userModel";
+import { AllApprovalPagination, AllApprovalParams, CheckFaceStatusResponse, DataKaryawan, DataKontak, DataPribadi, Karyawan, KaryawanKuotaCutiPagination, KaryawanPagination, registerFaceRequest, ResetPasswordRequest, UpdateFCMTokenRequest, User, UserByPic, UserPosiblePIC } from "@/models/userModel";
 
 export interface KaryawanParams {
   page?: number;
@@ -111,5 +111,10 @@ export const updateFCMToken = async (request: UpdateFCMTokenRequest) => {
 
 export const fetchAllApprovalWaitingStatus = async (params: AllApprovalParams) : Promise<AllApprovalPagination> => {
   const response = await api.get<AllApprovalPagination>("/users/all-approval-by-approval-user", {params});  
+  return response.data;
+};
+
+export const fetchfindUser = async (params: {search:string}) : Promise<Karyawan[]> => {
+  const response = await api.get<Karyawan[]>("/users/find-user", {params});  
   return response.data;
 };

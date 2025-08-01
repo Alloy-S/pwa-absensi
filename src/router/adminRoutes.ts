@@ -422,6 +422,15 @@ export const adminRoutes = [
     meta: { requiresAuth: true, roles: adminRoles },
   },
   {
+    path: "/admin/role-management",
+    name: "Role Management",
+    component: () =>
+      import(
+        "@/views/admin/roleMagement/RoleManagementView.vue"
+      ),
+    meta: { requiresAuth: true, roles: adminRoles },
+  },
+  {
     path: "/admin/:pathMatch(.*)*",
     name: "Not Found Admin",
     component: NotFound,
