@@ -1,85 +1,118 @@
 <template>
   <BasePage>
-    <div class="space-y-6">
-      <div class="flex items-center justify-between">
-        <div>
-          <h1 class="text-3xl font-semibold text-slate-800">Detail Absensi</h1>
-          <p class="text-sm text-gray-500">Informasi lengkap absensi pada {{ absensi.date }}</p>
-        </div>
-        <button @click="goBack" class="text-sm text-blue-600 hover:underline">
-          ← Kembali
-        </button>
-      </div>
-
-      <!-- Info Absensi Umum -->
-      <div class="bg-white shadow rounded-lg p-5 space-y-3">
-        <h2 class="text-xl font-semibold text-slate-700">Informasi Umum</h2>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
-          <div><span class="font-medium text-slate-600">Tanggal:</span> {{ absensi.date }}</div>
-          <div><span class="font-medium text-slate-600">Lokasi:</span> {{ absensi.lokasi }}</div>
-          <div><span class="font-medium text-slate-600">Metode:</span> {{ absensi.metode }}</div>
-          <div><span class="font-medium text-slate-600">Status:</span> {{ absensi.status }}</div>
-          <div><span class="font-medium text-slate-600">Catatan:</span> {{ absensi.catatan }}</div>
-          <div><span class="font-medium text-slate-600">Shift:</span> {{ absensi.shift }}</div>
-        </div>
-      </div>
-
-      <!-- Detail Absensi -->
-      <div class="bg-white shadow rounded-lg p-5 space-y-3">
-        <h2 class="text-xl font-semibold text-slate-700">Detail Absensi</h2>
-        <div class="space-y-4">
-          <div v-for="(detail, index) in detailAbsensi" :key="index" class="border rounded p-4">
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm">
-              <div><span class="font-medium text-slate-600">Tanggal:</span> {{ detail.date }}</div>
-              <div><span class="font-medium text-slate-600">Tipe:</span> {{ detail.type }}</div>
-              <div><span class="font-medium text-slate-600">Status Approval:</span> {{ detail.status_apprv }}</div>
-              <div><span class="font-medium text-slate-600">Status Absensi:</span> {{ detail.status_absensi }}</div>
-              <div><span class="font-medium text-slate-600">Longitude:</span> {{ detail.longitude }}</div>
-              <div><span class="font-medium text-slate-600">Latitude:</span> {{ detail.latitude }}</div>
-            </div>
+      <div class="space-y-6">
+          <div class="flex items-center justify-between">
+              <div>
+                  <h1 class="text-3xl font-semibold text-slate-800">Detail Riwayat Absensi</h1>
+                  <p v-if="absensiDetail" class="text-sm text-gray-500">Tinjau riwayat absensi untuk {{ absensiDetail.user.fullname }}</p>
+              </div>
+              <button @click="router.back()" class="text-sm text-blue-600 hover:underline">← Kembali ke Daftar</button>
           </div>
-        </div>
-      </div>
-    </div>
 
-    <div class="mb-20"></div>
+          <div v-if="loading" class="text-center py-20">
+              <i class="fa-solid fa-spinner fa-spin text-4xl text-gray-400"></i>
+              <p class="mt-3 text-gray-500">Memuat detail...</p>
+          </div>
+
+          <div v-else-if="absensiDetail" class="space-y-4">
+              
+              <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
+                  <div class="bg-white p-4 rounded-lg shadow-md border-l-4" :class="statusColor(absensiDetail.status)">
+                      <h3 class="text-sm text-gray-500">Status Final</h3>
+                      <p class="text-xl font-bold text-slate-800">{{ absensiDetail.status }}</p>
+                  </div>
+                  <div class="lg:col-span-2 bg-white p-4 rounded-lg shadow-md">
+                      <h3 class="text-sm text-gray-500">Karyawan</h3>
+                      <p class="text-xl font-semibold text-slate-800">{{ absensiDetail.user.fullname }}</p>
+                      <p class="text-sm text-slate-600">{{ absensiDetail.user.jabatan }} - {{ absensiDetail.user.lokasi }}</p>
+                  </div>
+              </div>
+
+              
+              <div class="bg-white p-4 rounded-lg shadow-md">
+                  <h3 class="font-semibold text-slate-800 mb-4">Rincian Absensi</h3>
+                  <div class="space-y-3 text-sm">
+                      <DetailItem icon="fa-solid fa-calendar-alt" label="Tanggal Absensi" :value="formatDate(absensiDetail.date)" />
+                      <DetailItem icon="fa-solid fa-map-marker-alt" label="Lokasi" :value="absensiDetail.lokasi" />
+                      <DetailItem icon="fa-solid fa-camera" label="Metode" :value="absensiDetail.metode" />
+                  </div>
+              </div>
+
+              
+              <div class="bg-white p-4 rounded-lg shadow-md">
+                  <h3 class="font-semibold text-slate-800 mb-4">Linimasa Kehadiran</h3>
+                  <div class="relative border-l-2 border-gray-200 ml-3">
+                      
+                      <div v-if="jamMasuk" class="mb-6 ml-6">
+                          <span class="absolute flex items-center justify-center w-6 h-6 bg-blue-100 rounded-full -left-3 ring-8 ring-white">
+                              <i class="fa-solid fa-arrow-right-to-bracket text-blue-600"></i>
+                          </span>
+                          <h4 class="font-semibold text-gray-900">Jam Masuk</h4>
+                          <p class="text-xl font-mono text-gray-800">{{ formatTime(jamMasuk.date) }}</p>
+                          <p class="text-sm text-gray-500">Status: <span class="font-medium">{{ jamMasuk.status_absensi }}</span></p>
+                      </div>
+                      
+                      <div v-if="jamPulang" class="ml-6">
+                          <span class="absolute flex items-center justify-center w-6 h-6 bg-red-100 rounded-full -left-3 ring-8 ring-white">
+                              <i class="fa-solid fa-arrow-right-from-bracket text-red-600"></i>
+                          </span>
+                          <h4 class="font-semibold text-gray-900">Jam Pulang</h4>
+                          <p class="text-xl font-mono text-gray-800">{{ formatTime(jamPulang.date) }}</p>
+                           <p class="text-sm text-gray-500">Status: <span class="font-medium">{{ jamPulang.status_absensi }}</span></p>
+                      </div>
+                  </div>
+              </div>
+          </div>
+          
+          <div v-else class="text-center py-20">
+               <i class="fa-solid fa-file-circle-question text-4xl text-gray-400"></i>
+              <p class="mt-3 text-gray-500">Detail riwayat absensi tidak ditemukan.</p>
+          </div>
+      </div>
+      <div class="mb-20"></div>
   </BasePage>
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
-import BasePage from '@/layouts/admin/BasePage.vue'
-import { useRouter } from 'vue-router'
+import { ref, onMounted, computed } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
+import BasePage from '@/layouts/admin/BasePage.vue';
+import DetailItem from '@/components/user/DetailItem.vue';
+import { Absensi, DetailAbsensi } from '@/models/absensiModel';
+import { fetchDetailAbsensiHistory } from '@/services/absensiService';
 
-const router = useRouter()
-const goBack = () => router.back()
+const route = useRoute();
+const router = useRouter();
+const loading = ref(true);
+const absensiDetail = ref<Absensi | null>(null);
 
-// Dummy data, nanti diganti dari API
-const absensi = ref({
-  date: '2025-04-06',
-  lokasi: 'Kandang A',
-  metode: 'Face Recognition',
-  catatan: 'Tepat waktu',
-  status: 'Valid',
-  shift: 'Normal(08:00 - 16:00)',
-})
-
-const detailAbsensi = ref([
-  {
-    date: '2025-04-06 07:00',
-    type: 'Masuk',
-    status_apprv: 'Disetujui',
-    status_absensi: 'Hadir',
-    longitude: '106.123456',
-    latitude: '-6.123456',
-  },
-  {
-    date: '2025-04-06 17:00',
-    type: 'Pulang',
-    status_apprv: 'Disetujui',
-    status_absensi: 'Hadir',
-    longitude: '106.123456',
-    latitude: '-6.123456',
+const getAbsensiDetail = async () => {
+  try {
+      const id = route.params.id as string;
+      absensiDetail.value = await fetchDetailAbsensiHistory(id);
+  } catch (error) {
+      console.error("Gagal memuat detail riwayat.");
+  } finally {
+      loading.value = false;
   }
-])
+};
+
+const jamMasuk = computed<DetailAbsensi | undefined>(() => {
+  return absensiDetail.value?.detail_absensi.find(d => d.type === 'IN');
+});
+const jamPulang = computed<DetailAbsensi | undefined>(() => {
+  return absensiDetail.value?.detail_absensi.find(d => d.type === 'OUT');
+});
+
+const formatDate = (dateString: string) => new Date(dateString).toLocaleDateString('id-ID', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+const formatTime = (dateTimeString?: string) => dateTimeString ? new Date(dateTimeString).toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }) : '--:--';
+const statusColor = (status: string) => {
+  const s = status.toLowerCase();
+  if (s.includes('terlambat') || s.includes('cepat')) return 'border-yellow-500';
+  if (s.includes('hadir')) return 'border-green-500';
+  if (s.includes('alpha')) return 'border-red-500';
+  return 'border-gray-500';
+};
+
+onMounted(getAbsensiDetail);
 </script>

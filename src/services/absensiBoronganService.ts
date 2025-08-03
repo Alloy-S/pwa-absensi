@@ -1,5 +1,6 @@
 import api from "@/lib/axios";
 import {
+  AbsensiBorongan,
   AbsensiBoronganParams,
   AbsensiBoronganReq,
   ApprovalAbsensiBoronganPagination,
@@ -65,5 +66,20 @@ export const fetchAbsensiBoronganAdmin = async (
       params,
     }
   );
+  return response.data;
+};
+
+
+export const fetchHistoryAbsensiBoronganAdmin = async (
+  params: AbsensiBoronganParams
+): Promise<ApprovalAbsensiBoronganPagination> => {
+  const response = await api.get<ApprovalAbsensiBoronganPagination>("/absensi-borongan/history", {
+    params,
+  });
+  return response.data;
+};
+
+export const fetchDetailAbsensiBoronganHistory = async (id: string): Promise<AbsensiBorongan> => {
+  const response = await api.get<AbsensiBorongan>(`/absensi-borongan/history/${id}`);
   return response.data;
 };

@@ -17,6 +17,7 @@ export interface User {
 export interface AbsensiBoronganParams {
   page?: number;
   size?: number;
+  search?: string;
   "filter-month"?: string;
   "filter-status"?: string;
 }

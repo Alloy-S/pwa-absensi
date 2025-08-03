@@ -1,6 +1,7 @@
 import api from "@/lib/axios";
 import {
   ApprovalReimburse,
+  Reimburse,
   ReimburseApprovalPagination,
   ReimburseParams,
   ReimburseReq,
@@ -55,5 +56,19 @@ export const fetchReimburseAdmin = async (
   const response = await api.get<ReimburseApprovalPagination>("/reimburse/approval", {
     params,
   });
+  return response.data;
+};
+
+export const fetchHistoryReimburseAdmin = async (
+  params: ReimburseParams
+): Promise<ReimburseApprovalPagination> => {
+  const response = await api.get<ReimburseApprovalPagination>("/reimburse/history", {
+    params,
+  });
+  return response.data;
+};
+
+export const fetchDetailReimburseHistory = async (id: string): Promise<Reimburse> => {
+  const response = await api.get<Reimburse>(`/reimburse/history/${id}`);
   return response.data;
 };

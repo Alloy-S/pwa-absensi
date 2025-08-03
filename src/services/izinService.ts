@@ -1,6 +1,7 @@
 import api from "@/lib/axios";
 import {
   ApprovalIzin,
+  Izin,
   IzinPagination,
   IzinParams,
   IzinReq,
@@ -55,4 +56,18 @@ export const approveIzinApi = async (id: string) => {
 export const rejectIzinApi = async (id: string) => {
   const response = await api.post(`/izin/approval/${id}/reject`);
   return response;
+};
+
+export const fetchHistoryIzinAdmin = async (
+  params: IzinParams
+): Promise<IzinPagination> => {
+  const response = await api.get<IzinPagination>("/izin/history", {
+    params,
+  });
+  return response.data;
+};
+
+export const fetchDetailIzinHistory = async (id: string): Promise<Izin> => {
+  const response = await api.get<Izin>(`/izin/history/${id}`);
+  return response.data;
 };

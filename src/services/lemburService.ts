@@ -1,6 +1,7 @@
 import api from "@/lib/axios";
 import {
   ApprovalLembur,
+  Lembur,
   LemburApprovalPagination,
   LemburParams,
   LemburReq,
@@ -56,5 +57,19 @@ export const fetchLemburPaginationAdmin = async (
       params,
     }
   );
+  return response.data;
+};
+
+export const fetchHistoryLemburAdmin = async (
+  params: LemburParams
+): Promise<LemburApprovalPagination> => {
+  const response = await api.get<LemburApprovalPagination>("/lembur/history", {
+    params,
+  });
+  return response.data;
+};
+
+export const fetchDetailLemburHistory = async (id: string): Promise<Lembur> => {
+  const response = await api.get<Lembur>(`/lembur/history/${id}`);
   return response.data;
 };

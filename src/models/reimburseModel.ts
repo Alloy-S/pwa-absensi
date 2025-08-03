@@ -6,6 +6,7 @@ import { ApprovalUser } from "./koreksiModel";
     status: string;
     total: number;
     photo: Photo;
+    user: User;
     detail_reimburse: ReimburseDetail[];
   }
 

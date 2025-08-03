@@ -1,96 +1,113 @@
 <template>
-    <BasePage>
-      <div class="space-y-6 mt-4">
-        <!-- Header -->
-        <div class="flex items-center justify-between">
-          <h1 class="text-2xl font-semibold text-slate-800">Detail Reimburse</h1>
-          <RouterLink to="/admin/reimburse" class="text-blue-600 hover:underline">← Kembali</RouterLink>
-        </div>
-  
-        <!-- Informasi Umum -->
-        <div class="bg-white shadow-md rounded-lg p-6 space-y-2">
-          <p><strong>Nama:</strong> {{ reimburse.name }}</p>
-          <p><strong>Tanggal:</strong> {{ reimburse.date }}</p>
-          <p><strong>Status:</strong>
-            <span :class="statusClass(reimburse.status)">
-              {{ reimburse.status }}
-            </span>
-          </p>
-          <p><strong>Catatan:</strong> {{ reimburse.note || '-' }}</p>
-          <p><strong>Total:</strong> <span class="text-blue-600 font-semibold">Rp{{ formatRupiah(reimburse.total) }}</span></p>
-        </div>
-  
-        <!-- Tabel Rincian Reimburse -->
-        <div class="bg-white shadow-md rounded-lg overflow-x-auto">
-          <table class="w-full border-collapse">
-            <thead class="bg-gray-100 text-left">
-              <tr>
-                <th class="p-3 border">No</th>
-                <th class="p-3 border">Deskripsi</th>
-                <th class="p-3 border">Jumlah</th>
-                <th class="p-3 border">Harga Satuan</th>
-                <th class="p-3 border">Subtotal</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr v-for="(item, index) in reimburse.items" :key="index" class="hover:bg-gray-50">
-                <td class="p-3 border">{{ index + 1 }}</td>
-                <td class="p-3 border">{{ item.description }}</td>
-                <td class="p-3 border">{{ item.quantity }}</td>
-                <td class="p-3 border">Rp{{ formatRupiah(item.unitPrice) }}</td>
-                <td class="p-3 border font-semibold">Rp{{ formatRupiah(item.quantity * item.unitPrice) }}</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-  
-        <!-- Bukti Gambar -->
-        <div class="bg-white shadow-md rounded-lg p-6">
-          <h2 class="text-lg font-semibold mb-2">Bukti Reimburse</h2>
-          <img
-            :src="reimburse.imageUrl"
-            alt="Bukti Reimburse"
-            class="w-64 h-64 object-cover rounded-md border"
-          />
-        </div>
+  <BasePage>
+      <div class="space-y-6">
+          <div class="flex items-center justify-between">
+              <div>
+                  <h1 class="text-3xl font-semibold text-slate-800">Detail Riwayat Reimburse</h1>
+                  <p v-if="reimburseDetail" class="text-sm text-gray-500">Tinjau riwayat reimburse</p>
+              </div>
+              <button @click="router.back()" class="text-sm text-blue-600 hover:underline">← Kembali ke Daftar</button>
+          </div>
+
+          <div v-if="loading" class="text-center py-20">
+              <i class="fa-solid fa-spinner fa-spin text-4xl text-gray-400"></i>
+              <p class="mt-3 text-gray-500">Memuat detail...</p>
+          </div>
+
+          <div v-else-if="reimburseDetail" class="space-y-4">
+              
+              <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
+                  <div class="bg-white p-4 rounded-lg shadow-md border-l-4" :class="statusColor(reimburseDetail.status)">
+                      <h3 class="text-sm text-gray-500">Status Final</h3>
+                      <p class="text-xl font-bold text-slate-800">{{ reimburseDetail.status }}</p>
+                  </div>
+                  <div class="lg:col-span-2 bg-white p-4 rounded-lg shadow-md">
+                      <h3 class="text-sm text-gray-500">Karyawan</h3>
+                      <p class="text-xl font-semibold text-slate-800">{{ reimburseDetail.user.fullname }}</p>
+                      <p class="text-sm text-slate-600">{{ reimburseDetail.user.jabatan }} - {{ reimburseDetail.user.lokasi }}</p>
+                  </div>
+              </div>
+
+              
+              <div class="bg-white p-4 rounded-lg shadow-md">
+                  <h3 class="font-semibold text-slate-800 mb-4">Rincian</h3>
+                  <div class="space-y-3 text-sm">
+                      <DetailItem icon="fa-solid fa-calendar-alt" label="Tanggal Pengajuan" :value="formatDateTime(reimburseDetail.date)" />
+                      <DetailItem icon="fa-solid fa-money-bill-wave" label="Total Nominal" :value="formatCurrency(reimburseDetail.total)" />
+                  </div>
+              </div>
+
+              
+              <div class="bg-white p-4 rounded-lg shadow-md">
+                  <h3 class="font-semibold text-slate-800 mb-3">Detail Barang</h3>
+                  <DataTable :value="reimburseDetail.detail_reimburse" responsiveLayout="scroll">
+                      <Column field="nama" header="Nama Barang"></Column>
+                      <Column field="jumlah" header="Jumlah" headerClass="text-center" bodyClass="text-center"></Column>
+                      <Column field="harga" header="Harga Satuan" headerClass="text-right" bodyClass="text-right">
+                          <template #body="slotProps">
+                              {{ formatCurrency(slotProps.data.harga) }}
+                          </template>
+                      </Column>
+                      <Column header="Subtotal" headerClass="text-right" bodyClass="text-right">
+                          <template #body="slotProps">
+                              <span class="font-semibold">{{ formatCurrency(slotProps.data.harga * Number(slotProps.data.jumlah)) }}</span>
+                          </template>
+                      </Column>
+                  </DataTable>
+              </div>
+
+               
+              <div class="bg-white p-4 rounded-lg shadow-md">
+                  <h3 class="font-semibold text-slate-800 mb-3">Bukti Foto</h3>
+                  <img v-if="reimburseDetail.photo" :src="reimburseDetail.photo.image" alt="Bukti Reimburse" class="w-full max-w-md mx-auto rounded-lg shadow" />
+                  <p v-else class="text-sm text-gray-500">Tidak ada bukti foto yang dilampirkan.</p>
+              </div>
+          </div>
+          
+          <div v-else class="text-center py-20">
+               <i class="fa-solid fa-file-circle-question text-4xl text-gray-400"></i>
+              <p class="mt-3 text-gray-500">Detail riwayat reimburse tidak ditemukan.</p>
+          </div>
       </div>
       <div class="mb-20"></div>
-    </BasePage>
-  </template>
-  
-  <script setup lang="ts">
-  import { ref } from 'vue'
-  import BasePage from '@/layouts/admin/BasePage.vue'
-  import { RouterLink } from 'vue-router'
-  
-  const reimburse = ref({
-    id: 1,
-    name: 'Dewi Kartika',
-    date: '2025-04-05',
-    status: 'Disetujui',
-    note: 'Pembelian alat tulis kantor',
-    total: 250000,
-    items: [
-      { description: 'Pulpen', quantity: 10, unitPrice: 3000 },
-      { description: 'Kertas A4', quantity: 5, unitPrice: 15000 },
-      { description: 'Map folder', quantity: 3, unitPrice: 12000 },
-    ],
-    imageUrl: 'https://via.placeholder.com/300x300.png?text=Bukti+Reimburse' // ganti dengan URL asli dari backend
-  })
-  
-  const formatRupiah = (value: number): string => {
-    return value.toLocaleString('id-ID')
+  </BasePage>
+</template>
+
+<script setup lang="ts">
+import { ref, onMounted } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
+import BasePage from '@/layouts/admin/BasePage.vue';
+import DetailItem from '@/components/user/DetailItem.vue';
+import DataTable from 'primevue/datatable';
+import Column from 'primevue/column';
+import { Reimburse } from '@/models/reimburseModel';
+import { fetchDetailReimburseHistory } from '@/services/reimburseService';
+
+const route = useRoute();
+const router = useRouter();
+const loading = ref(true);
+const reimburseDetail = ref<Reimburse | null>(null);
+
+const getReimburseDetail = async () => {
+  try {
+      const id = route.params.id as string;
+      reimburseDetail.value = await fetchDetailReimburseHistory(id);
+  } catch (error) {
+      console.error("Gagal memuat detail riwayat.");
+  } finally {
+      loading.value = false;
   }
-  
-  const statusClass = (status: string) => {
-    switch (status.toLowerCase()) {
-      case 'disetujui':
-        return 'text-green-600 font-semibold'
-      case 'ditolak':
-        return 'text-red-600 font-semibold'
-      default:
-        return 'text-yellow-600 font-semibold'
-    }
-  }
-  </script>
-  
+};
+
+const formatDateTime = (dateString: string) => new Date(dateString).toLocaleString('id-ID', { day: 'numeric', month: 'long', year: 'numeric'});
+const formatCurrency = (value: number) => new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(value || 0);
+const statusColor = (status: string) => {
+  const s = status.toLowerCase();
+  if (s.includes('menunggu')) return 'border-yellow-500';
+  if (s.includes('disetujui')) return 'border-green-500';
+  if (s.includes('ditolak')) return 'border-red-500';
+  return 'border-gray-500';
+};
+
+onMounted(getReimburseDetail);
+</script>

@@ -2,154 +2,160 @@
     <BasePage>
         <div class="my-5 flex justify-between items-center">
             <p class="text-3xl font-semibold text-slate-800">Riwayat Izin</p>
-
-
         </div>
 
-        <div class="bg-white p-3 mb-5 rounded-md shadow-md">
-
-            <div class="flex justify-center items-end space-x-2">
-                <div class="w-full max-w-md">
-                    <label class="block mb-2 text-sm font-medium text-gray-700">Cari Nama Karyawan</label>
-                    <input type="text" id="simple-search"
-                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                        placeholder="Cari Nama..." required />
-                </div>
-
-                <div class="">
-                    <label class="block text-sm font-medium text-gray-700">Pilih Rentang Tanggal</label>
-
-                    <div class="flex space-x-2 mt-2">
-                        <!-- Tanggal Mulai -->
-                        <input type="date" v-model="startDate" @change="validateDates"
-                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" />
-
-                        <!-- Tanggal Akhir -->
-                        <input type="date" v-model="endDate" @change="validateDates"
-                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                            :min="startDate" />
+        
+        <div class="bg-white p-4 mb-5 rounded-lg shadow-md">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 items-end">
+                <div>
+                    <label for="search-karyawan" class="block mb-2 text-sm font-medium text-gray-700">Cari Nama Karyawan</label>
+                    <div class="relative">
+                        <span class="absolute inset-y-0 left-0 flex items-center pl-3">
+                            <i class="fa-solid fa-magnifying-glass text-gray-400"></i>
+                        </span>
+                        <input type="text" id="search-karyawan" v-model="searchQuery"
+                            class="w-full pl-10 p-2.5 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500"
+                            placeholder="Cari nama..." />
                     </div>
-
-                    <p v-if="errorMessage" class="text-red-500 text-sm mt-2">{{ errorMessage }}</p>
                 </div>
-                <button type="submit"
-                    class="flex items-center space-x-2 p-2.5  text-sm font-medium text-white bg-blue-700 rounded-lg border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                    <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
-                        viewBox="0 0 20 20">
-                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
-                    </svg>
-                    <p>Cari</p>
-                </button>
+                <div>
+                    <label for="month-picker" class="block mb-2 text-sm font-medium text-gray-700">Filter Bulan</label>
+                    <input type="month" v-model="selectedMonth" id="month-picker"
+                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" />
+                </div>
             </div>
-
-        </div>
-        <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
-            <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-                <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-                    <tr>
-                        <th scope="col" class="px-6 py-3">
-                            Nama Karyawan
-                        </th>
-                        <th scope="col" class="px-6 py-3">
-                            Jenis Izin
-                        </th>
-                        <th scope="col" class="px-6 py-3">
-                            Alasan Izin
-                        </th>
-                        <th scope="col" class="px-6 py-3">
-                            izin Hingga
-                        </th>
-                        <th scope="col" class="px-6 py-3">
-                            Action
-                        </th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr v-for="n in 10"
-                        class="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700 border-gray-200">
-                        <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                            Bambang
-                        </th>
-                        <td class="px-6 py-4">
-                            Izin
-                        </td>
-                        <td class="px-6 py-4">
-                            Sakit
-                        </td>
-                        <td class="px-6 py-4">
-                            08-04-2025
-                        </td>
-                        <td class="px-6 py-4 space-x-3">
-                            <a @click="goToDetail(n)" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Detail</a>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-
-
-
         </div>
 
-        <div class="mb-16 flex justify-end mt-4">
+        
+        <div class="bg-white p-4 rounded-lg shadow-md">
+            <DataTable :value="izinList" lazy paginator :rows="lazyParams.rows" :rowsPerPageOptions="[5, 10, 20, 50]"
+                :totalRecords="totalRecords" :loading="loading" @page="onPage" v-model:first="lazyParams.first"
+                tableStyle="min-width: 50rem">
 
+                <Column field="user.fullname" header="Nama Karyawan" style="width: 25%"></Column>
+                <Column field="tgl_izin_start" header="Tanggal Mulai" style="width: 20%">
+                     <template #body="slotProps">
+                        {{ formatDate(slotProps.data.tgl_izin_start) }}
+                    </template>
+                </Column>
+                <Column field="tgl_izin_end" header="Tanggal Selesai" style="width: 20%">
+                     <template #body="slotProps">
+                        {{ formatDate(slotProps.data.tgl_izin_end) }}
+                    </template>
+                </Column>
+                <Column field="status" header="Status" style="width: 20%">
+                    <template #body="slotProps">
+                        <span class="px-2 py-1 text-xs font-medium rounded-full" :class="statusBadgeColor(slotProps.data.status)">
+                            {{ slotProps.data.status }}
+                        </span>
+                    </template>
+                </Column>
+                <Column header="Action" style="width: 15%">
+                    <template #body="slotProps">
+                        <button @click="goToDetail(slotProps.data.id)"
+                            class="font-medium text-blue-600 hover:underline">
+                            Detail
+                        </button>
+                    </template>
+                </Column>
 
-            <nav aria-label="Page navigation example">
-                <ul class="inline-flex -space-x-px text-sm">
-                    <li>
-                        <a href="#"
-                            class="flex items-center justify-center px-3 h-8 ms-0 leading-tight text-gray-500 bg-white border border-e-0 border-gray-300 rounded-s-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">Previous</a>
-                    </li>
-                    <li>
-                        <a href="#"
-                            class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">1</a>
-                    </li>
-                    <li>
-                        <a href="#"
-                            class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">2</a>
-                    </li>
-                    <li>
-                        <a href="#" aria-current="page"
-                            class="flex items-center justify-center px-3 h-8 text-blue-600 border border-gray-300 bg-blue-50 hover:bg-blue-100 hover:text-blue-700 dark:border-gray-700 dark:bg-gray-700 dark:text-white">3</a>
-                    </li>
-                    <li>
-                        <a href="#"
-                            class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">4</a>
-                    </li>
-                    <li>
-                        <a href="#"
-                            class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">5</a>
-                    </li>
-                    <li>
-                        <a href="#"
-                            class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">Next</a>
-                    </li>
-                </ul>
-            </nav>
+                <template #empty>
+                    <div class="text-center py-5">
+                        <p class="text-gray-500">Tidak ada data riwayat izin yang ditemukan.</p>
+                    </div>
+                </template>
+            </DataTable>
         </div>
+        <div class="mb-16"></div>
     </BasePage>
 </template>
 
 <script setup lang="ts">
-import BasePage from '@/layouts/admin/BasePage.vue'
-import { ref } from "vue";
-import { useRouter } from 'vue-router'
+import { ref, onMounted, watch } from 'vue';
+import { useRouter } from 'vue-router';
+import BasePage from '@/layouts/admin/BasePage.vue';
+import DataTable from 'primevue/datatable';
+import Column from 'primevue/column';
+import { Izin, IzinParams } from '@/models/izinModel';
+import { fetchHistoryIzinAdmin } from '@/services/izinService';
 
 const router = useRouter();
-const startDate = ref("");
-const endDate = ref("");
-const errorMessage = ref("");
 
-const validateDates = () => {
-    if (startDate.value && endDate.value && startDate.value > endDate.value) {
-        errorMessage.value = "Tanggal akhir harus setelah tanggal mulai!";
-        endDate.value = startDate.value; // Reset endDate ke startDate jika tidak valid
-    } else {
-        errorMessage.value = "";
+const izinList = ref<Izin[]>([]);
+const loading = ref(false);
+const totalRecords = ref(0);
+let debounceTimer: any = null;
+
+
+const searchQuery = ref('');
+const getCurrentMonth = () => {
+    const now = new Date();
+    const year = now.getFullYear();
+    const month = (now.getMonth() + 1).toString().padStart(2, '0');
+    return `${year}-${month}`;
+};
+const selectedMonth = ref(getCurrentMonth());
+
+const lazyParams = ref({
+    first: 0,
+    rows: 10,
+    page: 1,
+});
+
+const getHistory = async () => {
+    loading.value = true;
+    try {
+        const params: IzinParams = {
+            page: lazyParams.value.page,
+            size: lazyParams.value.rows,
+            search: searchQuery.value,
+            "filter-month": selectedMonth.value,
+        };
+        const response = await fetchHistoryIzinAdmin(params);
+        izinList.value = response.items;
+        totalRecords.value = response.total;
+    } catch (error) {
+        console.error("Gagal memuat riwayat izin.");
+    } finally {
+        loading.value = false;
     }
 };
 
-const goToDetail = (id: any) => {
-    router.push('izin/' + id);
+const onPage = (event: any) => {
+    lazyParams.value.page = event.page + 1;
+    lazyParams.value.rows = event.rows;
+    lazyParams.value.first = event.first;
+    getHistory();
 };
+
+const goToDetail = (id: string) => {
+    router.push(`/admin/riwayat/izin/${id}`);
+};
+
+const formatDate = (dateString: string) => {
+    if (!dateString) return '-';
+    return new Date(dateString).toLocaleDateString('id-ID', { year: 'numeric', month: 'long', day: 'numeric' });
+};
+
+const statusBadgeColor = (status: string) => {
+    if (!status) return 'bg-gray-100 text-gray-800';
+    const s = status.toLowerCase();
+    if (s.includes('menunggu')) return 'bg-yellow-100 text-yellow-800';
+    if (s.includes('disetujui')) return 'bg-green-100 text-green-800';
+    if (s.includes('ditolak')) return 'bg-red-100 text-red-800';
+    return 'bg-gray-100 text-gray-800';
+};
+
+watch([searchQuery, selectedMonth], () => {
+    if (debounceTimer) clearTimeout(debounceTimer);
+    debounceTimer = setTimeout(() => {
+        lazyParams.value.page = 1;
+        lazyParams.value.first = 0;
+        getHistory();
+    }, 500);
+});
+
+onMounted(() => {
+    getHistory();
+});
 </script>
