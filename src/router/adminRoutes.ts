@@ -207,6 +207,13 @@ export const adminRoutes = [
   },
   {
     path: "/admin/pengaturan/jadwal-kerja/:id",
+    name: "pengaturan view jadwal kerja",
+    component: () =>
+      import("@/views/admin/setting/jadwalKerja/ViewJadwalKerja.vue"),
+    meta: { requiresAuth: true, roles: adminRoles },
+  },
+  {
+    path: "/admin/pengaturan/jadwal-kerja/edit/:id",
     name: "pengaturan edit jadwal kerja",
     component: () =>
       import("@/views/admin/setting/jadwalKerja/EditJadwalKerja.vue"),

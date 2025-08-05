@@ -31,8 +31,8 @@ export const addjadwal = async (request: JadwalKerja) => {
   return response;
 };
 
-export const updatejadwal = async (id: string, request: JadwalKerja) => {
-  const response = await api.put("/jadwal/" + id, request);
+export const createCopyJadwal = async (id: string, request: JadwalKerja) => {
+  const response = await api.post("/jadwal/create-copy/" + id, request);
   return response;
 };
 
@@ -40,3 +40,9 @@ export const deletejadwal = async (id: string) => {
   const response = await api.delete("/jadwal/" + id);
   return response;
 };
+
+export const activateJadwalKerja = async (id: string) => {
+  const response = await api.post("/jadwal/activate/" + id);
+  return response;
+};
+

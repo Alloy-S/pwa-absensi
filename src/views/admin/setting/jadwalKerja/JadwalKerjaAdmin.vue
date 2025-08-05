@@ -1,183 +1,165 @@
 <template>
     <BasePage>
-
+        <ConfirmDialog></ConfirmDialog>
         <div class="mt-5 mb-10 flex justify-between items-center">
-            <p class="text-3xl font-semibold text-slate-800">Jadwal Kerja</p>
+            <p class="text-3xl font-semibold text-slate-800">Pengaturan Jenis Izin</p>
         </div>
+
 
         <div class="flex justify-between mb-5">
 
             <div class="flex items-center max-w-md">
-                <label for="simple-search" class="sr-only">Search</label>
-                <div class="relative w-full mr-3">
+                <div class="relative w-full">
                     <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
                         <i class="fa-solid fa-magnifying-glass"></i>
                     </div>
-                    <input type="text" id="simple-search" v-model="search"
-                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                        placeholder="Cari..." required />
+                    <input type="text" v-model="search"
+                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5"
+                        placeholder="Cari berdasarkan nama..." />
                 </div>
             </div>
 
             <div>
                 <button type="button" @click="addShift"
-                    class="flex items-center space-x-2 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
+                    class="flex items-center space-x-2 text-white bg-blue-700 hover:bg-blue-800 font-medium rounded-lg text-sm px-5 py-2.5">
                     <i class="fa-solid fa-plus"></i>
-                    <span class="">Tambah</span>
+                    <span>Tambah Jadwal Kerja</span>
                 </button>
             </div>
         </div>
 
-        <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+        <div class="bg-white p-4 rounded-lg shadow-md">
+            <DataTable :value="jadwalList" lazy paginator :rows="lazyParams.rows" :rowsPerPageOptions="[5, 10, 20, 50]"
+                :totalRecords="totalRecords" :loading="loading" @page="onPage" v-model:first="lazyParams.first"
+                tableStyle="min-width: 50rem">
 
-            <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-                <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-                    <tr>
-                        <th scope="col" class="px-6 py-3">
-                            Kode
-                        </th>
-                        <th scope="col" class="px-6 py-3">
-                            Nama
-                        </th>
-                        <th scope="col" class="w-1/4 px-6 py-3">
-                            Action
-                        </th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr v-for="item in jadwalList.items" :key="item.id"
-                        class="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700 border-gray-200">
-                        <td scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                            {{ item.kode }}
-                        </td>
-                        <td class="px-6 py-4">
-                            {{ item.shift }}
-                        </td>
-                        <td class="px-6 py-4 space-x-3">
-                            <a @click="editItem(item.id)" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
-                            <a @click="deletejad(item.id)" class="font-medium text-red-600 dark:text-red-500 hover:underline">Delete</a>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+                <Column field="kode" header="Kode" style="width: 20%"></Column>
+                <Column field="shift" header="Nama Shift" style="width: 35%"></Column>
+                <Column field="is_active" header="Status" style="width: 20%">
+                    <template #body="slotProps">
+                        <span class="px-2 py-1 text-xs font-medium rounded-full"
+                            :class="slotProps.data.is_active ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800'">
+                            {{ slotProps.data.is_active ? 'Aktif' : 'Arship' }}
+                        </span>
+                    </template>
+                </Column>
+                <Column header="Action" style="width: 25%">
+                    <template #body="slotProps">
+                        <div class="space-x-3">
+                            <a @click="editItem(slotProps.data.id, slotProps.data.is_active)" class="font-medium text-blue-600 hover:underline cursor-pointer">{{ slotProps.data.is_active? 'Edit': 'View' }}</a>
+                            <a v-if="slotProps.data.is_active" @click="confirmDelete(slotProps.data.id)" class="font-medium text-red-600 hover:underline cursor-pointer">Non-aktifkan</a>
+                        </div>
+                    </template>
+                </Column>
 
-
-
+                <template #empty>
+                    <div class="text-center py-5">
+                        <p class="text-gray-500">Tidak ada data jadwal kerja yang ditemukan.</p>
+                    </div>
+                </template>
+            </DataTable>
         </div>
-        <div class="mb-16 flex justify-end mt-4">
-
-
-            <nav aria-label="Page navigation example" v-if="pages > 1">
-                <ul class="inline-flex -space-x-px text-sm">
-
-                    <li>
-                        <button @click="changePage(page - 1)" :disabled="page === 1"
-                            class="flex items-center justify-center px-3 h-8 ms-0 leading-tight text-gray-500 bg-white border border-e-0 border-gray-300 rounded-s-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
-                            Previous
-                        </button>
-                    </li>
-
-                    <li v-for="n in pages" :key="n">
-
-                        <button @click="changePage(n)" :class="[
-                            'flex items-center justify-center px-3 h-8 leading-tight border border-gray-300',
-                            n === page ? 'text-blue-600 bg-blue-50 hover:bg-blue-100 hover:text-blue-700 dark:bg-gray-700 dark:text-white' : 'text-gray-500 bg-white hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white'
-                        ]">
-                            {{ n }}
-                        </button>
-                    </li>
-
-                    <li>
-                        <button @click="changePage(page + 1)" :disabled="page === pages"
-                            class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
-                            Next
-                        </button>
-                    </li>
-
-                </ul>
-            </nav>
-        </div>
+        <div class="mb-16"></div>
     </BasePage>
 </template>
 
 <script setup lang="ts">
-import BasePage from '@/layouts/admin/BasePage.vue'
-import { useRouter } from 'vue-router'
-import { toast } from 'vue3-toastify'
-import { ref, onMounted, watch } from 'vue'
-import { JadwalKerjaPagination } from '@/models/jadwalModel'
-import { deletejadwal, fetchjadwalPagination } from '@/services/jadwalKerjaService'
+import { ref, onMounted, watch } from 'vue';
+import { useRouter } from 'vue-router';
+import BasePage from '@/layouts/admin/BasePage.vue';
+import DataTable from 'primevue/datatable';
+import Column from 'primevue/column';
+import { useConfirm } from "primevue/useconfirm";
+import ConfirmDialog from 'primevue/confirmdialog';
+import { toast } from 'vue3-toastify';
+import { fetchjadwalPagination, deletejadwal } from '@/services/jadwalKerjaService';
+import { JadwalKerja } from '@/models/jadwalModel';
 
-const router = useRouter()
-const jadwalList = ref<JadwalKerjaPagination>({ pages:1, total: 0, items: [] });
-const pages = ref(1);
-const page = ref(1);
+const router = useRouter();
+const confirm = useConfirm();
+
+const jadwalList = ref<JadwalKerja[]>([]);
+const loading = ref(false);
+const totalRecords = ref(0);
 const search = ref('');
 let debounceTimer: any = null;
 
-const addShift = () => {
-    router.push('jadwal-kerja/add');
-}
-
-const editItem = (id: any) => {
-    router.push('jadwal-kerja/' + id);
-}
-
-const changePage = (newPage: number) => {
-    page.value = newPage
-    getJadwal()
-}
+const lazyParams = ref({
+    first: 0,
+    rows: 10,
+    page: 1,
+});
 
 const getJadwal = async () => {
+    loading.value = true;
     try {
-
         const params = {
-            page: page.value,
+            page: lazyParams.value.page,
+            size: lazyParams.value.rows,
             search: search.value
-        }
-
-        const response = fetchjadwalPagination(params)
-
-        jadwalList.value = (await response);
-        pages.value = Number((await response).pages);
-
-        console.log(jadwalList.value);
+        };
+        const response = await fetchjadwalPagination(params);
+        jadwalList.value = response.items;
+        totalRecords.value = response.total;
     } catch (error) {
-        console.error(error)
+        toast.error("Gagal memuat data jadwal kerja.");
+    } finally {
+        loading.value = false;
     }
-}
+};
 
-const deletejad = async (id: string) => {
-    try {
-        // Perform the delete logic here
-        console.log('Delete item with id:', id);
+const onPage = (event: any) => {
+    lazyParams.value.page = event.page + 1;
+    lazyParams.value.rows = event.rows;
+    lazyParams.value.first = event.first;
+    getJadwal();
+};
 
-        const response = await deletejadwal(id);
+const addShift = () => {
+    router.push('jadwal-kerja/add');
+};
 
-        if (response.status === 200) {
-            toast.success("Success Delete Jadwal Kerja")
-            getJadwal()
-        }
-    } catch (error) {
-        console.error(error)
-        toast.error(error.response.data.message);
+const editItem = (id: string, is_active: boolean) => {
+    if (is_active) {
+        router.push(`jadwal-kerja/edit/${id}`);    
+    } else {
+        router.push(`jadwal-kerja/${id}`);
     }
-}
-
-watch(search, (_newVal, _oldVal) => {
     
+};
+
+const confirmDelete = (id: string) => {
+    confirm.require({
+        message: 'Apakah Anda yakin ingin menonaktifkan jadwal kerja ini? Jadwal ini tidak akan bisa digunakan lagi.',
+        header: 'Konfirmasi Non-aktifkan',
+        icon: 'fa-solid fa-triangle-exclamation',
+        acceptLabel: 'Ya, Non-aktifkan',
+        rejectLabel: 'Batal',
+        acceptClass: 'p-button-danger',
+        accept: () => submitDelete(id),
+    });
+};
+
+const submitDelete = async (id: string) => {
+    try {
+        await deletejadwal(id);
+        toast.success("Jadwal kerja berhasil dinonaktifkan.");
+        getJadwal();
+    } catch (error: any) {
+        console.error("Gagal menonaktifkan jadwal kerja.");
+    }
+};
+
+watch(search, () => {
     if (debounceTimer) clearTimeout(debounceTimer);
-
     debounceTimer = setTimeout(() => {
-
-        page.value = 1 
-        getJadwal()
-        console.log('search', search.value)
-
-    }, 1000); 
-})
+        lazyParams.value.page = 1;
+        lazyParams.value.first = 0;
+        getJadwal();
+    }, 500);
+});
 
 onMounted(() => {
-    getJadwal()
-})
+    getJadwal();
+});
 </script>

@@ -143,7 +143,7 @@ const handleAction = async (action: 'approve' | 'reject') => {
             await rejectReimburseApi(id);
             toast.warn("Pengajuan berhasil ditolak.");
         }
-        router.push('/menu/approval');
+        router.replace('/menu/approval');
     } catch (error: any) {
         toast.error(error.response?.data?.message || `Gagal ${action === 'approve' ? 'menyetujui' : 'menolak'} pengajuan.`);
     } finally {

@@ -51,7 +51,7 @@
                         <div class="flex items-start">
                             
                             <div>
-                                <p class="font-medium text-slate-600">Total Durasi</p>
+                                <p class="font-medium text-slate-600">Estimasi Total Durasi</p>
                                 <p class="text-slate-800">{{ `${calculateDuration(izinDetail.izin.tgl_izin_start,
                                     izinDetail.izin.tgl_izin_end)} hari` }}</p>
                             </div>
@@ -154,7 +154,7 @@ const handleAction = async (action: 'approve' | 'reject') => {
             await rejectIzinApi(id);
             toast.warn("Pengajuan berhasil ditolak.");
         }
-        router.push('/menu/approval');
+        router.replace('/menu/approval');
     } catch (error: any) {
         toast.error(error.response?.data?.message || `Gagal ${action === 'approve' ? 'menyetujui' : 'menolak'} pengajuan.`);
     } finally {

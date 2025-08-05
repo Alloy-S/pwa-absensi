@@ -1,8 +1,8 @@
 <template>
     <BasePage>
         <div class="my-5">
-            <p class="text-3xl font-semibold text-slate-800">Manajemen Peran Karyawan</p>
-            <p class="text-sm text-slate-500">Cari karyawan untuk melihat dan mengubah peran yang mereka miliki.</p>
+            <p class="text-3xl font-semibold text-slate-800">Role Management Karyawan</p>
+            <p class="text-sm text-slate-500">Cari karyawan untuk melihat dan mengubah peran.</p>
         </div>
 
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -59,7 +59,7 @@
                 <div v-else class="flex items-center justify-center h-full text-center text-gray-500">
                     <div>
                         <i class="fa-solid fa-arrow-left text-3xl mb-2"></i>
-                        <p>Pilih seorang karyawan dari daftar di sebelah kiri untuk mengatur perannya.</p>
+                        <p>Cari Karyawan.</p>
                     </div>
                 </div>
             </div>

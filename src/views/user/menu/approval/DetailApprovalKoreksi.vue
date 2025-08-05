@@ -150,7 +150,7 @@ const handleAction = async (action: 'approve' | 'reject') => {
             await rejectKoreksiApi(id);
             toast.warn("Pengajuan berhasil ditolak.");
         }
-        router.push('/menu/approval');
+        router.replace('/menu/approval');
     } catch (error) {
         toast.error(`Gagal ${action === 'approve' ? 'menyetujui' : 'menolak'} pengajuan.`);
     } finally {

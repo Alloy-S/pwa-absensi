@@ -2,6 +2,8 @@ export interface JadwalKerja {
     id: string;
     kode: string;
     shift: string;
+    is_active: boolean;
+    migrate_data: boolean;
     detail_jadwal_kerja: DetailJadwalKerja[];
 }
 
@@ -30,6 +32,8 @@ export function initJadwalKerja(): JadwalKerja {
     id: "",
     kode: "",
     shift: "",
+    migrate_data: true,
+    is_active: true,
     detail_jadwal_kerja: [],
   };
 }
