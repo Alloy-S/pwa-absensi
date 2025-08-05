@@ -1,15 +1,15 @@
 <template>
     <div class="w-screen h-screen flex bg-slate-100 overflow-hidden">
-        <!-- Sidebar -->
+        
         <div class="min-w-72 h-screen sticky top-0 bg-white shadow-lg">
             <KeepAlive>
                 <SideBar />
             </KeepAlive>
         </div>
 
-        <!-- Wrapper konten -->
-        <div class="flex flex-col flex-1 h-screen">
-            <!-- Navbar -->
+        
+        <div class="flex flex-col flex-1 h-screen min-w-0">
+            
             <nav class="bg-white border-gray-200 dark:bg-gray-900 sticky top-0 z-50 shadow-md">
                 <div class="max-w-screen-xl flex flex-wrap items-center justify-end mx-auto p-4">
                     <div class="flex items-center md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse">
@@ -18,7 +18,7 @@
                             id="user-menu-button">
                             <img class="w-8 h-8 rounded-full" src="@/assets/profile.jpg" alt="user photo" />
                         </button>
-                        <!-- Dropdown -->
+                        
                         <div v-show="isDropdownOpen" ref="isDropdownRef"
                             class="z-50 my-4 text-base list-none bg-white divide-y divide-gray-100 rounded-lg shadow-lg dark:bg-gray-700 dark:divide-gray-600 absolute right-4 top-10 mt-2"
                             id="user-dropdown">
@@ -39,7 +39,7 @@
                 </div>
             </nav>
 
-            <div class="flex-1 overflow-y-auto p-4">
+            <div class="flex-1 overflow-auto p-4">
                 <slot></slot>
             </div>
         </div>
@@ -65,7 +65,6 @@ onClickOutside(isDropdownRef, () => {
 </script>
 
 <style scoped>
-/* Pastikan dropdown tidak tertutup oleh elemen lain */
 #user-dropdown {
     min-width: 160px;
 }

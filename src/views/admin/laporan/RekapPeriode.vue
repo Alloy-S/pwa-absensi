@@ -1,187 +1,192 @@
 <template>
     <BasePage>
-        <div class="w-3/4">
-            <div class="mb-4 flex flex-col md:flex-row gap-4 items-end">
-                <div class="flex flex-col">
-                    <label class="text-sm font-medium mb-1">Periode Mulai</label>
-                    <input type="date" v-model="startDate" class="input input-bordered w-full md:w-48" />
+        <div class="my-5 flex justify-between items-center">
+            <p class="text-3xl font-semibold text-slate-800">Laporan Rekapitulasi Kehadiran</p>
+        </div>
+
+        
+        <div class="bg-white p-4 mb-5 rounded-lg shadow-md">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 items-end">
+                <div class="lg:col-span-2">
+                    <label class="block mb-2 text-sm font-medium text-gray-700">Filter Rentang Tanggal</label>
+                    <div class="flex space-x-2">
+                        <input type="date" v-model="filters.startDate"
+                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" />
+                        <input type="date" v-model="filters.endDate" :min="filters.startDate"
+                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" />
+                    </div>
                 </div>
-                <div class="flex flex-col">
-                    <label class="text-sm font-medium mb-1">Periode Selesai</label>
-                    <input type="date" v-model="endDate" class="input input-bordered w-full md:w-48" />
+                <div>
+                    <label for="search-karyawan" class="block mb-2 text-sm font-medium text-gray-700">Cari Nama / NIP</label>
+                    <div class="relative">
+                        <span class="absolute inset-y-0 left-0 flex items-center pl-3">
+                            <i class="fa-solid fa-magnifying-glass text-gray-400"></i>
+                        </span>
+                        <input type="text" id="search-karyawan" v-model="filters.search"
+                            class="w-full pl-10 p-2.5 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500"
+                            placeholder="Cari..." />
+                    </div>
                 </div>
-                <div class="flex flex-col flex-1">
-                    <label class="text-sm font-medium mb-1">Cari Nama / NIP</label>
-                    <input type="text" v-model="search" placeholder="Cari nama atau NIP"
-                        class="input input-bordered w-full" />
-                </div>
-                <button type="submit"
-                    class="flex items-center gap-2 p-2.5 ms-2 text-sm font-medium text-white bg-blue-700 rounded-lg border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                    <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
-                        viewBox="0 0 20 20">
-                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
-                    </svg>
-                    <span class="">Proses</span>
+                 <button @click="getRekapData" class="w-full md:w-auto px-5 py-2.5 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition flex items-center justify-center">
+                    <i class="fa-solid fa-search mr-2"></i>
+                    Tampilkan
+                </button>
+            </div>
+        </div>
+
+        
+        <div class="bg-white p-4 rounded-lg shadow-md">
+            <div class="flex justify-end mb-4">
+                <button @click="exportToExcel" class="px-4 py-2 bg-green-600 text-white font-semibold rounded-lg hover:bg-green-700 transition text-sm flex items-center">
+                    <i class="fa-solid fa-file-excel mr-2"></i>
+                    Ekspor ke Excel
                 </button>
             </div>
 
-            <div class="relative overflow-x-auto bg-white shadow-md sm:rounded-lg">
-                <table class="table-auto w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-                    <thead
-                        class="text-xs text-gray-700  bg-gray-50 dark:bg-gray-700 dark:text-gray-400 text-center text-nowrap">
+            <div v-if="loading" class="text-center py-10 text-gray-500">
+                <i class="fa-solid fa-spinner animate-spin text-2xl"></i>
+                <p>Memuat data...</p>
+            </div>
+            
+            <div v-else-if="rekapList.length > 0" class="overflow-x-auto">
+                <table class="w-full text-sm text-left text-gray-500" style="min-width: 1400px;">
+                    <thead class="text-xs text-gray-700 bg-gray-50 text-center whitespace-nowrap">
                         <tr>
-                            <th class="px-4 py-2 border" rowspan="2">NIP</th>
-                            <th class="px-4 py-2 border" rowspan="2">Nama</th>
-                            <th class="px-4 py-2 border" rowspan="2">Jabatan</th>
-                            <th class="px-4 py-2 border" rowspan="2">Lokasi</th>
-                            <th class="px-4 py-2 border" rowspan="2">Izin/Libur</th>
-                            <th class="px-4 py-2 border" colspan="2">Kehadiran</th>
-
-                            <th class="px-4 py-2 border" colspan="2">Terlambat</th>
-
-                            <th class="px-4 py-2 border" colspan="2">Pulang Awal</th>
-
-                            <th class="px-4 py-2 border" colspan="2">Lembur</th>
-                            <th class="px-4 py-2 border" rowspan="2">Tidak Hadir</th>
-                            <th class="px-4 py-2 border" colspan="4">Izin</th>
+                            <th class="px-4 py-3 border" rowspan="2">NIP</th>
+                            <th class="px-4 py-3 border" rowspan="2">Nama</th>
+                            <th class="px-4 py-3 border" rowspan="2">Tipe Karyawan</th>
+                            <th class="px-4 py-3 border" rowspan="2">Jabatan</th>
+                            <th class="px-4 py-3 border" rowspan="2">Lokasi</th>
+                            <th class="px-4 py-3 border" colspan="2">Kehadiran</th>
+                            <th class="px-4 py-3 border" rowspan="2">Izin</th>
+                            <th class="px-4 py-3 border" rowspan="2">Alpha</th>
+                            <th class="px-4 py-3 border" rowspan="2">Tak Lengkap</th>
+                            <th class="px-4 py-3 border" colspan="2">Terlambat</th>
+                            <th class="px-4 py-3 border" colspan="2">Pulang Awal</th>
                         </tr>
                         <tr>
-                            <th class="px-4 py-2 border">Kehadiran</th>
-                            <th class="px-4 py-2 border">Total Jam Kehadiran</th>
-                            <th class="px-4 py-2 border">Datang Terlambat</th>
-                            <th class="px-4 py-2 border">Jam Terlambat</th>
-                            <th class="px-4 py-2 border">Pulang Awal</th>
-                            <th class="px-4 py-2 border">Jam Pulang Awal</th>
-                            <th class="px-4 py-2 border">Jam</th>
-                            <th class="px-4 py-2 border">Menit</th>
-                            <th class="px-4 py-2 border">Izin A</th>
-                            <th class="px-4 py-2 border">Izin B</th>
-                            <th class="px-4 py-2 border">Izin C</th>
-                            <th class="px-4 py-2 border">Izin D</th>
+                            <th class="px-4 py-3 border">Kali</th>
+                            <th class="px-4 py-3 border">Total Jam</th>
+                            <th class="px-4 py-3 border">Kali</th>
+                            <th class="px-4 py-3 border">Total Jam</th>
+                            <th class="px-4 py-3 border">Kali</th>
+                            <th class="px-4 py-3 border">Total Jam</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr v-for="item in laporanData" :key="item.nip" class="hover:bg-gray-50">
+                        <tr v-for="item in rekapList" :key="item.nip" class="bg-white border-b hover:bg-gray-50">
                             <td class="px-4 py-2 border">{{ item.nip }}</td>
-                            <td class="px-4 py-2 border">{{ item.nama }}</td>
+                            <td class="px-4 py-2 border font-medium text-gray-900 whitespace-nowrap">{{ item.nama }}</td>
+                            <td class="px-4 py-2 border">{{ item.tipe_karyawan }}</td>
                             <td class="px-4 py-2 border">{{ item.jabatan }}</td>
                             <td class="px-4 py-2 border">{{ item.lokasi }}</td>
-                            <td class="px-4 py-2 border text-center">{{ item.jml_izin_libur }}</td>
-                            <td class="px-4 py-2 border text-center">{{ item.jml_kehadiran }}</td>
-                            <td class="px-4 py-2 border text-center">{{ item.total_jam_kehadiran }}</td>
-                            <td class="px-4 py-2 border text-center">{{ item.jml_terlambat }}</td>
-                            <td class="px-4 py-2 border text-center">{{ item.jam_terlambat }}</td>
-                            <td class="px-4 py-2 border text-center">{{ item.jml_pulang_awal }}</td>
-                            <td class="px-4 py-2 border text-center">{{ item.jam_pulang_awal }}</td>
-                            <td class="px-4 py-2 border text-center">{{ item.jml_lembur }}</td>
-                            <td class="px-4 py-2 border text-center">{{ item.jml_tidak_hadir }}</td>
-                            <td class="px-4 py-2 border">
-                                {{ item.tidak_hadir }}
-                            </td>
-                            <td class="px-4 py-2 border">
-                                {{ item.tidak_hadir }}
-                            </td>
-                            <td class="px-4 py-2 border">
-                                {{ item.tidak_hadir }}
-                            </td>
-                            <td class="px-4 py-2 border">
-                                {{ item.tidak_hadir }}
-                            </td>
-                            <td class="px-4 py-2 border">
-                                {{ item.tidak_hadir }}
-                            </td>
+                            <td class="px-4 py-2 border text-center">{{ item.total_kehadiran }}</td>
+                            <td class="px-4 py-2 border text-center">{{ formatMinutesToHours(item.total_menit_kehadiran) }}</td>
+                            <td class="px-4 py-2 border text-center">{{ item.total_izin }}</td>
+                            <td class="px-4 py-2 border text-center">{{ item.total_tidak_hadir }}</td>
+                            <td class="px-4 py-2 border text-center">{{ item.total_absen_tidak_lengkap }}</td>
+                            <td class="px-4 py-2 border text-center">{{ item.total_terlambat }}</td>
+                            <td class="px-4 py-2 border text-center">{{ formatMinutesToHours(item.total_menit_terlambat) }}</td>
+                            <td class="px-4 py-2 border text-center">{{ item.total_pulang_awal }}</td>
+                            <td class="px-4 py-2 border text-center">{{ formatMinutesToHours(item.total_menit_pulang_awal) }}</td>
                         </tr>
                     </tbody>
                 </table>
             </div>
-            <div class="mb-16 flex justify-end mt-4">
 
-
-                <nav aria-label="Page navigation example">
-                    <ul class="inline-flex -space-x-px text-sm">
-                        <li>
-                            <a href="#"
-                                class="flex items-center justify-center px-3 h-8 ms-0 leading-tight text-gray-500 bg-white border border-e-0 border-gray-300 rounded-s-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">Previous</a>
-                        </li>
-                        <li>
-                            <a href="#"
-                                class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">1</a>
-                        </li>
-                        <li>
-                            <a href="#"
-                                class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">2</a>
-                        </li>
-                        <li>
-                            <a href="#" aria-current="page"
-                                class="flex items-center justify-center px-3 h-8 text-blue-600 border border-gray-300 bg-blue-50 hover:bg-blue-100 hover:text-blue-700 dark:border-gray-700 dark:bg-gray-700 dark:text-white">3</a>
-                        </li>
-                        <li>
-                            <a href="#"
-                                class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">4</a>
-                        </li>
-                        <li>
-                            <a href="#"
-                                class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">5</a>
-                        </li>
-                        <li>
-                            <a href="#"
-                                class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">Next</a>
-                        </li>
-                    </ul>
-                </nav>
+            <div v-else class="text-center py-10 text-gray-500">
+                <p>Tidak ada data yang cocok dengan filter yang Anda pilih.</p>
             </div>
+
+        
+            <Paginator v-if="totalRecords > 0"
+                :rows="lazyParams.rows" 
+                :totalRecords="totalRecords" 
+                :first="lazyParams.first"
+                @page="onPage"
+                :rowsPerPageOptions="[2,10, 25, 50]"
+                class="mt-4"
+            ></Paginator>
         </div>
+        <div class="mb-16"></div>
     </BasePage>
 </template>
 
 <script setup lang="ts">
-import BasePage from '@/layouts/admin/BasePage.vue'
-import { ref } from 'vue'
+import { ref, reactive, watch } from 'vue';
+import BasePage from '@/layouts/admin/BasePage.vue';
+import Paginator from 'primevue/paginator';
+import { toast } from 'vue3-toastify';
+import { RekapPeriode, RekapPeriodeParams } from '@/models/rekapPeriodeModel';
+import { fetchRekapPeriodePagination } from '@/services/rekapPeriodeService';
 
-const search = ref('')
-const startDate = ref('')
-const endDate = ref('')
 
-const laporanData = ref([
-    {
-        nip: '12345678',
-        nama: 'Ahmad Santoso',
-        jabatan: 'Staff Gudang',
-        lokasi: 'Kandang A',
-        jml_izin_libur: 2,
-        jml_kehadiran: 20,
-        total_jam_kehadiran: '160 jam',
-        jml_terlambat: 3,
-        jam_terlambat: '45 menit',
-        jml_pulang_awal: 1,
-        jam_pulang_awal: '20 menit',
-        jml_lembur: '5 jam',
-        jml_tidak_hadir: 1,
-        tidak_hadir: 4,
-    },
-    {
-        nip: '12345678',
-        nama: 'Ahmad Santoso',
-        jabatan: 'Staff Gudang',
-        lokasi: 'Kandang A',
-        jml_izin_libur: 2,
-        jml_kehadiran: 20,
-        total_jam_kehadiran: '160 jam',
-        jml_terlambat: 3,
-        jam_terlambat: '45 menit',
-        jml_pulang_awal: 1,
-        jam_pulang_awal: '20 menit',
-        jml_lembur: '5 jam',
-        jml_tidak_hadir: 1,
-        tidak_hadir: 4,
-    },
-    // Data dummy lain jika perlu
-])
+const rekapList = ref<RekapPeriode[]>([]);
+const loading = ref(false);
+const totalRecords = ref(0);
+let debounceTimer: any = null;
+
+const filters = reactive({
+    search: '',
+    startDate: '',
+    endDate: '',
+});
+
+const lazyParams = ref({
+    first: 0,
+    rows: 10,
+    page: 1,
+});
+
+
+const getRekapData = async () => {
+    if (!filters.startDate || !filters.endDate) {
+        toast.warn("Silakan pilih rentang tanggal terlebih dahulu.");
+        return;
+    }
+    loading.value = true;
+    try {
+        const params: RekapPeriodeParams = {
+            page: lazyParams.value.page,
+            size: lazyParams.value.rows,
+            search: filters.search,
+            "start-date": filters.startDate,
+            "end-date": filters.endDate,
+        };
+        const response = await fetchRekapPeriodePagination(params);
+        rekapList.value = response.items;
+        totalRecords.value = response.total;
+    } catch (error) {
+        toast.error("Gagal memuat data rekapitulasi.");
+    } finally {
+        loading.value = false;
+    }
+};
+
+const onPage = (event: any) => {
+    lazyParams.value.page = event.page + 1;
+    lazyParams.value.rows = event.rows;
+    lazyParams.value.first = event.first;
+    getRekapData();
+};
+
+const exportToExcel = () => {
+    toast.info("Fitur ekspor ke Excel sedang dalam pengembangan.");
+};
+
+const formatMinutesToHours = (totalMinutes: number): string => {
+    if (totalMinutes == null || totalMinutes === 0) return '0 menit';
+    const hours = Math.floor(totalMinutes / 60);
+    const minutes = Math.round(totalMinutes % 60);
+    return `${hours} jam ${minutes} menit`;
+};
+
+watch(() => filters.search, () => {
+    if (debounceTimer) clearTimeout(debounceTimer);
+    debounceTimer = setTimeout(() => {
+        lazyParams.value.page = 1;
+        lazyParams.value.first = 0;
+        getRekapData();
+    }, 500);
+});
 </script>
-
-<style scoped>
-.input {
-    @apply border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500;
-}
-</style>
