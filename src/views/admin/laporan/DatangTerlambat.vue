@@ -1,194 +1,169 @@
 <template>
     <BasePage>
-        <div class="">
-            <div class="mb-4 flex flex-col md:flex-row gap-4 items-end">
+        <div class="my-5">
+            <p class="text-3xl font-semibold text-slate-800">Laporan Keterlambatan</p>
+        </div>
+
+        <div class="bg-white p-4 mb-5 rounded-lg shadow-md">
+            <div class="flex flex-col md:flex-row gap-4 items-end">
                 <div class="flex flex-col">
                     <label class="text-sm font-medium mb-1">Periode Mulai</label>
-                    <input type="date" v-model="startDate" class="input input-bordered w-full md:w-48" />
+                    <input type="date" v-model="filters.startDate"
+                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" />
                 </div>
                 <div class="flex flex-col">
                     <label class="text-sm font-medium mb-1">Periode Selesai</label>
-                    <input type="date" v-model="endDate" class="input input-bordered w-full md:w-48" />
+                    <input type="date" v-model="filters.endDate" :min="filters.startDate"
+                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" />
                 </div>
                 <div class="flex flex-col flex-1">
                     <label class="text-sm font-medium mb-1">Cari Nama / NIP</label>
-                    <input type="text" v-model="search" placeholder="Cari nama atau NIP"
-                        class="input input-bordered w-full" />
+                    <input type="text" v-model="filters.search" placeholder="Cari nama atau NIP"
+                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" />
                 </div>
-                <button type="submit"
-                    class="flex items-center gap-2 p-2.5 ms-2 text-sm font-medium text-white bg-blue-700 rounded-lg border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                    <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
-                        viewBox="0 0 20 20">
-                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
-                    </svg>
-                    <span class="">Proses</span>
+                <button @click="getLaporan"
+                    class="flex items-center gap-2 p-2.5 text-sm font-medium text-white bg-blue-700 rounded-lg border border-blue-700 hover:bg-blue-800">
+                    <i class="fa-solid fa-search"></i>
+                    <span>Proses</span>
                 </button>
             </div>
+        </div>
+        <div class="bg-white p-4 rounded-lg shadow-md">
 
-            <div class="relative overflow-x-auto bg-white shadow-md sm:rounded-lg">
-                <table class="table-auto w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-                    <thead
-                        class="text-xs text-gray-700  bg-gray-50 dark:bg-gray-700 dark:text-gray-400 text-center text-nowrap">
+            <div v-if="loading" class="text-center py-10 text-gray-500">
+                <i class="fa-solid fa-spinner animate-spin text-2xl"></i>
+                <p>Memuat data...</p>
+            </div>
+            <div v-else-if="laporanData.length > 0" class="overflow-x-auto">
+                <table class="w-full text-sm text-left text-gray-500" style="min-width: 1000px;">
+                    <thead class="text-xs text-gray-700 bg-gray-50 text-center whitespace-nowrap">
                         <tr>
-                            <th class="px-4 py-2 border">NIP</th>
-                            <th class="px-4 py-2 border">Nama</th>
-                            <th class="px-4 py-2 border">Jabatan</th>
-                            <th class="px-4 py-2 border">Shift</th>
-                            <th class="px-4 py-2 border">Lokasi</th>
-                            <th class="px-4 py-2 border">Tanggal</th>
-                            <th class="px-4 py-2 border">Durasi Terlambat</th>
+                            <th class="px-4 py-3 border">NIP</th>
+                            <th class="px-4 py-3 border">Nama</th>
+                            <th class="px-4 py-3 border">Jabatan</th>
+                            <th class="px-4 py-3 border">Lokasi</th>
+                            <th class="px-4 py-3 border">Jadwal Kerja</th>
+                            <th class="px-4 py-3 border">Tanggal Absen</th>
+                            <th class="px-4 py-3 border">Jadwal Masuk</th>
+                            <th class="px-4 py-3 border">Waktu Absen</th>
+                            <th class="px-4 py-3 border">Durasi Terlambat (Menit)</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr v-for="item in laporanData" :key="item.nip" class="hover:bg-gray-50">
+                        <tr v-for="item in laporanData" :key="item.nip" class="bg-white border-b hover:bg-gray-50">
                             <td class="px-4 py-2 border">{{ item.nip }}</td>
-                            <td class="px-4 py-2 border">{{ item.nama }}</td>
+                            <td class="px-4 py-2 border font-medium text-gray-900">{{ item.nama }}</td>
                             <td class="px-4 py-2 border">{{ item.jabatan }}</td>
-                            <td class="px-4 py-2 border">{{ item.shift }}</td>
                             <td class="px-4 py-2 border">{{ item.lokasi }}</td>
-                            <td class="px-4 py-2 border text-center">{{ item.tanggal }}</td>
-                            <td class="px-4 py-2 border text-center">{{ item.durasi_terlambat }}</td>
+                            <td class="px-4 py-2 border">{{ item.jadwal_kerja }}</td>
+                            <td class="px-4 py-2 border text-center">{{ formatDate(item.date_absensi) }}</td>
+                            <td class="px-4 py-2 border text-center">{{ item.jadwal_time_in }}</td>
+                            <td class="px-4 py-2 border text-center">{{ formatDateTime(item.waktu_absen) }}</td>
+                            <td class="px-4 py-2 border text-center font-semibold text-red-600">{{
+                                formatMinutesToHours(item.menit_terlambat)
+                            }}</td>
                         </tr>
                     </tbody>
                 </table>
             </div>
-            <div class="mb-16 flex justify-end mt-4">
-
-
-                <nav aria-label="Page navigation example">
-                    <ul class="inline-flex -space-x-px text-sm">
-                        <li>
-                            <a href="#"
-                                class="flex items-center justify-center px-3 h-8 ms-0 leading-tight text-gray-500 bg-white border border-e-0 border-gray-300 rounded-s-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">Previous</a>
-                        </li>
-                        <li>
-                            <a href="#"
-                                class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">1</a>
-                        </li>
-                        <li>
-                            <a href="#"
-                                class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">2</a>
-                        </li>
-                        <li>
-                            <a href="#" aria-current="page"
-                                class="flex items-center justify-center px-3 h-8 text-blue-600 border border-gray-300 bg-blue-50 hover:bg-blue-100 hover:text-blue-700 dark:border-gray-700 dark:bg-gray-700 dark:text-white">3</a>
-                        </li>
-                        <li>
-                            <a href="#"
-                                class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">4</a>
-                        </li>
-                        <li>
-                            <a href="#"
-                                class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">5</a>
-                        </li>
-                        <li>
-                            <a href="#"
-                                class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">Next</a>
-                        </li>
-                    </ul>
-                </nav>
+            <div v-else class="text-center py-10 text-gray-500">
+                <p>Tidak ada data keterlambatan yang ditemukan.</p>
             </div>
+
+
+            <Paginator v-if="totalRecords > 0" :rows="lazyParams.rows" :totalRecords="totalRecords"
+                :first="lazyParams.first" @page="onPage" :rowsPerPageOptions="[10, 25, 50]" class="mt-4"></Paginator>
         </div>
+        <div class="mb-16"></div>
     </BasePage>
 </template>
 
 <script setup lang="ts">
-import BasePage from '@/layouts/admin/BasePage.vue'
-import { ref } from 'vue'
+import { ref, reactive, watch } from 'vue';
+import BasePage from '@/layouts/admin/BasePage.vue';
+import Paginator from 'primevue/paginator';
+import { toast } from 'vue3-toastify';
+import { DatangTerlambat, LaporanParams } from '@/models/laporanModel';
+import { fetchDatangTerlambatPagination } from '@/services/laporanService';
 
-const search = ref('')
-const startDate = ref('')
-const endDate = ref('')
 
-const laporanData = ref([
-    {
-        nip: '12345678',
-        nama: 'Ahmad Santoso',
-        jabatan: 'Staff Gudang',
-        lokasi: 'Kandang A',
-        shift: 'Pagi',
-        tanggal: '02-04-2025',
-        durasi_terlambat: '00:10'
-    },
-    {
-        nip: '12345678',
-        nama: 'Ahmad Santoso',
-        jabatan: 'Staff Gudang',
-        lokasi: 'Kandang A',
-        shift: 'Pagi',
-        tanggal: '02-04-2025',
-        durasi_terlambat: '00:10'
-    },
-    {
-        nip: '12345678',
-        nama: 'Ahmad Santoso',
-        jabatan: 'Staff Gudang',
-        lokasi: 'Kandang A',
-        shift: 'Pagi',
-        tanggal: '02-04-2025',
-        durasi_terlambat: '00:10'
-    },
-    {
-        nip: '12345678',
-        nama: 'Ahmad Santoso',
-        jabatan: 'Staff Gudang',
-        lokasi: 'Kandang A',
-        shift: 'Pagi',
-        tanggal: '02-04-2025',
-        durasi_terlambat: '00:10'
-    },
-    {
-        nip: '12345678',
-        nama: 'Ahmad Santoso',
-        jabatan: 'Staff Gudang',
-        lokasi: 'Kandang A',
-        shift: 'Pagi',
-        tanggal: '02-04-2025',
-        durasi_terlambat: '00:10'
-    },
-    {
-        nip: '12345678',
-        nama: 'Ahmad Santoso',
-        jabatan: 'Staff Gudang',
-        lokasi: 'Kandang A',
-        shift: 'Pagi',
-        tanggal: '02-04-2025',
-        durasi_terlambat: '00:10'
-    },
-    {
-        nip: '12345678',
-        nama: 'Ahmad Santoso',
-        jabatan: 'Staff Gudang',
-        lokasi: 'Kandang A',
-        shift: 'Pagi',
-        tanggal: '02-04-2025',
-        durasi_terlambat: '00:10'
-    },
-    {
-        nip: '12345678',
-        nama: 'Ahmad Santoso',
-        jabatan: 'Staff Gudang',
-        lokasi: 'Kandang A',
-        shift: 'Pagi',
-        tanggal: '02-04-2025',
-        durasi_terlambat: '00:10'
-    },
-    {
-        nip: '12345678',
-        nama: 'Ahmad Santoso',
-        jabatan: 'Staff Gudang',
-        lokasi: 'Kandang A',
-        shift: 'Pagi',
-        tanggal: '02-04-2025',
-        durasi_terlambat: '00:10'
-    },
-    // Data dummy lain jika perlu
-])
+const laporanData = ref<DatangTerlambat[]>([]);
+const loading = ref(false);
+const totalRecords = ref(0);
+let debounceTimer: any = null;
+
+const filters = reactive({
+    search: '',
+    startDate: '',
+    endDate: '',
+});
+
+const lazyParams = ref({
+    first: 0,
+    rows: 10,
+    page: 1,
+});
+
+
+const getLaporan = async () => {
+    if (!filters.startDate || !filters.endDate) {
+        toast.warn("Silakan pilih rentang tanggal terlebih dahulu.");
+        return;
+    }
+    loading.value = true;
+    try {
+        const params: LaporanParams = {
+            page: lazyParams.value.page,
+            size: lazyParams.value.rows,
+            search: filters.search,
+            "start-date": filters.startDate,
+            "end-date": filters.endDate,
+        };
+        const response = await fetchDatangTerlambatPagination(params);
+        laporanData.value = response.items;
+        totalRecords.value = response.total;
+    } catch (error) {
+        toast.error("Gagal memuat laporan keterlambatan.");
+    } finally {
+        loading.value = false;
+    }
+};
+
+const formatMinutesToHours = (totalMinutes: number): string => {
+    if (totalMinutes == null || totalMinutes === 0) return '00:00';
+    const hours = Math.floor(totalMinutes / 60);
+    const minutes = Math.round(totalMinutes % 60);
+    return `${hours} jam ${minutes} menit`;
+};
+
+const onPage = (event: any) => {
+    lazyParams.value.page = event.page + 1;
+    lazyParams.value.rows = event.rows;
+    lazyParams.value.first = event.first;
+    getLaporan();
+};
+
+const formatDate = (dateString: string) => new Date(dateString).toLocaleDateString('id-ID', { day: '2-digit', month: '2-digit', year: 'numeric' });
+const formatDateTime = (dateString: string) => {
+    if (!dateString) return '-';
+    const date = new Date(dateString);
+    const day = String(date.getDate()).padStart(2, '0');
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const year = date.getFullYear();
+    const hours = String(date.getHours()).padStart(2, '0');
+    const minutes = String(date.getMinutes()).padStart(2, '0');
+    const seconds = String(date.getSeconds()).padStart(2, '0');
+
+    return `${day}/${month}/${year} ${hours}:${minutes}:${seconds}`;
+};
+
+watch(() => filters.search, () => {
+    if (debounceTimer) clearTimeout(debounceTimer);
+    debounceTimer = setTimeout(() => {
+        lazyParams.value.page = 1;
+        lazyParams.value.first = 0;
+        getLaporan();
+    }, 500);
+});
+
 </script>
-
-<style scoped>
-.input {
-    @apply border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500;
-}
-</style>

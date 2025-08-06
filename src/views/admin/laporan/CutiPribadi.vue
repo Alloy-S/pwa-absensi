@@ -1,128 +1,144 @@
 <template>
     <BasePage>
-        <div class="">
-            <div class="mb-4 flex flex-col md:flex-row gap-4 items-end">
-                <div class="flex flex-col">
-                    <label class="text-sm font-medium mb-1">Periode Mulai</label>
-                    <input type="date" v-model="startDate" class="input input-bordered w-full md:w-48" />
-                </div>
-                <div class="flex flex-col">
-                    <label class="text-sm font-medium mb-1">Periode Selesai</label>
-                    <input type="date" v-model="endDate" class="input input-bordered w-full md:w-48" />
+        <div class="my-5">
+             <p class="text-3xl font-semibold text-slate-800">Laporan Kuota Cuti</p>
+        </div>
+
+        <div class="bg-white p-4 mb-5 rounded-lg shadow-md">
+            <div class="flex flex-col md:flex-row gap-4 items-end">
+                <div>
+                    <label for="year-picker" class="block mb-2 text-sm font-medium text-gray-700">Filter Tahun Periode</label>
+                    <input type="number" id="year-picker" v-model="filters.year"
+                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                        placeholder="Contoh: 2025" />
                 </div>
                 <div class="flex flex-col flex-1">
                     <label class="text-sm font-medium mb-1">Cari Nama / NIP</label>
-                    <input type="text" v-model="search" placeholder="Cari nama atau NIP"
-                        class="input input-bordered w-full" />
+                    <input type="text" v-model="filters.search" placeholder="Cari nama atau NIP"
+                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" />
                 </div>
-                <button type="submit"
-                    class="flex items-center gap-2 p-2.5 ms-2 text-sm font-medium text-white bg-blue-700 rounded-lg border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                    <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
-                        viewBox="0 0 20 20">
-                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
-                    </svg>
-                    <span class="">Proses</span>
+                <button @click="getLaporan"
+                    class="flex items-center gap-2 p-2.5 text-sm font-medium text-white bg-blue-700 rounded-lg border border-blue-700 hover:bg-blue-800">
+                    <i class="fa-solid fa-search"></i>
+                    <span>Proses</span>
+                </button>
+            </div>
+        </div>
+
+        <div class="bg-white p-4 rounded-lg shadow-md">
+            <div class="flex justify-end mb-4">
+                <button @click="exportToExcel" class="px-4 py-2 bg-green-600 text-white font-semibold rounded-lg hover:bg-green-700 transition text-sm flex items-center">
+                    <i class="fa-solid fa-file-excel mr-2"></i>
+                    Ekspor ke Excel
                 </button>
             </div>
 
-            <div class="relative overflow-x-auto bg-white shadow-md sm:rounded-lg">
-                <table class="table-auto w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-                    <thead
-                        class="text-xs text-gray-700  bg-gray-50 dark:bg-gray-700 dark:text-gray-400 text-center text-nowrap">
+            <div v-if="loading" class="text-center py-10 text-gray-500">
+                <i class="fa-solid fa-spinner animate-spin text-2xl"></i>
+                <p>Memuat data...</p>
+            </div>
+
+            <div v-else-if="laporanList.length > 0" class="overflow-x-auto">
+                <table class="w-full text-sm text-left text-gray-500" style="min-width: 800px;">
+                    <thead class="text-xs text-gray-700 bg-gray-50 text-center whitespace-nowrap">
                         <tr>
-                            <th class="px-4 py-2 border">NIP</th>
-                            <th class="px-4 py-2 border">Nama</th>
-                            <th class="px-4 py-2 border">Jabatan</th>
-                            <th class="px-4 py-2 border">Lokasi</th>
-                            <th class="px-4 py-2 border">Tanggal Mulai</th>
-                            <th class="px-4 py-2 border">Tanggal Selesai</th>
-                            <th class="px-4 py-2 border">Hak Cuti</th>
-                            <th class="px-4 py-2 border">Diambil</th>
-                            <th class="px-4 py-2 border">Sisa</th>
+                            <th class="px-4 py-3 border">NIP</th>
+                            <th class="px-4 py-3 border text-left">Nama Karyawan</th>
+                            <th class="px-4 py-3 border">Periode</th>
+                            <th class="px-4 py-3 border">Total Kuota</th>
+                            <th class="px-4 py-3 border">Kuota Digunakan</th>
+                            <th class="px-4 py-3 border">Sisa Kuota</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr v-for="item in laporanData" :key="item.nip" class="hover:bg-gray-50">
+                        <tr v-for="item in laporanList" :key="item.nip + item.periode" class="bg-white border-b hover:bg-gray-50">
                             <td class="px-4 py-2 border">{{ item.nip }}</td>
-                            <td class="px-4 py-2 border">{{ item.nama }}</td>
-                            <td class="px-4 py-2 border">{{ item.jabatan }}</td>
-                            <td class="px-4 py-2 border">{{ item.lokasi }}</td>
-                            <td class="px-4 py-2 border text-center">{{ item.tanggal_mulai }}</td>
-                            <td class="px-4 py-2 border text-center">{{ item.tanggal_selesai }}</td>
-                            <td class="px-4 py-2 border text-center">{{ item.hak_cuti }}</td>
-                            <td class="px-4 py-2 border text-center">{{ item.diambil }}</td>
-                            <td class="px-4 py-2 border text-center">{{ item.sisa }}</td>
+                            <td class="px-4 py-2 border font-medium text-gray-900 text-left">{{ item.nama }}</td>
+                            <td class="px-4 py-2 border text-center">{{ item.periode }}</td>
+                            <td class="px-4 py-2 border text-center">{{ item.total_cuti_tahunan }}</td>
+                            <td class="px-4 py-2 border text-center">{{ item.cuti_tahunan_terpakai }}</td>
+                            <td class="px-4 py-2 border text-center font-semibold text-blue-600">{{ item.sisa_cuti_tahunan }}</td>
                         </tr>
                     </tbody>
                 </table>
             </div>
-            <div class="mb-16 flex justify-end mt-4">
-
-
-                <nav aria-label="Page navigation example">
-                    <ul class="inline-flex -space-x-px text-sm">
-                        <li>
-                            <a href="#"
-                                class="flex items-center justify-center px-3 h-8 ms-0 leading-tight text-gray-500 bg-white border border-e-0 border-gray-300 rounded-s-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">Previous</a>
-                        </li>
-                        <li>
-                            <a href="#"
-                                class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">1</a>
-                        </li>
-                        <li>
-                            <a href="#"
-                                class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">2</a>
-                        </li>
-                        <li>
-                            <a href="#" aria-current="page"
-                                class="flex items-center justify-center px-3 h-8 text-blue-600 border border-gray-300 bg-blue-50 hover:bg-blue-100 hover:text-blue-700 dark:border-gray-700 dark:bg-gray-700 dark:text-white">3</a>
-                        </li>
-                        <li>
-                            <a href="#"
-                                class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">4</a>
-                        </li>
-                        <li>
-                            <a href="#"
-                                class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">5</a>
-                        </li>
-                        <li>
-                            <a href="#"
-                                class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">Next</a>
-                        </li>
-                    </ul>
-                </nav>
+            
+            <div v-else class="text-center py-10 text-gray-500">
+                <p>Tidak ada data yang cocok dengan filter yang Anda pilih.</p>
             </div>
+
+            
+            <Paginator v-if="totalRecords > 0"
+                :rows="lazyParams.rows" 
+                :totalRecords="totalRecords" 
+                :first="lazyParams.first"
+                @page="onPage"
+                :rowsPerPageOptions="[10, 25, 50]"
+                class="mt-4"
+            ></Paginator>
         </div>
+        <div class="mb-16"></div>
     </BasePage>
 </template>
 
 <script setup lang="ts">
-import BasePage from '@/layouts/admin/BasePage.vue'
-import { ref } from 'vue'
+import { ref, reactive } from 'vue';
+import BasePage from '@/layouts/admin/BasePage.vue';
+import Paginator from 'primevue/paginator';
+import { toast } from 'vue3-toastify';
+import { KuotaCuti, LaporanCutiParams } from '@/models/laporanModel';
+import { fetchLaporanKuotaCutiPagination } from '@/services/laporanService';
 
-const search = ref('')
-const startDate = ref('')
-const endDate = ref('')
 
-const laporanData = ref([
-    {
-        nip: '12345678',
-        nama: 'Ahmad Santoso',
-        jabatan: 'Staff Gudang',
-        lokasi: 'Kandang A',
-        tanggal_mulai: '01-01-2025',
-        tanggal_selesai: '31-12-2025',
-        hak_cuti: '12',
-        diambil: '3',
-        sisa: '9'
+
+const laporanList = ref<KuotaCuti[]>([]);
+const loading = ref(false);
+const totalRecords = ref(0);
+
+const filters = reactive({
+    search: '',
+    year: new Date().getFullYear(),
+});
+
+const lazyParams = ref({
+    first: 0,
+    rows: 10,
+    page: 1,
+});
+
+
+const getLaporan = async () => {
+    if (!filters.year) {
+        toast.warn("Silakan isi tahun periode terlebih dahulu.");
+        return;
     }
-    // Data dummy lain jika perlu
-])
-</script>
+    loading.value = true;
+    try {
+        const params: LaporanCutiParams = {
+            page: lazyParams.value.page,
+            size: lazyParams.value.rows,
+            search: filters.search,
+            periode: filters.year,
+        };
+        const response = await fetchLaporanKuotaCutiPagination(params);
+        laporanList.value = response.items;
+        totalRecords.value = response.total;
+    } catch (error) {
+        toast.error("Gagal memuat laporan kuota cuti.");
+    } finally {
+        loading.value = false;
+    }
+};
 
-<style scoped>
-.input {
-    @apply border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500;
-}
-</style>
+const onPage = (event: any) => {
+    lazyParams.value.page = event.page + 1;
+    lazyParams.value.rows = event.rows;
+    lazyParams.value.first = event.first;
+    getLaporan();
+};
+
+const exportToExcel = () => {
+    toast.info("Fitur ekspor ke Excel sedang dalam pengembangan.");
+};
+
+</script>

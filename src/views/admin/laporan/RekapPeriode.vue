@@ -4,40 +4,35 @@
             <p class="text-3xl font-semibold text-slate-800">Laporan Rekapitulasi Kehadiran</p>
         </div>
 
-        
         <div class="bg-white p-4 mb-5 rounded-lg shadow-md">
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 items-end">
-                <div class="lg:col-span-2">
-                    <label class="block mb-2 text-sm font-medium text-gray-700">Filter Rentang Tanggal</label>
-                    <div class="flex space-x-2">
-                        <input type="date" v-model="filters.startDate"
-                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" />
-                        <input type="date" v-model="filters.endDate" :min="filters.startDate"
-                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" />
-                    </div>
+            <div class="flex flex-col md:flex-row gap-4 items-end">
+                <div class="flex flex-col">
+                    <label class="text-sm font-medium mb-1">Periode Mulai</label>
+                    <input type="date" v-model="filters.startDate"
+                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" />
                 </div>
-                <div>
-                    <label for="search-karyawan" class="block mb-2 text-sm font-medium text-gray-700">Cari Nama / NIP</label>
-                    <div class="relative">
-                        <span class="absolute inset-y-0 left-0 flex items-center pl-3">
-                            <i class="fa-solid fa-magnifying-glass text-gray-400"></i>
-                        </span>
-                        <input type="text" id="search-karyawan" v-model="filters.search"
-                            class="w-full pl-10 p-2.5 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500"
-                            placeholder="Cari..." />
-                    </div>
+                <div class="flex flex-col">
+                    <label class="text-sm font-medium mb-1">Periode Selesai</label>
+                    <input type="date" v-model="filters.endDate" :min="filters.startDate"
+                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" />
                 </div>
-                 <button @click="getRekapData" class="w-full md:w-auto px-5 py-2.5 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition flex items-center justify-center">
-                    <i class="fa-solid fa-search mr-2"></i>
-                    Tampilkan
+                <div class="flex flex-col flex-1">
+                    <label class="text-sm font-medium mb-1">Cari Nama / NIP</label>
+                    <input type="text" v-model="filters.search" placeholder="Cari nama atau NIP"
+                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" />
+                </div>
+                <button @click="getRekapData"
+                    class="flex items-center gap-2 p-2.5 text-sm font-medium text-white bg-blue-700 rounded-lg border border-blue-700 hover:bg-blue-800">
+                    <i class="fa-solid fa-search"></i>
+                    <span>Proses</span>
                 </button>
             </div>
         </div>
 
-        
         <div class="bg-white p-4 rounded-lg shadow-md">
             <div class="flex justify-end mb-4">
-                <button @click="exportToExcel" class="px-4 py-2 bg-green-600 text-white font-semibold rounded-lg hover:bg-green-700 transition text-sm flex items-center">
+                <button @click="exportToExcel"
+                    class="px-4 py-2 bg-green-600 text-white font-semibold rounded-lg hover:bg-green-700 transition text-sm flex items-center">
                     <i class="fa-solid fa-file-excel mr-2"></i>
                     Ekspor ke Excel
                 </button>
@@ -47,7 +42,7 @@
                 <i class="fa-solid fa-spinner animate-spin text-2xl"></i>
                 <p>Memuat data...</p>
             </div>
-            
+
             <div v-else-if="rekapList.length > 0" class="overflow-x-auto">
                 <table class="w-full text-sm text-left text-gray-500" style="min-width: 1400px;">
                     <thead class="text-xs text-gray-700 bg-gray-50 text-center whitespace-nowrap">
@@ -76,19 +71,23 @@
                     <tbody>
                         <tr v-for="item in rekapList" :key="item.nip" class="bg-white border-b hover:bg-gray-50">
                             <td class="px-4 py-2 border">{{ item.nip }}</td>
-                            <td class="px-4 py-2 border font-medium text-gray-900 whitespace-nowrap">{{ item.nama }}</td>
+                            <td class="px-4 py-2 border font-medium text-gray-900 whitespace-nowrap">{{ item.nama }}
+                            </td>
                             <td class="px-4 py-2 border">{{ item.tipe_karyawan }}</td>
                             <td class="px-4 py-2 border">{{ item.jabatan }}</td>
                             <td class="px-4 py-2 border">{{ item.lokasi }}</td>
                             <td class="px-4 py-2 border text-center">{{ item.total_kehadiran }}</td>
-                            <td class="px-4 py-2 border text-center">{{ formatMinutesToHours(item.total_menit_kehadiran) }}</td>
+                            <td class="px-4 py-2 border text-center">{{ formatMinutesToHours(item.total_menit_kehadiran)
+                                }}</td>
                             <td class="px-4 py-2 border text-center">{{ item.total_izin }}</td>
                             <td class="px-4 py-2 border text-center">{{ item.total_tidak_hadir }}</td>
                             <td class="px-4 py-2 border text-center">{{ item.total_absen_tidak_lengkap }}</td>
                             <td class="px-4 py-2 border text-center">{{ item.total_terlambat }}</td>
-                            <td class="px-4 py-2 border text-center">{{ formatMinutesToHours(item.total_menit_terlambat) }}</td>
+                            <td class="px-4 py-2 border text-center">{{ formatMinutesToHours(item.total_menit_terlambat)
+                                }}</td>
                             <td class="px-4 py-2 border text-center">{{ item.total_pulang_awal }}</td>
-                            <td class="px-4 py-2 border text-center">{{ formatMinutesToHours(item.total_menit_pulang_awal) }}</td>
+                            <td class="px-4 py-2 border text-center">{{
+                                formatMinutesToHours(item.total_menit_pulang_awal) }}</td>
                         </tr>
                     </tbody>
                 </table>
@@ -98,15 +97,9 @@
                 <p>Tidak ada data yang cocok dengan filter yang Anda pilih.</p>
             </div>
 
-        
-            <Paginator v-if="totalRecords > 0"
-                :rows="lazyParams.rows" 
-                :totalRecords="totalRecords" 
-                :first="lazyParams.first"
-                @page="onPage"
-                :rowsPerPageOptions="[2,10, 25, 50]"
-                class="mt-4"
-            ></Paginator>
+
+            <Paginator v-if="totalRecords > 0" :rows="lazyParams.rows" :totalRecords="totalRecords"
+                :first="lazyParams.first" @page="onPage" :rowsPerPageOptions="[2, 10, 25, 50]" class="mt-4"></Paginator>
         </div>
         <div class="mb-16"></div>
     </BasePage>
@@ -117,8 +110,8 @@ import { ref, reactive, watch } from 'vue';
 import BasePage from '@/layouts/admin/BasePage.vue';
 import Paginator from 'primevue/paginator';
 import { toast } from 'vue3-toastify';
-import { RekapPeriode, RekapPeriodeParams } from '@/models/rekapPeriodeModel';
-import { fetchRekapPeriodePagination } from '@/services/rekapPeriodeService';
+import { RekapPeriode, LaporanParams } from '@/models/laporanModel';
+import { fetchRekapPeriodePagination } from '@/services/laporanService';
 
 
 const rekapList = ref<RekapPeriode[]>([]);
@@ -146,7 +139,7 @@ const getRekapData = async () => {
     }
     loading.value = true;
     try {
-        const params: RekapPeriodeParams = {
+        const params: LaporanParams = {
             page: lazyParams.value.page,
             size: lazyParams.value.rows,
             search: filters.search,
