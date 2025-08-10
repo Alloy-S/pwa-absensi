@@ -52,7 +52,7 @@
                                 {{ slotProps.data.harga.nama }}
                             </template>
                         </Column>
-                        <Column field="ton_normal" header="Ton Normal" style="min-width:8rem" headerClass="text-right"
+                        <!-- <Column field="ton_normal" header="Ton Normal" style="min-width:8rem" headerClass="text-right"
                             bodyClass="text-right">
                             <template #body="slotProps">
                                 {{ slotProps.data.ton_normal }} Ton
@@ -63,7 +63,7 @@
                             <template #body="slotProps">
                                 {{ slotProps.data.ton_lembur }} Ton
                             </template>
-                        </Column>
+                        </Column> -->
                         <Column field="total" header="Subtotal" style="min-width:10rem" headerClass="text-right"
                             bodyClass="text-right">
                             <template #body="slotProps">

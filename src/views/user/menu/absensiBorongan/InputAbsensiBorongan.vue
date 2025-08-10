@@ -71,11 +71,11 @@
                         <Column field="userName" header="Karyawan"></Column>
                         <Column field="type" header="Tipe"></Column>
                         <Column field="hargaName" header="Jenis Pekerjaan"></Column>
-                        <Column header="Tonase">
+                        <!-- <Column header="Tonase">
                             <template #body="slotProps">
                                 {{ slotProps.data.ton_normal }}
                             </template>
-                        </Column>
+                        </Column> -->
                         <Column header="Pendapatan">
                             <template #body="slotProps">
                                <span class="font-semibold text-blue-600">{{ formatCurrency(slotProps.data.totalHarga) }}</span>

@@ -2,6 +2,7 @@ import NotFound from "@/views/admin/NotFound.vue";
 import RekapPeriode from "@/views/admin/laporan/RekapPeriode.vue";
 import DatangTerlambat from "@/views/admin/laporan/DatangTerlambat.vue";
 import CutiPribadi from "@/views/admin/laporan/CutiPribadi.vue";
+import UpahBorongan from "@/views/admin/laporan/UpahBorongan.vue";
 
 const adminRoles = ["Admin", "HRD"];
 
@@ -426,6 +427,12 @@ export const adminRoutes = [
     path: "/admin/laporan/cuti-pribadi",
     name: "laporan cuti pribadi",
     component: CutiPribadi,
+    meta: { requiresAuth: true, roles: adminRoles },
+  },
+  {
+    path: "/admin/laporan/upah-borongan",
+    name: "laporan upah borongan",
+    component: UpahBorongan,
     meta: { requiresAuth: true, roles: adminRoles },
   },
   {

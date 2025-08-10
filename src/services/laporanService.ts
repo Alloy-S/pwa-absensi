@@ -1,6 +1,13 @@
 import api from "@/lib/axios";
-import { RekapPangination, LaporanParams, DatangTerlambatPangination, LaporanCutiParams, KuotaCutiPangination } from "@/models/laporanModel";
-
+import {
+  RekapPangination,
+  LaporanParams,
+  DatangTerlambatPangination,
+  LaporanCutiParams,
+  KuotaCutiPangination,
+  UpahBoronganPangination,
+  ExportResponse,
+} from "@/models/laporanModel";
 
 export const fetchRekapPeriodePagination = async (
   params: LaporanParams
@@ -14,9 +21,12 @@ export const fetchRekapPeriodePagination = async (
 export const fetchDatangTerlambatPagination = async (
   params: LaporanParams
 ): Promise<DatangTerlambatPangination> => {
-  const response = await api.get<DatangTerlambatPangination>("/laporan/datang-terlambat", {
-    params,
-  });
+  const response = await api.get<DatangTerlambatPangination>(
+    "/laporan/datang-terlambat",
+    {
+      params,
+    }
+  );
   return response.data;
 };
 
@@ -26,5 +36,43 @@ export const fetchLaporanKuotaCutiPagination = async (
   const response = await api.get<KuotaCutiPangination>("/laporan/kuota-cuti", {
     params,
   });
+  return response.data;
+};
+
+export const fetchUpahBoronganPagination = async (
+  params: LaporanCutiParams
+): Promise<UpahBoronganPangination> => {
+  const response = await api.get<UpahBoronganPangination>(
+    "/laporan/upah-borongan",
+    {
+      params,
+    }
+  );
+  return response.data;
+};
+
+export const ExportUpahBorongan = async (params: {
+  "start-date": string;
+  "end-date": string;
+}): Promise<ExportResponse> => {
+  const response = await api.get<ExportResponse>(
+    "/laporan/export/upah-borongan",
+    {
+      params,
+    }
+  );
+  return response.data;
+};
+
+export const ExportRekapFull = async (params: {
+  "start-date": string;
+  "end-date": string;
+}): Promise<ExportResponse> => {
+  const response = await api.get<ExportResponse>(
+    "/laporan/export/rekap-full",
+    {
+      params,
+    }
+  );
   return response.data;
 };

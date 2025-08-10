@@ -36,6 +36,23 @@ export interface KuotaCuti {
     cuti_tahunan_terpakai: number;
 }
 
+export interface UpahItem {
+    date: string;
+    upah: number;
+}
+
+export interface HeaderUpahItem {
+    date: string;
+    day: string;
+}
+
+export interface UpahBorongan {
+    nip: string;
+    nama: string;
+    upah: UpahItem[];
+    total_upah: number;
+}
+
 export interface LaporanParams {
     page?: number;
     size?: number;
@@ -67,4 +84,16 @@ export interface KuotaCutiPangination {
     pages: number;
     total: number;
     items: KuotaCuti[];
+}
+
+export interface UpahBoronganPangination {
+    pages: number;
+    total: number;
+    headers: HeaderUpahItem[];
+    items: UpahBorongan[];
+}
+
+export interface ExportResponse {
+    filename: string;
+    file: string;
 }

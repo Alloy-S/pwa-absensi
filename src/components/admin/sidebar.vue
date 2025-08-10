@@ -196,6 +196,11 @@
                                 class="flex items-center w-full p-2 text-base font-normal text-gray-600 transition duration-75 group hover:bg-gray-100 border-l-4 border-transparent hover:border-blue-600 pl-14">
                                 Cuti Pribadi</RouterLink>
                         </li>
+                        <li>
+                            <RouterLink to="/admin/laporan/upah-borongan"
+                                class="flex items-center w-full p-2 text-base font-normal text-gray-600 transition duration-75 group hover:bg-gray-100 border-l-4 border-transparent hover:border-blue-600 pl-14">
+                                Rekap Upah Borongan</RouterLink>
+                        </li>
                     </ul>
                 </li>
                 <li class="px-5">

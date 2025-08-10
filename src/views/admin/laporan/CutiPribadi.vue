@@ -26,12 +26,6 @@
         </div>
 
         <div class="bg-white p-4 rounded-lg shadow-md">
-            <div class="flex justify-end mb-4">
-                <button @click="exportToExcel" class="px-4 py-2 bg-green-600 text-white font-semibold rounded-lg hover:bg-green-700 transition text-sm flex items-center">
-                    <i class="fa-solid fa-file-excel mr-2"></i>
-                    Ekspor ke Excel
-                </button>
-            </div>
 
             <div v-if="loading" class="text-center py-10 text-gray-500">
                 <i class="fa-solid fa-spinner animate-spin text-2xl"></i>
@@ -136,9 +130,4 @@ const onPage = (event: any) => {
     lazyParams.value.first = event.first;
     getLaporan();
 };
-
-const exportToExcel = () => {
-    toast.info("Fitur ekspor ke Excel sedang dalam pengembangan.");
-};
-
 </script>
