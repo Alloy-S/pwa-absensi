@@ -3,75 +3,70 @@
         <div class="space-y-3">
             <div class="mb-10 mt-5 flex justify-between items-start">
                 <p class="text-3xl font-semibold text-slate-800">Tambah Komponen Gaji</p>
-
             </div>
 
-
             <div class="flex space-x-3">
-
                 <div class="flex-[7] space-y-3">
-                    <div class="p-3 bg-white rounded-md shadow-md">
-                        <div class="mb-6">
-                            <label for="nama" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Kode
-                                Komponen<span class="text-red-600">*</span></label>
-                            <input type="text" id="nama"
-                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                    <form @submit.prevent="simpan">
+                        <div class="p-5 bg-white rounded-md shadow-md space-y-4">
+                            <div>
+                                <label for="kom_kode" class="block mb-2 text-sm font-medium text-gray-900">Kode
+                                    Komponen<span class="text-red-600">*</span></label>
+                                <input v-model="form.kom_kode" type="text" id="kom_kode" required
+                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+                            </div>
+
+                            <div>
+                                <label for="kom_name" class="block mb-2 text-sm font-medium text-gray-900">Nama
+                                    Komponen<span class="text-red-600">*</span></label>
+                                <input v-model="form.kom_name" type="text" id="kom_name" required
+                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+                            </div>
+
+                            <div>
+                                <label for="no_urut" class="block mb-2 text-sm font-medium text-gray-900">Nomor
+                                    Urut<span class="text-red-600">*</span></label>
+                                <input v-model.number="form.no_urut" type="number" id="no_urut" required
+                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+                            </div>
+
+                            <div>
+                                <label for="tipe" class="block mb-2 text-sm font-medium text-gray-900">Tipe
+                                    Komponen<span class="text-red-600">*</span></label>
+                                <select v-model="form.tipe" id="tipe" required
+                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+                                    <option disabled value="">Pilih salah satu</option>
+                                    <option value="TUNJANGAN">Tunjangan (Pemasukan)</option>
+                                    <option value="POTONGAN">Potongan</option>
+                                </select>
+                            </div>
+
+                            <div>
+                                <label for="hitung" class="block mb-2 text-sm font-medium text-gray-900">Cara
+                                    Hitung<span class="text-red-600">*</span></label>
+                                <select v-model="form.hitung" id="hitung" required
+                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+                                    <option disabled value="">Pilih salah satu</option>
+                                    <option value="PERIODE">Periode</option>
+                                    <option value="HARIAN">Harian</option>
+                                </select>
+                            </div>
                         </div>
 
-                        <div class="mb-6">
-                            <label for="date"
-                                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nama Komponen<span
-                                    class="text-red-600">*</span></label>
-                            <input type="text" id="date"
-                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                        </div>
-
-                        <div class="mb-6">
-                            <label for="type" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Dapat digunakan Formula<span class="text-red-600">*</span></label>
-                            <input type="checkbox" id="date"
-                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                        </div>
-
-                        <div class="mb-6">
-                            <label for="hitung" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Tipe Hitung<span class="text-red-600">*</span></label>
-                            <select id="hitung"
-                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                                <option disabled selected>Pilih salah satu</option>
-                                <option value="0">Periode</option>
-                                <option value="1">Harian</option>
-                            </select>
-                        </div>
-
-                        <div class="mb-6">
-                            <label for="type" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Tipe
-                                Pembayaran<span class="text-red-600">*</span></label>
-                            <select id="type"
-                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                                <option disabled selected>Pilih salah satu</option>
-                                <option value="0">Harian</option>
-                                <option value="1">Mingguan</option>
-                                <option value="2">Bulanan</option>
-                                <option value="3">Tahunan</option>
-                            </select>
-                        </div>
-                    </div>
-
-
-                    <div class="mt-5 flex justify-end">
-
-                        <div class="w-1/3 flex">
+                        <div class="mt-5 flex justify-end space-x-2">
                             <button type="button" @click="goBack"
-                                class="w-full text-red-500 hover:text-white border border-red-600 hover:bg-red-500 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 dark:border-red-500 dark:text-red-500 dark:hover:text-white dark:hover:bg-red-500 dark:focus:ring-red-600">Batal</button>
-                            <button type="button"
-                                class="w-full text-white bg-blue-500 hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Simpan</button>
+                                class="text-red-500 border border-red-600 hover:bg-red-500 hover:text-white rounded-lg px-5 py-2.5">
+                                Batal
+                            </button>
+                            <button type="submit" :disabled="isSubmitting"
+                                class="text-white bg-blue-500 hover:bg-blue-700 rounded-lg px-5 py-2.5 flex items-center disabled:bg-blue-300">
+                                <i v-if="isSubmitting" class="fa-solid fa-spinner animate-spin mr-2"></i>
+                                <span>Simpan</span>
+                            </button>
                         </div>
-                    </div>
-
-
+                    </form>
                 </div>
-                <div class="flex-[3]">
-
-                </div>
+                <div class="flex-[3]"></div>
             </div>
         </div>
         <div class="mb-20"></div>
@@ -79,16 +74,40 @@
 </template>
 
 <script setup lang="ts">
-import BasePage from '@/layouts/admin/BasePage.vue'
-import { useRouter } from 'vue-router'
+import { ref } from 'vue';
+import BasePage from '@/layouts/admin/BasePage.vue';
+import { useRouter } from 'vue-router';
+import { toast } from 'vue3-toastify';
+import { KomponenGaji } from '@/models/komponenGajiModel';
+import { addKomGaji } from '@/services/komponenGajiService';
 
 const router = useRouter();
+const isSubmitting = ref(false);
+
+const form = ref<KomponenGaji>({
+    id: '',
+    kom_kode: '',
+    kom_name: '',
+    no_urut: 0,
+    tipe: '',
+    hitung: '',
+});
 
 const goBack = () => {
     router.back();
-}
+};
 
+const simpan = async () => {
 
-
-
+    isSubmitting.value = true;
+    try {
+        await addKomGaji(form.value);
+        toast.success("Komponen gaji berhasil ditambahkan.");
+        router.replace('/admin/pengaturan/gaji/komponen-gaji');
+    } catch (error) {
+        console.error("Gagal menyimpan komponen gaji:", error);
+    } finally {
+        isSubmitting.value = false;
+    }
+};
 </script>

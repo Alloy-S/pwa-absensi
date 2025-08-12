@@ -375,29 +375,29 @@ export const adminRoutes = [
     meta: { requiresAuth: true, roles: adminRoles },
   },
   {
-    path: "/admin/pengaturan/gaji/group-gaji",
+    path: "/admin/pengaturan/gaji/grup-gaji",
     name: "pengaturan group gaji",
     component: () =>
       import("@/views/admin/setting/gaji/groupGaji/GroupGaji.vue"),
     meta: { requiresAuth: true, roles: adminRoles },
   },
   {
-    path: "/admin/pengaturan/gaji/group-gaji/add",
+    path: "/admin/pengaturan/gaji/grup-gaji/add",
     name: "pengaturan tambah group gaji",
     component: () =>
       import("@/views/admin/setting/gaji/groupGaji/TambahGroupGaji.vue"),
     meta: { requiresAuth: true, roles: adminRoles },
   },
   {
-    path: "/admin/pengaturan/gaji/group-gaji/:id",
+    path: "/admin/pengaturan/gaji/grup-gaji/:id",
     name: "pengaturan edit group gaji",
     component: () =>
       import("@/views/admin/setting/gaji/groupGaji/EditGroupGaji.vue"),
     meta: { requiresAuth: true, roles: adminRoles },
   },
   {
-    path: "/admin/pengaturan/gaji/group-gaji-karyawan",
-    name: "pengaturan group gaji karyawan",
+    path: "/admin/pengaturan/gaji/grup-gaji/:id/list-karyawan",
+    name: "pengaturan group gaji view list karyawan",
     component: () =>
       import("@/views/admin/setting/gaji/groupGaji/GroupGajiKaryawan.vue"),
     meta: { requiresAuth: true, roles: adminRoles },

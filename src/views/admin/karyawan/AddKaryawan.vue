@@ -182,6 +182,13 @@
                             </select>
                         </div>
 
+                        <div class="mb-6">
+                            <label for="grup-gaji" class="block mb-2 text-sm font-medium text-gray-900">Grup Gaji<span
+                                    class="text-red-600">*</span></label>
+                            <ModelSelect id="grup-gaji" :options="grupGajiList"
+                                v-model="user.data_karyawan.grup_gaji_id" placeholder="Pilih Grup Gaji" />
+                        </div>
+
                     </div>
                     <div class="flex justify-end">
                         <div class="w-1/3 flex">
@@ -208,7 +215,6 @@
             </ul>
 
             <template #footer>
-                <!-- <button @click="isModalOpen = false" class="px-4 py-2 bg-gray-300 rounded">Tutup</button> -->
                 <button @click="ModalMandatoryfield = false"
                     class="px-4 py-2 bg-red-500 text-white rounded">Close</button>
             </template>
@@ -231,6 +237,7 @@ import { fetchJabatanAll } from '@/services/jabatanService';
 import { JabatanConvert } from '@/models/jabatanModel';
 import { fetchLokasiAll } from '@/services/lokasiService';
 import { fetchjadwalAll } from '@/services/jadwalKerjaService';
+import { fetchAllGrupGaji } from '@/services/GrupGajiService';
 
 const user = ref<User>(initUser())
 const ModalMandatoryfield = ref(false);
@@ -240,6 +247,7 @@ const lokasiList = ref([])
 const jadwalKerjaList = ref([])
 const userPosiblePIC = ref([]);
 const isSelectPIC = ref(true)
+const grupGajiList = ref<{ value: string, text: string }[]>([])
 
 const router = useRouter();
 
@@ -248,9 +256,7 @@ const goBack = () => {
 };
 
 onMounted(() => {
-    getJabatan();
-    getLokasi();
-    getJadwalKerja();
+    fetchInitialData();
 })
 
 watch(() => user.value.data_karyawan.jabatan_id, async (_oldValue, _newValue) => {
@@ -272,58 +278,43 @@ watch(() => user.value.data_karyawan.jabatan_id, async (_oldValue, _newValue) =>
     }
 });
 
-const getJabatan = async () => {
-    try {
+const fetchInitialData = async () => {
+    const [jabatanRes, lokasiRes, jadwalRes, grupGajiRes] = await Promise.all([
+        fetchJabatanAll(),
+        fetchLokasiAll(),
+        fetchjadwalAll(),
+        fetchAllGrupGaji()
+    ]);
 
-        const response = await fetchJabatanAll();
+    jabatanList.value = jabatanRes.items.map(item => {
+        return {
+            value: item.id,
+            text: item.nama
+        }
+    });
 
-        jabatanList.value = response.items.map(item => {
-            return {
-                value: item.id,
-                text: item.nama
-            }
-        });
+    lokasiList.value = lokasiRes.items.map(item => {
+        return {
+            value: item.id,
+            text: item.name
+        }
+    });
 
-        console.log(jabatanList.value);
-    } catch (error) {
-        console.error(error)
-    }
-}
+    jadwalKerjaList.value = jadwalRes.items.map(item => {
+        return {
+            value: item.id,
+            text: item.shift
+        }
+    });
 
-const getLokasi = async () => {
-    try {
+    grupGajiList.value = grupGajiRes.map(item => {
+        return {
+            value: item.id,
+            text: item.grup_name
+        }
+    })
 
-        const response = await fetchLokasiAll();
 
-        lokasiList.value = response.items.map(item => {
-            return {
-                value: item.id,
-                text: item.name
-            }
-        });
-
-        console.log(lokasiList.value);
-    } catch (error) {
-        console.error(error)
-    }
-}
-
-const getJadwalKerja = async () => {
-    try {
-
-        const response = await fetchjadwalAll();
-
-        jadwalKerjaList.value = response.items.map(item => {
-            return {
-                value: item.id,
-                text: item.shift
-            }
-        });
-
-        console.log(jadwalKerjaList.value);
-    } catch (error) {
-        console.error(error)
-    }
 }
 
 const createKaryawan = async () => {

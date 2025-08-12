@@ -350,12 +350,12 @@
                                 Komponen Gaji</RouterLink>
                         </li>
                         <li>
-                            <RouterLink to="/admin/pengaturan/gaji/group-gaji"
+                            <RouterLink to="/admin/pengaturan/gaji/grup-gaji"
                                 class="flex items-center w-full p-2 text-base font-normal text-gray-600 transition duration-75 group hover:bg-gray-100 border-l-4 border-transparent hover:border-blue-600 pl-14">
                                 Group Gaji</RouterLink>
                         </li>
                         <li>
-                            <RouterLink to="/admin/pengaturan/gaji/group-gaji-karyawan"
+                            <RouterLink to="/admin/pengaturan/gaji/grup-gaji-karyawan"
                                 class="flex items-center w-full p-2 text-base font-normal text-gray-600 transition duration-75 group hover:bg-gray-100 border-l-4 border-transparent hover:border-blue-600 pl-14">
                                 Group Gaji Karyawan</RouterLink>
                         </li>

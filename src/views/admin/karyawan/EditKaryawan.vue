@@ -181,6 +181,13 @@
                             </select>
                         </div>
 
+                        <div class="mb-6">
+                            <label for="grup-gaji" class="block mb-2 text-sm font-medium text-gray-900">Grup Gaji<span
+                                    class="text-red-600">*</span></label>
+                            <ModelSelect id="grup-gaji" :options="grupGajiList"
+                                v-model="user.data_karyawan.grup_gaji_id" placeholder="Pilih Grup Gaji" />
+                        </div>
+
                     </div>
                     <div class="flex justify-end">
                         <div class="w-1/3 flex">
@@ -214,7 +221,6 @@
             </ul>
 
             <template #footer>
-                <!-- <button @click="isModalOpen = false" class="px-4 py-2 bg-gray-300 rounded">Tutup</button> -->
                 <button @click="ModalMandatoryfield = false"
                     class="px-4 py-2 bg-red-500 text-white rounded">Close</button>
             </template>
@@ -236,6 +242,7 @@ import "vue-search-select/dist/VueSearchSelect.css";
 import { ModelSelect } from 'vue-search-select'
 import { toast } from 'vue3-toastify';
 import 'vue3-toastify/dist/index.css';
+import { fetchAllGrupGaji } from '@/services/GrupGajiService';
 
 const router = useRouter();
 const route = useRoute();
@@ -247,12 +254,11 @@ const lokasiList = ref([])
 const jadwalKerjaList = ref([])
 const userPosiblePIC = ref([]);
 const isSelectPIC = ref(true)
+const grupGajiList = ref<{ value: string, text: string }[]>([])
 
 onMounted(() => {
+    fetchInitialData();
     getKaryawanById();
-    getJabatan();
-    getLokasi();
-    getJadwalKerja();
 })
 
 watch(() => user.value.data_karyawan.jabatan_id, async (_oldValue, _newValue) => {
@@ -274,10 +280,49 @@ watch(() => user.value.data_karyawan.jabatan_id, async (_oldValue, _newValue) =>
     }
 });
 
+const fetchInitialData = async () => {
+    const [jabatanRes, lokasiRes, jadwalRes, grupGajiRes] = await Promise.all([
+        fetchJabatanAll(),
+        fetchLokasiAll(),
+        fetchjadwalAll(),
+        fetchAllGrupGaji()
+    ]);
+
+    jabatanList.value = jabatanRes.items.map(item => {
+        return {
+            value: item.id,
+            text: item.nama
+        }
+    });
+
+    lokasiList.value = lokasiRes.items.map(item => {
+        return {
+            value: item.id,
+            text: item.name
+        }
+    });
+
+    jadwalKerjaList.value = jadwalRes.items.map(item => {
+        return {
+            value: item.id,
+            text: item.shift
+        }
+    });
+
+    grupGajiList.value = grupGajiRes.map(item => {
+        return {
+            value: item.id,
+            text: item.grup_name
+        }
+    })
+
+
+}
+
 const hitResendLoginData = async (id: string) => {
     const toastId = toast.loading("Resend Login Data...");
     const response = await resendLoginData(id);
-   
+
     if (response.status === 200) {
         toast.update(toastId, {
             render: "Sukses Resend Login Data!",
@@ -292,60 +337,6 @@ const getKaryawanById = async () => {
     user.value = await fetchDetailKaryawan(route.params.id as string)
 
     console.log(user.value);
-}
-
-const getJabatan = async () => {
-    try {
-
-        const response = await fetchJabatanAll();
-
-        jabatanList.value = response.items.map(item => {
-            return {
-                value: item.id,
-                text: item.nama
-            }
-        });
-
-        console.log(jabatanList.value);
-    } catch (error) {
-        console.error(error)
-    }
-}
-
-const getLokasi = async () => {
-    try {
-
-        const response = await fetchLokasiAll();
-
-        lokasiList.value = response.items.map(item => {
-            return {
-                value: item.id,
-                text: item.name
-            }
-        });
-
-        console.log(lokasiList.value);
-    } catch (error) {
-        console.error(error)
-    }
-}
-
-const getJadwalKerja = async () => {
-    try {
-
-        const response = await fetchjadwalAll();
-
-        jadwalKerjaList.value = response.items.map(item => {
-            return {
-                value: item.id,
-                text: item.shift
-            }
-        });
-
-        console.log(jadwalKerjaList.value);
-    } catch (error) {
-        console.error(error)
-    }
 }
 
 const goBack = () => {
