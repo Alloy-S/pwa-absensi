@@ -48,8 +48,8 @@
                                 <label for="Tgl-lahir"
                                     class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Tanggal
                                     lahir<span class="text-red-600">*</span></label>
-                                <input id="tgl-lahir" type="date" v-model="user.data_pribadi.tgl_lahir" required
-                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                <DatePicker v-model="(user.data_pribadi.tgl_lahir as any)" dateFormat="dd/mm/yy"
+                                    class="w-full" />
                             </div>
 
                         </div>
@@ -149,8 +149,8 @@
                             <label for="tgl-gabung"
                                 class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Tanggal
                                 Gabung<span class="text-red-600">*</span></label>
-                            <input id="tgl-gabung" type="date" v-model="user.data_karyawan.tgl_gabung" required
-                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                            <DatePicker v-model="(user.data_karyawan.tgl_gabung as any)" dateFormat="dd/mm/yy"
+                                class="w-full" />
                         </div>
 
                         <div class="mb-6">
@@ -182,10 +182,17 @@
                         </div>
 
                         <div class="mb-6">
-                            <label for="grup-gaji" class="block mb-2 text-sm font-medium text-gray-900">Grup Gaji<span
-                                    class="text-red-600">*</span></label>
+                            <label for="grup-gaji" class="block mb-2 text-sm font-medium text-gray-900">Grup
+                                Gaji</label>
                             <ModelSelect id="grup-gaji" :options="grupGajiList"
                                 v-model="user.data_karyawan.grup_gaji_id" placeholder="Pilih Grup Gaji" />
+                        </div>
+
+                        <div class="mb-6">
+                            <label for="gaji-pokok" class="block mb-2 text-sm font-medium text-gray-900">Gaji
+                                Pokok</label>
+                            <input type="number" id="gaji-pokok" v-model="user.data_karyawan.gaji_pokok"
+                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" />
                         </div>
 
                     </div>
@@ -211,20 +218,19 @@
                 </div>
             </div>
         </div>
-        <ReusableModal v-model:isOpen="ModalMandatoryfield" title="Harap Lengkapi Data"
-            @close="ModalMandatoryfield = false">
+        <Dialog v-model:visible="ModalMandatoryfield" modal header="Harap Lengkapi Data" :style="{ width: '30rem' }">
 
             <ul>
-                <li v-for="error in errors">
-                    <p>{{ error }}</p>
+                <li v-for="(error, index) in errors" :key="index" class="mb-2">
+                    <span class="p-error">{{ index + 1 }}. {{ error }}</span>
                 </li>
             </ul>
 
             <template #footer>
-                <button @click="ModalMandatoryfield = false"
-                    class="px-4 py-2 bg-red-500 text-white rounded">Close</button>
+                <Button label="Close" icon="pi pi-times" @click="ModalMandatoryfield = false" autofocus
+                    class="p-button-danger" />
             </template>
-        </ReusableModal>
+        </Dialog>
     </BasePage>
 </template>
 
@@ -241,7 +247,11 @@ import { fetchjadwalAll } from '@/services/jadwalKerjaService';
 import "vue-search-select/dist/VueSearchSelect.css";
 import { ModelSelect } from 'vue-search-select'
 import { toast } from 'vue3-toastify';
+import { format } from 'date-fns';
 import 'vue3-toastify/dist/index.css';
+import DatePicker from 'primevue/datepicker';
+import Dialog from 'primevue/dialog';
+import Button from 'primevue/button';
 import { fetchAllGrupGaji } from '@/services/GrupGajiService';
 
 const router = useRouter();
@@ -256,13 +266,13 @@ const userPosiblePIC = ref([]);
 const isSelectPIC = ref(true)
 const grupGajiList = ref<{ value: string, text: string }[]>([])
 
+
 onMounted(() => {
     fetchInitialData();
     getKaryawanById();
 })
 
 watch(() => user.value.data_karyawan.jabatan_id, async (_oldValue, _newValue) => {
-    console.log("Fetching Posible PIC for Jabatan ID:", user.value.data_karyawan.jabatan_id);
 
     const repsonse = await fetchPosiblePIC(user.value.data_karyawan.jabatan_id);
 
@@ -348,14 +358,15 @@ const submitUpdateKaryawan = async () => {
 
     errors.value = validateUserField(user.value)
 
-    console.log("validate user errors:")
     console.log(errors)
     console.log(user.value)
     if (errors.value.length == 0) {
+        user.value.data_pribadi.tgl_lahir = format(user.value.data_pribadi.tgl_lahir, 'yyyy-MM-dd')
+        user.value.data_karyawan.tgl_gabung = format(user.value.data_karyawan.tgl_gabung, 'yyyy-MM-dd')
         const response = await updateKaryawan(route.params.id as string, user.value);
 
         if (response.status === 200) {
-            toast.success("Success Add New Karyawan")
+            toast.success("Success Edit Karyawan")
             getKaryawanById();
         }
     } else {

@@ -11,11 +11,7 @@
 
                 <div class="relative">
                     <label for="tanggal" class="block mb-2 text-sm font-medium text-gray-700">Tanggal Kehadiran</label>
-                    <div class="absolute inset-y-0 start-0 top-8 flex items-center ps-3.5 pointer-events-none">
-                        <i class="fa-regular fa-calendar-days text-gray-500"></i>
-                    </div>
-                    <input id="tanggal" type="date" v-model="form.date" @change="checkExistingAttendance" required
-                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5" />
+                    <DatePicker v-model="(form.date as any)" model-type="yyyy-mm-dd" :enable-time-picker="false" dateFormat="dd/mm/yy" class="w-full" @update:model-value="checkExistingAttendance"/>
                 </div>
 
 
@@ -66,6 +62,8 @@ import BasePageNoNav from '@/layouts/user/BasePageNoNav.vue';
 import TopHeader from '@/components/user/TopHeader.vue';
 import { toast } from 'vue3-toastify';
 import { KoreksiReq, initKoreksiReq } from '@/models/koreksiModel';
+import DatePicker from 'primevue/datepicker';
+import { format } from 'date-fns';
 import { CreateKoreksiApi } from '@/services/koreksiService';
 import { fetchAbsensiByDate } from '@/services/absensiService';
 
@@ -78,7 +76,8 @@ const checkExistingAttendance = async () => {
     if (!form.value.date) return;
 
     try {
-        const params = { date: form.value.date };
+        const params = { date: format(form.value.date, 'yyyy-MM-dd') };
+    
         const existingData = await fetchAbsensiByDate(params);
 
         if (existingData) {

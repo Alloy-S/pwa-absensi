@@ -62,8 +62,8 @@
                         </div>
                         <div>
                             <label class="block text-sm font-medium">Tanggal Lahir</label>
-                            <input type="date" v-model="editableDataPribadi.tgl_lahir"
-                                class="mt-1 w-full px-3 py-2 border border-gray-300 rounded-md" />
+                            <DatePicker v-model="(editableDataPribadi.tgl_lahir as any)" dateFormat="dd/mm/yy"
+                                class="w-full" />
                         </div>
                     </div>
 
@@ -113,7 +113,7 @@
                     </button>
                     <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">
                         Simpan Perubahan
-                    </button>   
+                    </button>
                 </div>
             </form>
         </div>
@@ -128,6 +128,8 @@ import TopProfileNavigation from '@/components/user/TopProfileNavigation.vue';
 import { DataPribadi, initDataPribadi } from '@/models/userModel';
 import { fetchDataPribadi, updateDataPribadi } from '@/services/userService';
 import { toast } from 'vue3-toastify';
+import DatePicker from 'primevue/datepicker';
+import { format } from 'date-fns';
 
 const dataPribadi = ref<DataPribadi>(initDataPribadi());
 const isEditing = ref(false);
@@ -152,6 +154,8 @@ const cancelEdit = () => {
 };
 
 const saveChanges = async () => {
+
+    editableDataPribadi.value.tgl_lahir = format(editableDataPribadi.value.tgl_lahir, 'yyyy-MM-dd')
 
     const response = await updateDataPribadi(editableDataPribadi.value);
     if (response.status === 200) {

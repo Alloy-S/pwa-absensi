@@ -9,8 +9,7 @@
 
             <div class="mb-5">
                 <label for="main-date" class="block mb-2 text-sm font-medium text-gray-700">Tanggal Absensi</label>
-                <input id="main-date" type="date" v-model="formDate" required
-                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" />
+                <DatePicker v-model="(formDate as any)" dateFormat="dd/mm/yy" class="w-full" />
             </div>
 
 
@@ -63,7 +62,7 @@
                             class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg p-2.5">
                             <option disabled value="">-- Pilih Jenis Borongan --</option>
                             <option v-for="harga in boronganHargaList" :key="harga.id" :value="harga.id">{{ harga.nama
-                                }}
+                            }}
                                 ({{ formatCurrency(harga.harga_normal) }}/ton)</option>
                         </select>
                     </div>
@@ -110,7 +109,7 @@
                         <Column header="Pendapatan">
                             <template #body="slotProps">
                                 <span class="font-semibold text-blue-600">{{ formatCurrency(slotProps.data.totalHarga)
-                                }}</span>
+                                    }}</span>
                             </template>
                         </Column>
                         <Column header="Aksi">
@@ -148,6 +147,8 @@ import BasePageNoNav from '@/layouts/user/BasePageNoNav.vue';
 import TopHeader from '@/components/user/TopHeader.vue';
 import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
+import DatePicker from 'primevue/datepicker';
+import { format } from 'date-fns';
 import { createApprovalBoronganApi } from '@/services/absensiBoronganService';
 import { UserByPicItem } from '@/models/userModel';
 import { HargaHarianBorongan } from '@/models/hargaHarianBorongan';
@@ -260,6 +261,7 @@ const saveData = async () => {
         return;
     }
     isSubmitting.value = true;
+    formDate.value = format(formDate.value, 'yyyy-MM-dd')
     try {
         const payload: AbsensiBoronganReq = {
             date: formDate.value,

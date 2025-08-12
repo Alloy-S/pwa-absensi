@@ -1,6 +1,6 @@
 <template>
     <BasePage>
-
+        <ConfirmDialog></ConfirmDialog>
         <div class="mt-5 mb-10 flex justify-between items-center">
             <p class="text-3xl font-semibold text-slate-800">Hari Libur</p>
         </div>
@@ -30,78 +30,37 @@
 
         <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
 
-            <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-                <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-                    <tr>
-                        <th scope="col" class="px-6 py-3">
-                            Tanggal
-                        </th>
-                        <th scope="col" class="px-6 py-3">
-                            Event
-                        </th>
-                        <th scope="col" class="px-6 py-3">
-                            type
-                        </th>
-                        <th scope="col" class="px-6 py-3">
-                            Action
-                        </th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr v-for="item in LiburList.items" :key="item.id"
-                        class="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700 border-gray-200">
-                        <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                            {{ item.date }}
-                        </th>
-                        <td class="px-6 py-4">
-                            {{ item.description }}
-                        </td>
-                        <td class="px-6 py-4">
-                            {{ item.is_holiday ? 'Libur' : 'Cuti Bersama' }}
-                        </td>
-                        <td class="px-6 py-4 space-x-3">
-                            <a @click="editItem(item.id)"
-                                class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
-                            <a @click="hitDeleteLibur(item.id)" class="font-medium text-red-600 dark:text-red-500 hover:underline">Delete</a>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+            <DataTable :value="LiburList.items" lazy paginator :rows="lazyParams.rows" :totalRecords="LiburList.total"
+                :rowsPerPageOptions="[5, 10, 20, 50]" @page="onPage" dataKey="id" v-model:first="lazyParams.first">
 
+                <Column field="date" header="Tanggal"></Column>
+                <Column field="description" header="Event"></Column>
 
+                <Column header="Type">
+                    <template #body="slotProps">
+                        <span>{{ slotProps.data.is_holiday ? 'Libur' : 'Cuti Bersama' }}</span>
+                    </template>
+                </Column>
 
-        </div>
-        <div class="mb-16 flex justify-end mt-4">
+                <Column header="Action" style="min-width: 12rem">
+                    <template #body="slotProps">
+                        <div class="px-6 space-x-3">
+                            <a @click="editItem(slotProps.data.id)"
+                                class="font-medium text-blue-600 hover:underline cursor-pointer">Edit</a>
+                            <a @click="confirmDelete(slotProps.data.id)"
+                                class="font-medium text-red-600 hover:underline cursor-pointer">Delete</a>
+                        </div>
+                    </template>
+                </Column>
 
-            <nav aria-label="Page navigation example" v-if="pages >= 1">
-                <ul class="inline-flex -space-x-px text-sm">
+                <template #empty>
+                    <div class="text-center p-4">
+                        Tidak ada data hari libur yang ditemukan.
+                    </div>
+                </template>
 
-                    <li>
-                        <button @click="changePage(page - 1)" :disabled="page === 1"
-                            class="flex items-center justify-center px-3 h-8 ms-0 leading-tight text-gray-500 bg-white border border-e-0 border-gray-300 rounded-s-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
-                            Previous
-                        </button>
-                    </li>
+            </DataTable>
 
-                    <li v-for="n in pages" :key="n">
-
-                        <button @click="changePage(n)" :class="[
-                            'flex items-center justify-center px-3 h-8 leading-tight border border-gray-300',
-                            n === page ? 'text-blue-600 bg-blue-50 hover:bg-blue-100 hover:text-blue-700 dark:bg-gray-700 dark:text-white' : 'text-gray-500 bg-white hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white'
-                        ]">
-                            {{ n }}
-                        </button>
-                    </li>
-
-                    <li>
-                        <button @click="changePage(page + 1)" :disabled="page === pages"
-                            class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
-                            Next
-                        </button>
-                    </li>
-
-                </ul>
-            </nav>
         </div>
     </BasePage>
 </template>
@@ -113,14 +72,22 @@ import { useRouter } from 'vue-router'
 import { ref, onMounted, watch } from 'vue';
 import { toast } from 'vue3-toastify'
 import { deleteLibur, fetchLiburPagination } from '@/services/liburService';
+import DataTable from 'primevue/datatable';
+import Column from 'primevue/column';
+import ConfirmDialog from 'primevue/confirmdialog';
+import { useConfirm } from "primevue/useconfirm";
 
 
 const router = useRouter()
 const LiburList = ref<LiburPagination>({ pages: 1, total: 0, items: [] });
-const pages = ref(1);
-const page = ref(1);
 const search = ref('');
 let debounceTimer: any = null;
+const confirm = useConfirm();
+const lazyParams = ref({
+    first: 0,
+    rows: 10,
+    page: 1,
+});
 
 const addItem = () => {
     router.push('hari-libur/add');
@@ -130,22 +97,16 @@ const editItem = (id: any) => {
     router.push('hari-libur/' + id);
 }
 
-const changePage = (newPage: number) => {
-    page.value = newPage
-    getLibur()
-}
-
 const getLibur = async () => {
     const params = {
-        page: page.value,
+        page: lazyParams.value.page,
+        size: lazyParams.value.rows,
         search: search.value
     }
 
     const response = fetchLiburPagination(params)
 
     LiburList.value = (await response);
-    pages.value = Number((await response).pages);
-
 }
 
 const hitDeleteLibur = async (id: string) => {
@@ -161,17 +122,35 @@ const hitDeleteLibur = async (id: string) => {
 
 }
 
+const confirmDelete = (id: string) => {
+    confirm.require({
+        message: 'Apakah Anda yakin ingin menghapus Tanggal ini?',
+        header: 'Konfirmasi Hapus',
+        icon: 'fa-solid fa-triangle-exclamation',
+        acceptLabel: 'Ya, Hapus',
+        rejectLabel: 'Batal',
+        acceptClass: 'p-button-danger',
+        accept: () => hitDeleteLibur(id),
+    });
+};
+
+const onPage = (event: any) => {
+    lazyParams.value.page = event.page + 1;
+    lazyParams.value.rows = event.rows;
+    getLibur();
+};
+
 watch(search, (_newVal, _oldVal) => {
-    
+
     if (debounceTimer) clearTimeout(debounceTimer);
 
     debounceTimer = setTimeout(() => {
 
-        page.value = 1 
+        lazyParams.value.page = 1;
+        lazyParams.value.first = 0;
         getLibur()
-        console.log('search', search.value)
 
-    }, 1000); 
+    }, 1000);
 })
 
 onMounted(() => {

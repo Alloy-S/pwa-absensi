@@ -6,52 +6,45 @@
             <p class="text-sm text-slate-500 mb-6">Silakan isi detail di bawah ini untuk mengajukan izin.</p>
 
             <form @submit.prevent="submitIzin" class="space-y-5">
-                
+
                 <div class="relative">
-                    <label for="tanggal-mulai" class="block mb-2 text-sm font-medium text-gray-700">Tanggal Izin Mulai</label>
-                    <div class="absolute inset-y-0 start-0 top-8 flex items-center ps-3.5 pointer-events-none">
-                        <i class="fa-regular fa-calendar-days text-gray-500"></i>
-                    </div>
-                    <input id="tanggal-mulai" type="date" v-model="form.tgl_izin_start" required
-                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5"
-                         />
+                    <label for="tanggal-mulai" class="block mb-2 text-sm font-medium text-gray-700">Tanggal Izin
+                        Mulai</label>
+
+                    <DatePicker v-model="(form.tgl_izin_start as any)" dateFormat="dd/mm/yy" class="w-full" />
                 </div>
 
-                
+
                 <div class="relative">
-                    <label for="tanggal-selesai" class="block mb-2 text-sm font-medium text-gray-700">Tanggal Izin Selesai</label>
-                     <div class="absolute inset-y-0 start-0 top-8 flex items-center ps-3.5 pointer-events-none">
-                        <i class="fa-regular fa-calendar-days text-gray-500"></i>
-                    </div>
-                    <input id="tanggal-selesai" type="date" v-model="form.tgl_izin_end" required
-                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5"
-                         />
+                    <label for="tanggal-selesai" class="block mb-2 text-sm font-medium text-gray-700">Tanggal Izin
+                        Selesai</label>
+                    
+                    <DatePicker v-model="(form.tgl_izin_end as any)" dateFormat="dd/mm/yy" class="w-full" />
                 </div>
 
-                
+
                 <div>
                     <label for="jenisIzin" class="block mb-2 text-sm font-medium text-gray-700">Jenis Izin</label>
                     <select id="jenisIzin" v-model="form.jenis_izin_id" required
-                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-                        >
+                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
                         <option disabled value="">Pilih jenis izin</option>
                         <option v-for="jenis in jenisIzinList" :key="jenis.id" :value="jenis.id">
                             {{ jenis.nama }}
                         </option>
                     </select>
-                    
+
                 </div>
 
-                
+
                 <div>
-                    <label for="catatan" class="block mb-2 text-sm font-medium text-gray-700">Keterangan / Alasan</label>
+                    <label for="catatan" class="block mb-2 text-sm font-medium text-gray-700">Keterangan /
+                        Alasan</label>
                     <textarea id="catatan" v-model="form.keterangan"
                         class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 min-h-[120px]"
-                        placeholder="Contoh: Keperluan keluarga mendadak."
-                        ></textarea>
+                        placeholder="Contoh: Keperluan keluarga mendadak."></textarea>
                 </div>
 
-                
+
                 <button type="submit" :disabled="isSubmitting"
                     class="w-full flex justify-center items-center p-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition-colors disabled:bg-blue-300">
                     <i v-if="isSubmitting" class="fa-solid fa-spinner animate-spin mr-2"></i>
@@ -72,6 +65,8 @@ import { CreateIzinApi } from '@/services/izinService';
 import { IzinReq } from '@/models/izinModel';
 import { JenisIzin } from '@/models/jenisIzinModel';
 import { fetchJenisAll } from '@/services/jenisIzinService';
+import DatePicker from 'primevue/datepicker';
+import { format } from 'date-fns';
 
 const router = useRouter();
 
@@ -95,7 +90,10 @@ const getJenisIzin = async () => {
 };
 
 const submitIzin = async () => {
-    if (!form.value.tgl_izin_start && !form.value.tgl_izin_end) return;
+    if (!form.value.tgl_izin_start && !form.value.tgl_izin_end) toast.error("Tanggal Wajib Diisi");
+
+    form.value.tgl_izin_start = format(form.value.tgl_izin_start, 'yyyy-MM-dd')
+    form.value.tgl_izin_end = format(form.value.tgl_izin_end, 'yyyy-MM-dd')
 
     isSubmitting.value = true;
     try {

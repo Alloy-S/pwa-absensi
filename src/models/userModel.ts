@@ -4,6 +4,7 @@ export interface DataKaryawan {
   id: string;
   nip: string;
   tgl_gabung: string;
+  gaji_pokok: number;
   lokasi_kerja: string;
   tipe_karyawan: string;
   jabatan_id: string;
@@ -151,6 +152,7 @@ export function initUser(): User {
       id: "",
       nip: "",
       tgl_gabung: "",
+      gaji_pokok: null,
       lokasi_kerja: "",
       tipe_karyawan: "",
       jabatan_id: "",
@@ -211,6 +213,7 @@ export function initDataKaryawan(): DataKaryawan {
     id: "",
     nip: "",
     tgl_gabung: "",
+    gaji_pokok: null,
     lokasi_kerja: "",
     tipe_karyawan: "",
     jabatan_id: "",
@@ -228,7 +231,11 @@ export function initDataKaryawan(): DataKaryawan {
 export function validateUserField(user: User) {
   const errors: String[] = [];
 
+  const pribadi = user.data_pribadi;
+  if (!pribadi.tgl_lahir) errors.push("Tgl Lahir harus dipilih");
+
   const karyawan = user.data_karyawan;
+  if (!karyawan.tgl_gabung) errors.push("Tgl Gabung harus dipilih");
   if (!karyawan.jabatan_id.trim()) errors.push("Jabatan harus dipilih");
   if (!karyawan.lokasi_id.trim()) errors.push("Lokasi harus dipilih");
 

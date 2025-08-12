@@ -8,13 +8,11 @@
             <div class="flex flex-col md:flex-row gap-4 items-end">
                 <div class="flex flex-col">
                     <label class="text-sm font-medium mb-1">Periode Mulai</label>
-                    <input type="date" v-model="filters.startDate"
-                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" />
+                    <DatePicker v-model="(filters.startDate as any)" dateFormat="dd/mm/yy" class="w-full" />
                 </div>
                 <div class="flex flex-col">
                     <label class="text-sm font-medium mb-1">Periode Selesai</label>
-                    <input type="date" v-model="filters.endDate" :min="filters.startDate"
-                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" />
+                    <DatePicker v-model="(filters.endDate as any)" dateFormat="dd/mm/yy" class="w-full" />
                 </div>
                 <div class="flex flex-col flex-1">
                     <label class="text-sm font-medium mb-1">Cari Nama / NIP</label>
@@ -113,6 +111,8 @@ import Paginator from 'primevue/paginator';
 import { toast } from 'vue3-toastify';
 import { RekapPeriode, LaporanParams } from '@/models/laporanModel';
 import { ExportRekapFull, fetchRekapPeriodePagination } from '@/services/laporanService';
+import DatePicker from 'primevue/datepicker';
+import { format } from 'date-fns';
 
 
 const rekapList = ref<RekapPeriode[]>([]);
@@ -145,8 +145,8 @@ const getRekapData = async () => {
             page: lazyParams.value.page,
             size: lazyParams.value.rows,
             search: filters.search,
-            "start-date": filters.startDate,
-            "end-date": filters.endDate,
+            "start-date": format(filters.startDate, 'yyyy-MM-dd'),
+            "end-date": format(filters.endDate, 'yyyy-MM-dd'),
         };
         const response = await fetchRekapPeriodePagination(params);
         rekapList.value = response.items;

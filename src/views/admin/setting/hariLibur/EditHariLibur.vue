@@ -22,8 +22,7 @@
                             <label for="date"
                                 class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Tanggal<span
                                     class="text-red-600">*</span></label>
-                            <input type="date" id="date" v-model="libur.date"
-                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                            <DatePicker v-model="(libur.date as any)" dateFormat="dd/mm/yy" class="w-full" />
                         </div>
 
                         <div class="mb-6">
@@ -67,6 +66,8 @@ import { onMounted, ref } from 'vue'
 import { initLibur, Libur } from '@/models/liburModel';
 import { toast } from 'vue3-toastify'
 import { fetchLiburById, updateLibur } from '@/services/liburService';
+import DatePicker from 'primevue/datepicker';
+import { format } from 'date-fns';
 
 const router = useRouter();
 const route = useRoute();
@@ -87,6 +88,8 @@ const getLiburById = async () => {
 }
 
 const hitUpdateLibur = async () => {
+
+    libur.value.date = format(libur.value.date, 'yyyy-MM-dd')
 
     const request = {
         date: libur.value.date,
