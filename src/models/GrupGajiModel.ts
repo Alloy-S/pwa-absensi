@@ -7,8 +7,9 @@ export interface KomponenGrupGaji {
   use_formula: boolean;
   kode_formula: string;
   operation_sum: string;
-  nilai_uang: number;
-  hitung: string;
+  nilai_statis: number;
+  use_nilai_dinamis: boolean;
+  kode_nilai_dinamis: string;
 }
 
 export interface GrupGaji {

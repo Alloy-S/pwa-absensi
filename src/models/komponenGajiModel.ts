@@ -4,7 +4,6 @@ export interface KomponenGaji {
   kom_name: string;
   no_urut: number;
   tipe: string;
-  hitung: string;
 }
 
 export interface KomGajiPagination {

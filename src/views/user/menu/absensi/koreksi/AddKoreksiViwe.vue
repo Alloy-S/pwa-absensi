@@ -11,7 +11,8 @@
 
                 <div class="relative">
                     <label for="tanggal" class="block mb-2 text-sm font-medium text-gray-700">Tanggal Kehadiran</label>
-                    <DatePicker v-model="(form.date as any)" model-type="yyyy-mm-dd" :enable-time-picker="false" dateFormat="dd/mm/yy" class="w-full" @update:model-value="checkExistingAttendance"/>
+                    <DatePicker v-model="(form.date as any)" model-type="yyyy-mm-dd" :enable-time-picker="false"
+                        dateFormat="dd/mm/yy" class="w-full" @update:model-value="checkExistingAttendance" />
                 </div>
 
 
@@ -77,7 +78,7 @@ const checkExistingAttendance = async () => {
 
     try {
         const params = { date: format(form.value.date, 'yyyy-MM-dd') };
-    
+
         const existingData = await fetchAbsensiByDate(params);
 
         if (existingData) {

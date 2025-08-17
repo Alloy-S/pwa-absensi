@@ -7,6 +7,7 @@ export interface DataKaryawan {
   gaji_pokok: number;
   lokasi_kerja: string;
   tipe_karyawan: string;
+  face_recognition_mode: string;
   jabatan_id: string;
   jabatan: string;
   jadwal_kerja_id: string;
@@ -155,6 +156,7 @@ export function initUser(): User {
       gaji_pokok: null,
       lokasi_kerja: "",
       tipe_karyawan: "",
+      face_recognition_mode: "NORMAL",
       jabatan_id: "",
       jabatan: "",
       jadwal_kerja_id: "",
@@ -216,6 +218,7 @@ export function initDataKaryawan(): DataKaryawan {
     gaji_pokok: null,
     lokasi_kerja: "",
     tipe_karyawan: "",
+    face_recognition_mode: "NORMAL",
     jabatan_id: "",
     jabatan: "",
     jadwal_kerja_id: "",

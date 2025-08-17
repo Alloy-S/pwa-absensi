@@ -94,7 +94,6 @@ const confirm = useConfirm();
 const loading = ref(true);
 const isSubmitting = ref(false);
 const absensiDetail = ref<ApprovalBorongan | null>(null);
-const approvalNote = ref('');
 
 const getAbsensiDetail = async () => {
     try {
@@ -108,10 +107,6 @@ const getAbsensiDetail = async () => {
 };
 
 const confirmAction = (action: 'approve' | 'reject') => {
-    if (action === 'reject' && !approvalNote.value.trim()) {
-        toast.warn("Catatan wajib diisi untuk menolak pengajuan.");
-        return;
-    }
     const isApprove = action === 'approve';
     confirm.require({
         message: `Apakah Anda yakin ingin ${isApprove ? 'menyetujui' : 'menolak'} pengajuan ini?`,

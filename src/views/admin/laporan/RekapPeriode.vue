@@ -52,15 +52,19 @@
                             <th class="px-4 py-3 border" rowspan="2">Jabatan</th>
                             <th class="px-4 py-3 border" rowspan="2">Lokasi</th>
                             <th class="px-4 py-3 border" colspan="2">Kehadiran</th>
-                            <th class="px-4 py-3 border" rowspan="2">Izin</th>
+                            <th class="px-4 py-3 border" colspan="3">Izin</th>
                             <th class="px-4 py-3 border" rowspan="2">Alpha</th>
                             <th class="px-4 py-3 border" rowspan="2">Tak Lengkap</th>
                             <th class="px-4 py-3 border" colspan="2">Terlambat</th>
                             <th class="px-4 py-3 border" colspan="2">Pulang Awal</th>
+                            <th class="px-4 py-3 border" rowspan="2">Lembur (Jam)</th>
                         </tr>
                         <tr>
                             <th class="px-4 py-3 border">Kali</th>
                             <th class="px-4 py-3 border">Total Jam</th>
+                            <th class="px-4 py-3 border">Total</th>
+                            <th class="px-4 py-3 border">Berbayar</th>
+                            <th class="px-4 py-3 border">Tidak Berbayar</th>
                             <th class="px-4 py-3 border">Kali</th>
                             <th class="px-4 py-3 border">Total Jam</th>
                             <th class="px-4 py-3 border">Kali</th>
@@ -79,6 +83,8 @@
                             <td class="px-4 py-2 border text-center">{{ formatMinutesToHours(item.total_menit_kehadiran)
                             }}</td>
                             <td class="px-4 py-2 border text-center">{{ item.total_izin }}</td>
+                            <td class="px-4 py-2 border text-center">{{ item.total_izin_berbayar }}</td>
+                            <td class="px-4 py-2 border text-center">{{ item.total_izin_tidak_berbayar }}</td>
                             <td class="px-4 py-2 border text-center">{{ item.total_tidak_hadir }}</td>
                             <td class="px-4 py-2 border text-center">{{ item.total_absen_tidak_lengkap }}</td>
                             <td class="px-4 py-2 border text-center">{{ item.total_terlambat }}</td>
@@ -87,6 +93,7 @@
                             <td class="px-4 py-2 border text-center">{{ item.total_pulang_awal }}</td>
                             <td class="px-4 py-2 border text-center">{{
                                 formatMinutesToHours(item.total_menit_pulang_awal) }}</td>
+                            <td class="px-4 py-2 border text-center">{{ item.total_jam_lembur }}</td>
                         </tr>
                     </tbody>
                 </table>
@@ -105,7 +112,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, watch } from 'vue';
+import { ref, reactive } from 'vue';
 import BasePage from '@/layouts/admin/BasePage.vue';
 import Paginator from 'primevue/paginator';
 import { toast } from 'vue3-toastify';
@@ -119,7 +126,6 @@ const rekapList = ref<RekapPeriode[]>([]);
 const loading = ref(false);
 const isExporting = ref(false);
 const totalRecords = ref(0);
-let debounceTimer: any = null;
 
 const filters = reactive({
     search: '',
@@ -221,13 +227,4 @@ const formatMinutesToHours = (totalMinutes: number): string => {
     const minutes = Math.round(totalMinutes % 60);
     return `${hours} jam ${minutes} menit`;
 };
-
-watch(() => filters.search, () => {
-    if (debounceTimer) clearTimeout(debounceTimer);
-    debounceTimer = setTimeout(() => {
-        lazyParams.value.page = 1;
-        lazyParams.value.first = 0;
-        getRekapData();
-    }, 500);
-});
 </script>

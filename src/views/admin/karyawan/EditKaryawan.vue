@@ -195,6 +195,18 @@
                                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" />
                         </div>
 
+                        <div class="mb-6">
+                            <label for="tipe-karyawan"
+                                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Mode Pengenalan Wajah<span class="text-red-600">*</span></label>
+                            <select id="tipe-karyawan" v-model="user.data_karyawan.face_recognition_mode" required
+                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                <option selected>Pilih salah satu</option>
+                                <option value="NORMAL">Normal</option>
+                                <option value="RENDAH">Rendah</option>
+                                <option value="MATI">Mati</option>
+                            </select>
+                        </div>
+
                     </div>
                     <div class="flex justify-end">
                         <div class="w-1/3 flex">

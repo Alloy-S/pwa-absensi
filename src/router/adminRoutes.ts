@@ -91,14 +91,18 @@ export const adminRoutes = [
     path: "/admin/approval/koreksi-kehadiran",
     name: "approval koreksi admin",
     component: () =>
-      import("@/views/admin/approval/koreksi/ApprovalKoreksiKehadiranAdmin.vue"),
+      import(
+        "@/views/admin/approval/koreksi/ApprovalKoreksiKehadiranAdmin.vue"
+      ),
     meta: { requiresAuth: true, roles: adminRoles },
   },
   {
     path: "/admin/approval/koreksi-kehadiran/:id",
     name: "approval detail koreksi admin",
     component: () =>
-      import("@/views/admin/approval/koreksi/ApprovalDetailKoreksiKehadiranAdmin.vue"),
+      import(
+        "@/views/admin/approval/koreksi/ApprovalDetailKoreksiKehadiranAdmin.vue"
+      ),
     meta: { requiresAuth: true, roles: adminRoles },
   },
   {
@@ -439,9 +443,25 @@ export const adminRoutes = [
     path: "/admin/role-management",
     name: "Role Management",
     component: () =>
-      import(
-        "@/views/admin/roleMagement/RoleManagementView.vue"
-      ),
+      import("@/views/admin/roleMagement/RoleManagementView.vue"),
+    meta: { requiresAuth: true, roles: adminRoles },
+  },
+  {
+    path: "/admin/penggajian/olah",
+    name: "Penggajian Olah Data",
+    component: () => import("@/views/admin/pengajian/OlahPengajian.vue"),
+    meta: { requiresAuth: true, roles: adminRoles },
+  },
+  {
+    path: "/admin/penggajian/riwayat",
+    name: "Riwayat Penggajian",
+    component: () => import("@/views/admin/pengajian/RiwayatPenggajian.vue"),
+    meta: { requiresAuth: true, roles: adminRoles },
+  },
+  {
+    path: "/admin/penggajian/riwayat/:id",
+    name: "Riwayat Penggajian Detail",
+    component: () => import("@/views/admin/pengajian/RiwayatPenggajianDetail.vue"),
     meta: { requiresAuth: true, roles: adminRoles },
   },
   {

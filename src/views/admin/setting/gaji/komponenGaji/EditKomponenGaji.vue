@@ -45,17 +45,6 @@
                                     <option value="POTONGAN">Potongan</option>
                                 </select>
                             </div>
-
-                            <div>
-                                <label for="hitung" class="block mb-2 text-sm font-medium text-gray-900">Cara
-                                    Hitung<span class="text-red-600">*</span></label>
-                                <select v-model="form.hitung" id="hitung" required
-                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
-                                    <option disabled value="">Pilih salah satu</option>
-                                    <option value="PERIODE">Periode</option>
-                                    <option value="HARIAN">Harian</option>
-                                </select>
-                            </div>
                         </div>
 
                         <div class="mt-5 flex justify-end space-x-2">
@@ -92,12 +81,11 @@ const loading = ref(true);
 const isSubmitting = ref(false);
 
 const form = ref<KomponenGaji>({
-    id:'',
+    id: '',
     kom_kode: '',
     kom_name: '',
     no_urut: 0,
     tipe: '',
-    hitung: '',
 });
 
 const getKomponenDetail = async (id: string) => {
@@ -117,7 +105,7 @@ const goBack = () => {
 };
 
 const simpan = async () => {
-    if (!form.value.kom_kode || !form.value.kom_name || !form.value.tipe || !form.value.hitung) {
+    if (!form.value.kom_kode || !form.value.kom_name || !form.value.tipe) {
         toast.error("Semua field yang ditandai (*) wajib diisi.");
         return;
     }

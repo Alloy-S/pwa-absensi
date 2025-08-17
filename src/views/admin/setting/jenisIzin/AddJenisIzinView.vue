@@ -42,6 +42,15 @@
                             <p class="text-xs text-gray-500 mt-1">Masukkan 0 jika berlaku sejak hari pertama bergabung.</p>
                         </div>
 
+                        <div>
+                            <label for="periode_reset" class="block mb-2 text-sm font-medium text-gray-900">Izin/Cuti Berbayar<span class="text-red-600">*</span></label>
+                            <select id="periode_reset" v-model="request.is_paid" required
+                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+                                <option disabled value="">Pilih salah satu</option>
+                                <option value="true">Ya</option>
+                                <option value="false">Tidak</option>
+                            </select>
+                        </div>
                         
                         <div class="mt-5 flex justify-end pt-4 border-t">
                             <div class="w-1/3 flex space-x-2">

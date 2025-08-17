@@ -203,6 +203,37 @@
                         </li>
                     </ul>
                 </li>
+                <li>
+                    <button @click="dropdownPengajian()"
+                        class="relative flex items-center justify-between w-full h-11 transition duration-150 ease-in-out focus:outline-none hover:bg-gray-50 text-gray-600 hover:text-gray-800 border-l-4 border-transparent hover:border-blue-600 pr-6">
+                        <div class="flex items-center">
+                            <span class="inline-flex justify-center items-center ml-4">
+                                <i class="fa-solid fa-money-bills"></i>
+                            </span>
+                            <span class="ml-2 text-sm tracking-wide truncate">Penggajian</span>
+                        </div>
+                        <svg sidebar-toggle-item
+                            :class="{ 'rotate-180': sidebarStore.isPenggajian, 'rotate-0': !sidebarStore.isPenggajian }"
+                            class="w-6 h-6 transition duration-150" fill="currentColor" viewBox="0 0 20 20"
+                            xmlns="http://www.w3.org/2000/svg">
+                            <path fill-rule="evenodd"
+                                d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                                clip-rule="evenodd"></path>
+                        </svg>
+                    </button>
+                    <ul id="dropdown-reimburse" v-show="sidebarStore.isPenggajian" class="py-2 space-y-2">
+                        <li>
+                            <RouterLink to="/admin/penggajian/olah"
+                                class="flex items-center w-full p-2 text-base font-normal text-gray-600 transition duration-75  group hover:bg-gray-100 border-l-4 border-transparent hover:border-blue-600 pl-14">
+                                Olah Pengajian</RouterLink>
+                        </li>
+                        <li>
+                            <RouterLink to="/admin/penggajian/riwayat"
+                                class="flex items-center w-full p-2 text-base font-normal text-gray-600 transition duration-75 group hover:bg-gray-100 border-l-4 border-transparent hover:border-blue-600 pl-14">
+                                Riwayat Pengajian</RouterLink>
+                        </li>
+                    </ul>
+                </li>
                 <li class="px-5">
                     <div class="flex flex-row items-center h-8">
                         <div class="text-sm font-light tracking-wide text-gray-500">Approval</div>
@@ -352,13 +383,9 @@
                         <li>
                             <RouterLink to="/admin/pengaturan/gaji/grup-gaji"
                                 class="flex items-center w-full p-2 text-base font-normal text-gray-600 transition duration-75 group hover:bg-gray-100 border-l-4 border-transparent hover:border-blue-600 pl-14">
-                                Group Gaji</RouterLink>
+                                Grup Gaji</RouterLink>
                         </li>
-                        <li>
-                            <RouterLink to="/admin/pengaturan/gaji/grup-gaji-karyawan"
-                                class="flex items-center w-full p-2 text-base font-normal text-gray-600 transition duration-75 group hover:bg-gray-100 border-l-4 border-transparent hover:border-blue-600 pl-14">
-                                Group Gaji Karyawan</RouterLink>
-                        </li>
+                       
                     </ul>
                 </li>
                 <li>
@@ -465,6 +492,10 @@ const dropdownConfigGaji = () => {
 }
 const dropdownLaporan = () => {
     sidebarStore.toggleIsLaporanOpen();
+}
+
+const dropdownPengajian = () => {
+    sidebarStore.toggleIsPengajianOpen();
 }
 </script>
 

@@ -6,6 +6,8 @@ export interface RekapPeriode {
     lokasi: string;
     total_kehadiran: number;
     total_izin: number;
+    total_izin_berbayar: number;
+    total_izin_tidak_berbayar: number;
     total_tidak_hadir: number;
     total_absen_tidak_lengkap: number;
     total_terlambat: number;
@@ -13,6 +15,7 @@ export interface RekapPeriode {
     total_menit_kehadiran: number;
     total_menit_terlambat: number;
     total_menit_pulang_awal: number;
+    total_jam_lembur: number;
 }
 
 export interface DatangTerlambat {

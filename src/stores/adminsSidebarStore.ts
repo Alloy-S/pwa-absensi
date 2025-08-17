@@ -10,6 +10,7 @@ export const useAdminSidebarStore = defineStore('global', () => {
   const isPengumumanOpen = ref(false);
   const isConfigOpen = ref(false);
   const isLaporanOpen = ref(false);
+  const isPenggajian = ref(false);
   const isConfigGajiOpen = ref(false);
   const scrollTop = ref(0);
 
@@ -53,11 +54,15 @@ export const useAdminSidebarStore = defineStore('global', () => {
     isLaporanOpen.value = !isLaporanOpen.value;
   };
 
+  const toggleIsPengajianOpen = () => {
+    isPenggajian.value = !isPenggajian.value;
+  };
+
   return { 
     isOpen, isKarywanOpen, isAbsensiOpen, isApprovalOpen, isReimburseOpen, 
-    isPengumumanOpen, isConfigOpen, isLaporanOpen,
+    isPengumumanOpen, isConfigOpen, isLaporanOpen, isPenggajian,
     toggleIsOpen, toggleIsKarywanOpen, toggleAbsensiOpen, toggleIsApprovalOpen, 
     toggleIsReimburseOpen, toggleIsPengumumanOpen, 
-    toggleIsConfigOpen, toggleIsLaporanOpen, scrollTop, setScrollTop, isConfigGajiOpen, toggleIsConfigGajiOpen
+    toggleIsConfigOpen, toggleIsLaporanOpen, scrollTop, setScrollTop, isConfigGajiOpen, toggleIsConfigGajiOpen, toggleIsPengajianOpen
   };
 });

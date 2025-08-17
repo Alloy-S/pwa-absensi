@@ -4,6 +4,7 @@ export interface JenisIzin {
   kuota_default: number;
   periode_reset: string;
   berlaku_setelah_bulan: number;
+  is_paid: boolean;
 }
 
 export interface JenisIzinPagination {

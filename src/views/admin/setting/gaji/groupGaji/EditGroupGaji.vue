@@ -44,26 +44,18 @@
                                 <i class="fa-solid fa-times"></i>
                             </button>
 
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                <div>
-                                    <label class="block mb-2 text-sm font-medium text-gray-900">Pilih Komponen</label>
-                                    <select v-model="komponen.kom_id" required
-                                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
-                                        <option disabled value="">-- Pilih --</option>
-                                        <option v-for="item in masterKomponen" :key="item.id" :value="item.id">{{
-                                            item.kom_name }}</option>
-                                    </select>
-                                </div>
-                                <div>
-                                    <label class="block mb-2 text-sm font-medium text-gray-900">Cara Hitung</label>
-                                    <select v-model="komponen.hitung" required
-                                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
-                                        <option disabled value="">-- Pilih --</option>
-                                        <option value="PERIODE">Periode</option>
-                                        <option value="HARIAN">Harian</option>
-                                    </select>
-                                </div>
+
+                            <div>
+                                <label class="block mb-2 text-sm font-medium text-gray-900">Pilih Komponen</label>
+                                <select v-model="komponen.kom_id" required
+                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+                                    <option disabled value="">-- Pilih --</option>
+                                    <option v-for="item in masterKomponen" :key="item.id" :value="item.id">{{
+                                        `${item.kom_name} (${item.tipe})` }}</option>
+                                </select>
                             </div>
+
+
 
 
                             <div>
@@ -74,18 +66,30 @@
                                 </label>
                                 <div v-if="komponen.use_kondisi"
                                     class="mt-2 p-3 bg-gray-50 rounded-lg grid grid-cols-1 md:grid-cols-2 gap-4">
-                                    <select v-model="komponen.kode_kondisi"
-                                        class="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5">
-                                        <option disabled value="">-- Pilih Dasar Kondisi --</option>
-                                        <option v-for="field in calculationFields" :key="field.kode"
-                                            :value="field.kode">{{ field.name }}</option>
-                                    </select>
-                                    <input v-model.number="komponen.min_kondisi" type="number"
-                                        placeholder="Nilai Minimal"
-                                        class="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5" />
-                                    <input v-model.number="komponen.max_kondisi" type="number"
-                                        placeholder="Nilai Maksimal"
-                                        class="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5" />
+                                    <div>
+                                        <label class="block mb-2 text-sm font-medium text-gray-900">Pilih Field
+                                            Perhitungan</label>
+                                        <select v-model="komponen.kode_kondisi"
+                                            class="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5">
+                                            <option disabled value="">-- Pilih Field Perhitungan --</option>
+                                            <option v-for="field in calculationFields" :key="field.kode"
+                                                :value="field.kode">{{ field.name }}</option>
+                                        </select>
+                                    </div>
+
+                                    <div>
+                                        <label class="block mb-2 text-sm font-medium text-gray-900">Min Kondisi</label>
+                                        <input v-model.number="komponen.min_kondisi" type="number"
+                                            placeholder="Nilai Minimal"
+                                            class="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5" />
+                                    </div>
+
+                                    <div>
+                                        <label class="block mb-2 text-sm font-medium text-gray-900">Max Kondisi</label>
+                                        <input v-model.number="komponen.max_kondisi" type="number"
+                                            placeholder="Nilai Maksimal"
+                                            class="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5" />
+                                    </div>
                                 </div>
                             </div>
 
@@ -97,32 +101,55 @@
                                     <span>Gunakan Rumus (Dasar Pengali)</span>
                                 </label>
                                 <div v-if="komponen.use_formula" class="mt-2 p-3 bg-gray-50 rounded-lg">
-                                    <select v-model="komponen.kode_formula"
-                                        class="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5">
-                                        <option disabled value="">-- Pilih Dasar Rumus --</option>
-                                        <option v-for="field in calculationFields" :key="field.kode"
-                                            :value="field.kode">{{ field.name }}</option>
-                                    </select>
+                                    <div>
+                                        <label class="block mb-2 text-sm font-medium text-gray-900">Pilih Field
+                                            Perhitungan</label>
+                                        <select v-model="komponen.kode_formula"
+                                            class="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5">
+                                            <option disabled value="">-- Pilih Field Perhitungan --</option>
+                                            <option v-for="field in calculationFields" :key="field.kode"
+                                                :value="field.kode">{{ field.name }}</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="mt-3">
+                                        <label class="block mb-2 text-sm font-medium text-gray-900">Operasi
+                                            Matematika<span class="text-red-600">*</span></label>
+                                        <select v-model="komponen.operation_sum" required
+                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5">
+                                            <option value="+">+</option>
+                                            <option value="-">-</option>
+                                            <option value="x">x</option>
+                                            <option value="/">/</option>
+                                        </select>
+                                    </div>
                                 </div>
                             </div>
 
 
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 pt-4 border-t">
-                                <div>
-                                    <label class="block mb-2 text-sm font-medium text-gray-900">Operasi Matematika<span
-                                            class="text-red-600">*</span></label>
-                                    <select v-model="komponen.operation_sum" required
-                                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5">
-                                        <option value="+">+</option>
-                                        <option value="-">-</option>
-                                        <option value="*">*</option>
-                                        <option value="/">/</option>
-                                    </select>
+                            <div class="pt-4 border-t">
+                                <label class="flex items-center space-x-2 text-sm font-medium text-gray-900">
+                                    <Checkbox v-model="komponen.use_nilai_dinamis" :binary="true" />
+                                    <span>Gunakan Nilai Dinamis</span>
+                                </label>
+
+                                <div v-if="komponen.use_nilai_dinamis" class="mt-2 p-3 bg-gray-50 rounded-lg">
+                                    <div>
+                                        <label class="block mb-2 text-sm font-medium text-gray-900">Pilih Field
+                                            Perhitungan</label>
+                                        <select v-model="komponen.kode_nilai_dinamis"
+                                            class="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5">
+                                            <option disabled value="">-- Pilih Field Perhitungan --</option>
+                                            <option v-for="field in calculationFields" :key="field.kode"
+                                                :value="field.kode">{{ field.name }}</option>
+                                        </select>
+                                    </div>
                                 </div>
-                                <div>
+
+                                <div v-else class="mt-2">
                                     <label class="block mb-2 text-sm font-medium text-gray-900">Nilai Uang<span
                                             class="text-red-600">*</span></label>
-                                    <input v-model.number="komponen.nilai_uang" type="number" required
+                                    <input v-model.number="komponen.nilai_statis" type="number" required
                                         placeholder="Nilai Uang"
                                         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5" />
                                 </div>
@@ -210,14 +237,15 @@ const addKomponen = () => {
     form.value.komponen.push({
         kom_id: '',
         use_kondisi: false,
-        kode_kondisi: '',
-        min_kondisi: 0,
-        max_kondisi: 0,
+        kode_kondisi: null,
+        min_kondisi: null,
+        max_kondisi: null,
         use_formula: false,
-        kode_formula: '',
-        operation_sum: '*',
-        nilai_uang: 0,
-        hitung: 'PERIODE',
+        kode_formula: null,
+        operation_sum: 'x',
+        nilai_statis: 0,
+        use_nilai_dinamis: false,
+        kode_nilai_dinamis: null,
     });
 };
 
@@ -248,7 +276,7 @@ const simpan = async () => {
     }
 
     for (const [index, komponen] of form.value.komponen.entries()) {
-        if (!komponen.kom_id || !komponen.hitung || !komponen.operation_sum) {
+        if (!komponen.kom_id || !komponen.operation_sum) {
             toast.error(`Harap lengkapi semua field wajib di Komponen #${index + 1}.`);
             return;
         }
@@ -258,6 +286,10 @@ const simpan = async () => {
         }
         if (komponen.use_formula && !komponen.kode_formula) {
             toast.error(`Pilih dasar rumus untuk Komponen #${index + 1}.`);
+            return;
+        }
+        if (komponen.use_nilai_dinamis && !komponen.kode_nilai_dinamis) {
+            toast.error(`Pilih field nilai dinamis untuk Komponen #${index + 1}.`);
             return;
         }
     }
