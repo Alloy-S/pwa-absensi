@@ -136,6 +136,7 @@ const submitAttendance = async () => {
         toast.error("Foto dan lokasi wajib diisi.");
         return;
     }
+    const toastId = toast.loading("Loading...");
     loading.value = true;
     try {
         const payload = {
@@ -153,6 +154,7 @@ const submitAttendance = async () => {
     } catch (error) {
         console.error('Gagal submit absensi:', error);
     } finally {
+        toast.remove(toastId);
         loading.value = false;
     }
 };
