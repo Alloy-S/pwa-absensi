@@ -114,6 +114,8 @@ const submitKoreksi = async () => {
             time_out: form.value.time_out.replace('T', ' '),
         };
 
+        payload.date = format(form.value.date, 'yyyy-MM-dd')
+
         const response = await CreateKoreksiApi(payload);
 
         if (response.status === 201) {
