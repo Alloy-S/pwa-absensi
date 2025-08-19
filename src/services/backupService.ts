@@ -27,7 +27,9 @@ export const fetchBackupLogById = async (id: string): Promise<BackupLogs> => {
 };
 
 export const downloadFileBackup = async (id: string) => {
-  const response = await api.get(`/backup/${id}/download`);
+  const response = await api.get(`/backup/${id}/download`, {
+    responseType: 'blob',
+  });
   return response;
 };
 
