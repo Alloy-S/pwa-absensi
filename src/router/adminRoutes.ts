@@ -465,6 +465,12 @@ export const adminRoutes = [
     meta: { requiresAuth: true, roles: adminRoles },
   },
   {
+    path: "/admin/backup",
+    name: "backup data",
+    component: () => import("@/views/admin/backup/BackupData.vue"),
+    meta: { requiresAuth: true, roles: adminRoles },
+  },
+  {
     path: "/admin/:pathMatch(.*)*",
     name: "Not Found Admin",
     component: NotFound,
