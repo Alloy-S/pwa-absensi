@@ -86,10 +86,9 @@
                 </div>
 
 
-                <button type="submit" :disabled="isSubmitting"
-                    class="w-full flex justify-center items-center p-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition-colors disabled:bg-blue-300">
-                    <i v-if="isSubmitting" class="fa-solid fa-spinner animate-spin mr-2"></i>
-                    <span>{{ isSubmitting ? 'Mengirim...' : 'Ajukan Reimburse' }}</span>
+                <button type="submit" :disabled="isSubmitting || isCompressing" class="w-full flex justify-center items-center p-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition-colors disabled:bg-blue-300">
+                    <i v-if="isSubmitting || isCompressing" class="fa-solid fa-spinner animate-spin mr-2"></i>
+                    <span>{{ isSubmitting ? 'Mengirim...' : (isCompressing ? 'Mengompres...' : 'Ajukan Reimburse') }}</span>
                 </button>
             </form>
         </div>
