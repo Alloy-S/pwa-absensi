@@ -68,6 +68,20 @@ export interface KoreksiReq {
   catatan_pengajuan: string;
 }
 
+export interface SyncKoreksiItemReq {
+  date: string;
+  time_in: string;
+  time_out: string;
+  absensi_id: string;
+  catatan_pengajuan: string;
+  pengajuan_id: string;
+  timestamp: number;
+}
+
+export interface SyncKoreksiReq {
+  pengajuan: SyncKoreksiItemReq[];
+}
+
 export function initKoreksiReq(): KoreksiReq {
   return {
     date: "",

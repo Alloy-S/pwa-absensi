@@ -65,16 +65,22 @@ import { toast } from 'vue3-toastify';
 import { KoreksiReq, initKoreksiReq } from '@/models/koreksiModel';
 import DatePicker from 'primevue/datepicker';
 import { format } from 'date-fns';
-import { CreateKoreksiApi } from '@/services/koreksiService';
 import { fetchAbsensiByDate } from '@/services/absensiService';
+import { useOfflineStore } from '@/stores/offlineStore';
 
 const router = useRouter();
 const isSubmitting = ref(false);
+const offlineStore = useOfflineStore();
 
 const form = ref<KoreksiReq>(initKoreksiReq());
 
 const checkExistingAttendance = async () => {
     if (!form.value.date) return;
+
+    if (!offlineStore.isOnline) {
+        toast.info("Anda sedang offline, data absensi sebelumnya tidak dapat dimuat.");
+        return;
+    }
 
     try {
         const params = { date: format(form.value.date, 'yyyy-MM-dd') };
@@ -116,12 +122,9 @@ const submitKoreksi = async () => {
 
         payload.date = format(form.value.date, 'yyyy-MM-dd')
 
-        const response = await CreateKoreksiApi(payload);
+        await offlineStore.submitKoreksi(payload);
 
-        if (response.status === 201) {
-            toast.success("Permintaan koreksi berhasil diajukan.");
-            router.back();
-        }
+        router.back();
     } catch (error) {
         console.error("Gagal mengajukan koreksi:", error);
         toast.error("Gagal mengajukan koreksi. Silakan coba lagi.");

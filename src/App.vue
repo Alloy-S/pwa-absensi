@@ -6,6 +6,7 @@ import { toast } from 'vue3-toastify';
 import { initializeApp } from "firebase/app";
 import { getMessaging, getToken, onMessage } from "firebase/messaging";
 import { updateFCMToken } from './services/userService';
+import { useOfflineStore } from './stores/offlineStore';
 
 const firebaseConfig = {
   apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
@@ -20,9 +21,12 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const router = useRouter();
 const messaging = getMessaging();
-
+const offlineStore = useOfflineStore();
 
 onMounted(() => {
+  offlineStore.setupOnlineStatusListeners();
+  offlineStore.syncQueue();
+  
   const token = localStorage.getItem('access_token');
 
   if (token) {

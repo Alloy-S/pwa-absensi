@@ -1,4 +1,3 @@
-// src/lib/axios.ts
 import axios from "axios";
 import router from "@/router";
 import { toast } from "vue3-toastify";
@@ -20,8 +19,11 @@ api.interceptors.request.use((config) => {
 });
 
 api.interceptors.response.use(
-  (response) => response,
+  (response) => {
+    return response;
+  },
   (error) => {
+
     if (error.response) {
       const status = error.response.status;
 
@@ -37,7 +39,9 @@ api.interceptors.response.use(
         toast.error("Terjadi kesalahan pada server");
       }
     } else {
-      toast.error("Tidak dapat terhubung ke server");
+      if (navigator.onLine) {
+        toast.error("Tidak dapat terhubung ke server");
+      }
     }
 
     return Promise.reject(error);

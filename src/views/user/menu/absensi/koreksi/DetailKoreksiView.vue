@@ -17,9 +17,12 @@
                             <p class="text-xl font-bold text-slate-800">{{ koreksiDetail.status }}</p>
                         </div>
                         <div :class="statusTextColor(koreksiDetail.status)" class="text-3xl">
-                            <i v-if="koreksiDetail.status.toLowerCase().includes('menunggu')" class="fa-solid fa-hourglass-half"></i>
-                            <i v-else-if="koreksiDetail.status.toLowerCase().includes('disetujui')" class="fa-solid fa-check-circle"></i>
-                            <i v-else-if="koreksiDetail.status.toLowerCase().includes('ditolak')" class="fa-solid fa-times-circle"></i>
+                            <i v-if="koreksiDetail.status.toLowerCase().includes('menunggu')"
+                                class="fa-solid fa-hourglass-half"></i>
+                            <i v-else-if="koreksiDetail.status.toLowerCase().includes('disetujui')"
+                                class="fa-solid fa-check-circle"></i>
+                            <i v-else-if="koreksiDetail.status.toLowerCase().includes('ditolak')"
+                                class="fa-solid fa-times-circle"></i>
                         </div>
                     </div>
                 </div>
@@ -27,36 +30,43 @@
                 <div class="bg-white p-4 rounded-lg shadow-md">
                     <h3 class="font-semibold text-slate-800 mb-3">Detail Pengajuan</h3>
                     <div class="space-y-2 text-sm">
-                        <DetailItem icon="fa-solid fa-calendar-day" label="Untuk Tanggal Absensi" :value="formatDate(koreksiDetail.absensi_date)" />
-                        <DetailItem icon="fa-solid fa-user-check" label="Disetujui Oleh" :value="koreksiDetail.approval_user?.fullname || '-'" />
-                        <DetailItem v-if="koreksiDetail.catatan_pengajuan" icon="fa-solid fa-pencil" label="Catatan Pengajuan" :value="koreksiDetail.catatan_pengajuan" />
+                        <DetailItem icon="fa-solid fa-calendar-day" label="Untuk Tanggal Absensi"
+                            :value="formatDate(koreksiDetail.absensi_date)" />
+                        <DetailItem icon="fa-solid fa-user-check" label="Disetujui Oleh"
+                            :value="koreksiDetail.approval_user?.fullname || '-'" />
+                        <DetailItem v-if="koreksiDetail.catatan_pengajuan" icon="fa-solid fa-pencil"
+                            label="Catatan Pengajuan" :value="koreksiDetail.catatan_pengajuan" />
                     </div>
                 </div>
 
                 <div class="bg-white p-4 rounded-lg shadow-md">
                     <h3 class="font-semibold text-slate-800 mb-4">Waktu yang Diajukan</h3>
                     <div class="relative border-l-2 border-gray-200 ml-3">
-                        
+
                         <div v-if="jamMasuk" class="mb-6 ml-6">
-                            <span class="absolute flex items-center justify-center w-6 h-6 bg-blue-100 rounded-full -left-3 ring-8 ring-white">
+                            <span
+                                class="absolute flex items-center justify-center w-6 h-6 bg-blue-100 rounded-full -left-3 ring-8 ring-white">
                                 <i class="fa-solid fa-arrow-right-to-bracket text-blue-600"></i>
                             </span>
                             <h4 class="font-semibold text-gray-900">Jam Masuk</h4>
-                            <p class="text-xl font-mono text-gray-800">{{ formatDateTime(jamMasuk.requested_datetime) }}</p>
+                            <p class="text-xl font-mono text-gray-800">{{ formatDateTime(jamMasuk.requested_datetime) }}
+                            </p>
                         </div>
 
-                        
+
                         <div v-if="jamPulang" class="ml-6">
-                            <span class="absolute flex items-center justify-center w-6 h-6 bg-red-100 rounded-full -left-3 ring-8 ring-white">
+                            <span
+                                class="absolute flex items-center justify-center w-6 h-6 bg-red-100 rounded-full -left-3 ring-8 ring-white">
                                 <i class="fa-solid fa-arrow-right-from-bracket text-red-600"></i>
                             </span>
                             <h4 class="font-semibold text-gray-900">Jam Pulang</h4>
-                            <p class="text-xl font-mono text-gray-800">{{ formatDateTime(jamPulang.requested_datetime) }}</p>
+                            <p class="text-xl font-mono text-gray-800">{{ formatDateTime(jamPulang.requested_datetime)
+                            }}</p>
                         </div>
                     </div>
                 </div>
 
-                
+
                 <div v-if="canCancel" class="mt-6">
                     <button @click="confirmCancel" :disabled="isCancelling"
                         class="w-full px-4 py-2 bg-red-600 text-white font-semibold rounded-lg hover:bg-red-700 disabled:bg-red-300">
@@ -66,10 +76,10 @@
                 </div>
 
             </div>
-            
-            
+
+
             <div v-else class="text-center py-20">
-                 <i class="fa-solid fa-file-circle-question text-4xl text-gray-400"></i>
+                <i class="fa-solid fa-file-circle-question text-4xl text-gray-400"></i>
                 <p class="mt-3 text-gray-500">Detail koreksi tidak ditemukan.</p>
             </div>
         </div>
@@ -87,16 +97,21 @@ import { Koreksi } from '@/models/koreksiModel';
 import { toast } from 'vue3-toastify';
 import ConfirmDialog from 'primevue/confirmdialog';
 import { useConfirm } from "primevue/useconfirm";
+import { useOfflineStore } from '@/stores/offlineStore';
+import { db } from '@/services/dbService';
 
 const route = useRoute();
 const router = useRouter();
-const confirm = useConfirm(); 
+const confirm = useConfirm();
 const loading = ref(true);
 const isCancelling = ref(false);
-const koreksiDetail = ref<Koreksi | null>(null);
+const isLocalItem = ref(false);
+const koreksiDetail = ref<Partial<Koreksi> | null>(null);
+const offlineStore = useOfflineStore();
 
 
 const canCancel = computed(() => {
+    if (!koreksiDetail.value?.status) return false;
     return koreksiDetail.value?.status.toLowerCase().includes('menunggu');
 });
 
@@ -111,7 +126,26 @@ const jamPulang = computed(() => {
 const getKoreksiDetail = async () => {
     try {
         const approvalId = route.params.id as string;
-        koreksiDetail.value = await fetchDetailKoreksi(approvalId);
+
+        const localItem = await db.koreksiQueue.where('pengajuan_id').equals(approvalId).first();
+
+        if (localItem) {
+            isLocalItem.value = true;
+            koreksiDetail.value = {
+                id: localItem.pengajuan_id,
+                status: 'Menunggu Sinkronisasi',
+                absensi_date: localItem.data.date,
+                catatan_pengajuan: localItem.data.catatan_pengajuan,
+                detail_approval: [
+                    { id: '', type: 'IN', requested_datetime: localItem.data.time_in },
+                    { id: '', type: 'OUT', requested_datetime: localItem.data.time_out }
+                ]
+            };
+        } else {
+            isLocalItem.value = false;
+            koreksiDetail.value = await fetchDetailKoreksi(approvalId);
+        }
+
     } catch (error) {
         console.error("Gagal memuat detail koreksi:", error);
     } finally {
@@ -140,9 +174,18 @@ const confirmCancel = () => {
 const cancelKoreksi = async () => {
     if (!koreksiDetail.value) return;
     isCancelling.value = true;
+
     try {
-        const response = await cancelKoreksiApi(koreksiDetail.value.id);
-        if (response.status === 200) {
+        let success = false;
+        if (isLocalItem.value) {
+
+            success = await offlineStore.cancelLocalKoreksi(koreksiDetail.value.id);
+        } else {
+            const response = await cancelKoreksiApi(koreksiDetail.value.id);
+            success = response.status === 200;
+        }
+
+        if (success) {
             toast.success("Pengajuan koreksi berhasil dibatalkan.");
             router.back();
         }
@@ -165,8 +208,8 @@ const formatDate = (dateString: string) => {
 const formatDateTime = (dateTimeString: string) => {
     if (!dateTimeString) return '-';
     return new Date(dateTimeString).toLocaleString('id-ID', {
-        day: 'numeric', 
-        month: 'short', 
+        day: 'numeric',
+        month: 'short',
         year: 'numeric',
         hour: '2-digit',
         minute: '2-digit'

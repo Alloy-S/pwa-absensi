@@ -11,7 +11,8 @@ export default defineConfig({
     VitePWA({
       registerType: "autoUpdate",
       workbox: {
-        cleanupOutdatedCaches: true, // Hapus cache lama
+        cleanupOutdatedCaches: true,
+        globPatterns: ['**/*.{js,css,html,ico,png,svg,woff,woff2}'],
       },
       manifest: {
         name: "Benz Absensi",
@@ -34,13 +35,13 @@ export default defineConfig({
         ],
       },
       devOptions: {
-        enabled: true, // Aktifkan mode PWA di development
+        enabled: true,
       },
     }),
   ],
   resolve: {
     alias: {
-      '@': path.resolve(__dirname, 'src'), // Pastikan ini ada
+      '@': path.resolve(__dirname, 'src'),
     },
   },
 });

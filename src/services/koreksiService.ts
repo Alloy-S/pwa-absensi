@@ -5,6 +5,7 @@ import {
   KoreksiPagination,
   KoreksiParams,
   KoreksiReq,
+  SyncKoreksiReq,
 } from "@/models/koreksiModel";
 
 export const fetchKoreksiPagination = async (
@@ -33,8 +34,12 @@ export const fetchDetailKoreksi = async (id: string): Promise<Koreksi> => {
   return response.data;
 };
 
-export const fetchDetailKoreksiPIC = async (id: string): Promise<ApprovalKoreksi> => {
-  const response = await api.get<ApprovalKoreksi>(`/koreksi-kehadiran/approval/${id}`);
+export const fetchDetailKoreksiPIC = async (
+  id: string
+): Promise<ApprovalKoreksi> => {
+  const response = await api.get<ApprovalKoreksi>(
+    `/koreksi-kehadiran/approval/${id}`
+  );
   return response.data;
 };
 
@@ -55,5 +60,10 @@ export const approveKoreksiApi = async (id: string) => {
 
 export const rejectKoreksiApi = async (id: string) => {
   const response = await api.post(`/koreksi-kehadiran/approval/${id}/reject`);
+  return response;
+};
+
+export const syncKoreksiApi = async (requests: SyncKoreksiReq) => {
+  const response = await api.post(`/koreksi-kehadiran/sync`, requests);
   return response;
 };

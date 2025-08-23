@@ -1,18 +1,21 @@
 <template>
     <BasePage>
         <div class="p-4">
-            <!-- Profile Header -->
-            <div class="flex mt-4">
+            
+            <div class="flex mt-4 items-center">
                 <div class="flex items-center justify-center">
-                    <div class="p-6 rounded-full bg-slate-500"></div>
+                    <div
+                        class="w-16 h-16 rounded-full bg-blue-500 flex items-center justify-center text-white text-2xl font-bold">
+                        {{ user.fullname.charAt(0) }}
+                    </div>
                 </div>
                 <div class="ml-4">
-                    <p class="text-lg font-semibold">Alloysius Steven</p>
-                    <p class="text-gray-600">Staff</p>
+                    <p class="text-lg font-semibold text-slate-800">{{ user.fullname }}</p>
+                    <p class="font-medium text-slate-600 capitalize">{{ user.userRole }}</p>
                 </div>
             </div>
         </div>
-        <!-- Profile Menu -->
+        
         <div class="mt-6">
             <button class="w-full flex items-center justify-between p-4 text-slate-800 bg-white hover:bg-slate-100" @click="goToDetailProfile">
                 <div>
@@ -69,9 +72,23 @@
 <script setup lang="ts">
 import BasePage from '@/layouts/user/BasePage.vue';
 import { hitLogout } from '@/services/authService';
+import { ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
+import { UserData } from '@/models/userModel';
 
 const router = useRouter();
+const user = ref<UserData>({ fullname: 'Pengguna', userRole: 'User', username: '-' });
+
+onMounted(() => {
+    const userDataString = localStorage.getItem('user_data');
+    if (userDataString) {
+        try {
+            user.value = JSON.parse(userDataString);
+        } catch (e) {
+            console.error("Gagal parsing data pengguna dari localStorage:", e);
+        }
+    }
+});
 
 const goToDetailProfile = () => router.push('/profile/kontak');
 const goToCompanyProfile = () => router.push('/perusahaan');

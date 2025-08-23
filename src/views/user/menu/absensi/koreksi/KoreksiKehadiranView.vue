@@ -75,17 +75,18 @@ import { useRouter } from 'vue-router';
 import { Koreksi, KoreksiParams } from '@/models/koreksiModel';
 import DataView from 'primevue/dataview';
 import { fetchKoreksiPagination } from '@/services/koreksiService';
-
+import { useOfflineStore } from '@/stores/offlineStore';
+import { db } from '@/services/dbService';
 const router = useRouter();
 
 
 const loading = ref(true);
-const koreksiList = ref<Koreksi[]>([]);
+const koreksiList = ref<Partial<Koreksi>[]>([]);
 const totalRecords = ref(0);
 const selectedMonth = ref(new Date().toISOString().slice(0, 7)); // Format YYYY-MM
 const selectedStatus = ref('Menunggu Persetujuan');
 let debounceTimer: any = null;
-
+const offlineStore = useOfflineStore();
 const lazyParams = ref({
     first: 0,
     rows: 5,
@@ -95,21 +96,37 @@ const lazyParams = ref({
 
 const getKoreksiList = async () => {
     loading.value = true;
-    try {
-        const params: KoreksiParams = {
-            page: lazyParams.value.page,
-            size: lazyParams.value.rows,
-            'filter-month': selectedMonth.value,
-            'filter-status': selectedStatus.value
-        };
-        const response = await fetchKoreksiPagination(params);
-        koreksiList.value = response.items;
-        totalRecords.value = Number(response.total);
-    } catch (error) {
-        console.error("Gagal memuat daftar koreksi:", error);
-    } finally {
-        loading.value = false;
+
+    let serverItems: Partial<Koreksi>[] = [];
+    let serverTotal = 0;
+
+    if (offlineStore.isOnline) {
+        try {
+            const params: KoreksiParams = {
+                page: lazyParams.value.page,
+                size: lazyParams.value.rows,
+                'filter-month': selectedMonth.value,
+                'filter-status': selectedStatus.value
+            };
+            const response = await fetchKoreksiPagination(params);
+            serverItems = response.items;
+            serverTotal = Number(response.total);
+        } catch (error) {
+            console.error("Gagal memuat daftar koreksi dari server:", error);
+        }
     }
+
+    const localItems = await db.koreksiQueue.toArray();
+
+    const formattedLocalItems: Partial<Koreksi>[] = localItems.map(item => ({
+        id: item.pengajuan_id,
+        absensi_date: item.data.date,
+        catatan_pengajuan: item.data.catatan_pengajuan,
+        status: 'Menunggu Sinkronisasi',
+    }));
+
+    koreksiList.value = [...formattedLocalItems, ...serverItems];
+    totalRecords.value = serverTotal + formattedLocalItems.length;
 };
 
 

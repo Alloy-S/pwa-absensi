@@ -1,7 +1,7 @@
 <template>
     <BasePage>
         <div class="p-4">
-            
+
             <div class="flex mt-4 items-center">
                 <div class="flex items-center justify-center">
                     <div
@@ -15,14 +15,14 @@
                 </div>
             </div>
 
-            
+
             <div v-if="loading" class="text-center py-10">
                 <i class="fa-solid fa-spinner animate-spin text-3xl text-slate-400"></i>
                 <p class="mt-2 text-slate-500">Memuat data dasbor...</p>
             </div>
 
             <div v-else>
-                
+
                 <div v-if="attendanceToday" class="bg-white rounded-lg shadow mt-6 overflow-hidden">
                     <div class="p-4">
                         <h3 class="font-semibold text-gray-800">Kehadiran</h3>
@@ -50,7 +50,7 @@
                     </div>
                 </div>
 
-                
+
                 <div class="flex justify-between mt-10 bg-white rounded-lg shadow">
                     <button v-for="tab in tabs" :key="tab" class="py-3 w-full rounded-md font-medium text-sm"
                         :class="activeTab === tab ? 'bg-blue-500 text-white' : 'text-gray-600'"
@@ -59,7 +59,7 @@
                     </button>
                 </div>
 
-                
+
                 <div class="mt-4">
                     <div v-if="activeTab === 'Pengumuman'">
                         <div v-if="announcements.length === 0" class="text-center text-gray-500 py-5">Tidak ada
@@ -73,7 +73,8 @@
                                     <p class="text-sm text-slate-500">{{ new
                                         Date(announcement.date_created).toLocaleDateString('id-ID', {
                                             day: 'numeric',
-                                        month: 'long', year: 'numeric' }) }}</p>
+                                            month: 'long', year: 'numeric'
+                                        }) }}</p>
                                 </div>
                                 <div class="flex flex-col justify-center">
                                     <i class="fa-solid fa-angle-right text-gray-500 text-lg"></i>
@@ -89,7 +90,8 @@
                         <div v-if="approvals.length === 0" class="text-center text-gray-500 py-5">Tidak ada pengajuan
                             yang menunggu.</div>
                         <div v-else class="space-y-3">
-                            <CardApproval v-for="approval in approvals" :key="approval.id" :approval="approval" />
+                            <CardApproval v-for="approval in approvals" :key="approval.approval_id"
+                                :approval="approval" />
                         </div>
                         <button @click="router.push('/menu/approval')"
                             class="mt-3 w-full py-2 border-2 rounded-md text-blue-500 border-blue-500 hover:text-white hover:bg-blue-500 transition font-semibold">
@@ -99,11 +101,11 @@
                 </div>
             </div>
 
-            
+
             <div class="mb-20"></div>
         </div>
 
-        
+
         <ReusableModal v-model:isOpen="isModalOpen" title="Pemberitahuan" @close="isModalOpen = false">
             <p>Wajah Anda belum terdaftar di sistem.</p>
             <p>Silakan lakukan pendaftaran wajah sekarang untuk dapat melakukan absensi.</p>
@@ -134,7 +136,7 @@ import { UserData } from '@/models/userModel';
 const router = useRouter();
 
 const loading = ref(true);
-const user = ref<UserData>({ fullname: 'Pengguna', userRole: 'User', username:'-' });
+const user = ref<UserData>({ fullname: 'Pengguna', userRole: 'User', username: '-' });
 const attendanceToday = ref<CheckTodayAttendanceRes | null>(null);
 const announcements = ref<Pengumuman[]>([]);
 const approvals = ref<ApprovalItem[]>([]);
@@ -148,8 +150,16 @@ const isPulangDisabled = computed(() => attendanceToday.value.required_attendanc
 
 const loadDashboardData = async () => {
     loading.value = true;
+    const userDataString = localStorage.getItem('user_data');
+    if (userDataString) {
+        try {
+            user.value = JSON.parse(userDataString);
+        } catch (e) {
+            console.error("Gagal parsing data pengguna dari localStorage:", e);
+        }
+    }
     try {
-        
+
         const [attendanceRes, pengumumanRes, approvalRes, faceStatusRes] = await Promise.all([
             checkAttadanceTodayApi(),
             fetchLatestPengumuman(),
@@ -157,21 +167,11 @@ const loadDashboardData = async () => {
             checkFaceStatus()
         ]);
 
-        const userDataString = localStorage.getItem('user_data');
-        if (userDataString) {
-            try {
-                user.value = JSON.parse(userDataString);
-            } catch (e) {
-                console.error("Gagal mem-parsing data pengguna dari localStorage:", e);
-            }
-        }
-
-        
         attendanceToday.value = attendanceRes;
         announcements.value = pengumumanRes.items;
         approvals.value = approvalRes.approvals;
 
-        
+
         if (faceStatusRes.face_registration_status === false) {
             isModalOpen.value = true;
         }
