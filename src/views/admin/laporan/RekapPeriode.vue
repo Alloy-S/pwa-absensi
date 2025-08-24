@@ -187,8 +187,8 @@ const exportToExcel = async () => {
     isExporting.value = true;
     try {
         const params = {
-            "start-date": filters.startDate,
-            "end-date": filters.endDate,
+            "start-date": format(filters.startDate, 'yyyy-MM-dd'),
+            "end-date": format(filters.endDate, 'yyyy-MM-dd'),
         };
         const response = await ExportRekapFull(params);
 
