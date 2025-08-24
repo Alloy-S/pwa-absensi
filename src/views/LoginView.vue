@@ -23,11 +23,6 @@
             class="mt-1 w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500" />
         </div>
 
-        <div class="flex items-center justify-between">
-
-          <a href="#" class="text-sm text-blue-600 hover:underline">Lupa Password?</a>
-        </div>
-
         <button type="submit"
           class="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 transition font-semibold">
           Login
