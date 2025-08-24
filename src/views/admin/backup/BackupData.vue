@@ -16,7 +16,7 @@
                 <div class="md:col-span-1">
                     <label for="periode-start" class="block mb-2 text-sm font-medium text-gray-700">Tanggal
                         Mulai</label>
-                        <DatePicker v-model="(form.start_date as any)" dateFormat="dd/mm/yy" class="w-full" />
+                    <DatePicker v-model="(form.start_date as any)" dateFormat="dd/mm/yy" class="w-full" />
                 </div>
                 <div class="md:col-span-1">
                     <label for="periode-end" class="block mb-2 text-sm font-medium text-gray-700">Tanggal Akhir</label>
@@ -41,7 +41,7 @@
                 :totalRecords="totalRecords" :loading="loading" @page="onPage" v-model:first="lazyParams.first"
                 tableStyle="min-width: 50rem">
 
-               
+
 
                 <Column field="date_created" header="Tanggal Dibuat" style="width: 20%">
                     <template #body="slotProps">
@@ -55,7 +55,8 @@
                 </Column>
                 <Column field="status" header="Status" style="width: 15%">
                     <template #body="slotProps">
-                        <span class="inline-flex items-center gap-2 font-semibold" :class="getStatusClass(slotProps.data.status)">
+                        <span class="inline-flex items-center gap-2 font-semibold"
+                            :class="getStatusClass(slotProps.data.status)">
                             <i class="fa-solid fa-circle text-xs"></i>
                             {{ slotProps.data.status }}
                         </span>
@@ -73,14 +74,20 @@
                             (Proses berjalan...)
                         </span>
                         <div v-else class="flex justify-center items-center gap-4">
-                            <button v-if="slotProps.data.status === 'READY TO DOWNLOAD'" @click="downloadAndFinalize(slotProps.data)"
-                                title="Unduh & Finalisasi" class="text-blue-600 hover:text-blue-800 text-lg">
-                                <i class="fa-solid fa-download"></i>
-                            </button>
-                            <button v-if="slotProps.data.status === 'FAILED'" @click="showError(slotProps.data)" title="Lihat Error"
-                                class="text-yellow-600 hover:text-yellow-800 text-lg">
-                                <i class="fa-solid fa-circle-info"></i>
-                            </button>
+                            <a v-if="slotProps.data.status === 'READY TO DOWNLOAD'"
+                                @click="downloadAndFinalize(slotProps.data)"
+                                class="font-medium text-blue-600 hover:text-blue-800 text-lg">
+                                Download
+                            </a>
+                            <a v-if="slotProps.data.status === 'READY TO DOWNLOAD'"
+                                @click="confirmDelete(slotProps.data.id)"
+                                class="font-medium text-red-600 hover:text-blue-800 text-lg">
+                                Hapus
+                            </a>
+                            <a v-if="slotProps.data.status === 'FAILED'" @click="showError(slotProps.data)"
+                                class="font-medium text-yellow-600 hover:text-yellow-800 text-lg">
+                                View Error
+                            </a>
                         </div>
                     </template>
                 </Column>
@@ -152,8 +159,8 @@ const triggerBackup = async () => {
     loading.value = true;
     try {
         form.start_date = format(form.start_date, 'yyyy-MM-dd');
-        form.end_date = format(form.end_date, 'yyyy-MM-dd');    
-        
+        form.end_date = format(form.end_date, 'yyyy-MM-dd');
+
         await createBackupJob(form);
         toast.success("Proses backup telah dimulai.");
         await getBackupLogs();
@@ -179,18 +186,22 @@ const downloadAndFinalize = async (log: BackupLogs) => {
 
         link.remove();
         window.URL.revokeObjectURL(url);
-        toast.update(toastId, { render: "Unduhan berhasil! Memfinalisasi...", type: "success", isLoading: true, autoClose: false });
-
-        await finalisasiBackupLog(log.id);
-
-        toast.update(toastId, { render: "Backup telah difinalisasi!", type: "success", isLoading: false, autoClose: 3000 });
-        await getBackupLogs();
+        toast.update(toastId, { render: "Unduhan berhasil", type: "success", isLoading: false, autoClose: 3000 });
 
     } catch (error) {
-        console.error("Download/Finalize error:", error);
+        console.error("Download error:", error);
         toast.remove(toastId);
     }
 };
+
+const deleteBackup = async (id: string) => {
+    try {
+        await finalisasiBackupLog(id);
+        await getBackupLogs();
+    } catch (error) {
+        console.error("delete backup error:", error)
+    }
+}
 
 onMounted(() => {
     getBackupLogs();
@@ -216,6 +227,18 @@ const confirmBackup = () => {
         rejectLabel: 'Batal',
         acceptClass: 'p-button-danger',
         accept: triggerBackup,
+    });
+};
+
+const confirmDelete = (id: string) => {
+    confirm.require({
+        message: `Anda akan menghapus file backup ini. Tindakan ini tidak bisa dibatalkan. Yakin ingin melanjutkan?`,
+        header: 'Konfirmasi Hapus',
+        icon: 'fa-solid fa-triangle-exclamation text-red-500',
+        acceptLabel: 'Ya, Saya Mengerti',
+        rejectLabel: 'Batal',
+        acceptClass: 'p-button-danger',
+        accept: () => deleteBackup(id),
     });
 };
 

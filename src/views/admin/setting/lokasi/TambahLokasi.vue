@@ -133,7 +133,7 @@ const createLokasi = async () => {
             toast.success("Success Add New Lokasi")
             setTimeout(() => {
                 router.back();
-            }, 1500);
+            }, 1000);
         }
     } catch (error) {
         console.error(error)

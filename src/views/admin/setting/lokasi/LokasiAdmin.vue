@@ -1,6 +1,6 @@
 <template>
     <BasePage>
-
+        <ConfirmDialog></ConfirmDialog>
         <div class="mt-5 mb-10 flex justify-between items-center">
             <p class="text-3xl font-semibold text-slate-800">Lokasi</p>
         </div>
@@ -28,87 +28,55 @@
             </div>
         </div>
 
-        <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+        <div class="bg-white p-4 rounded-lg shadow-md">
+            <DataTable :value="lokasiList" lazy paginator :rows="lazyParams.rows" :rowsPerPageOptions="[5, 10, 20, 50]"
+                :totalRecords="totalRecords" :loading="loading" @page="onPage" v-model:first="lazyParams.first"
+                tableStyle="min-width: 50rem">
 
-            <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-                <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-                    <tr>
-                        <th scope="col" class="w-3/4 px-6 py-3">
-                            Nama Lokasi
-                        </th>
+                <Column field="name" header="Nama Lokasi" style="width: 75%"></Column>
+                <Column header="Action" style="width: 25%">
+                    <template #body="slotProps">
+                        <div class="space-x-3">
+                            <a @click="editItem(slotProps.data.id)"
+                                class="font-medium text-blue-600 hover:underline cursor-pointer">Edit</a>
+                            <a @click="confirmDelete(slotProps.data.id)"
+                                class="font-medium text-red-600 hover:underline cursor-pointer">Delete</a>
+                        </div>
+                    </template>
+                </Column>
 
-                        <th scope="col" class="px-6 py-3">
-                            Action
-                        </th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr v-for="item in lokasiList.items" :key="item.id"
-                        class="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700 border-gray-200">
-                        <td scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                            {{ item.name }}
-                        </td>
-
-                        <td class="px-6 py-4 space-x-3">
-                            <a @click="editItem(item.id)"
-                                class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
-                            <a @click="deleteLok(item.id)" class="font-medium text-red-600 dark:text-red-500 hover:underline">Delete</a>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+                <template #empty>
+                    <div class="text-center py-5">
+                        <p class="text-gray-500">Tidak ada data jadwal kerja yang ditemukan.</p>
+                    </div>
+                </template>
+            </DataTable>
 
 
 
-        </div>
-        <div class="mb-16 flex justify-end mt-4">
-            <nav aria-label="Page navigation example" v-if="pages > 1">
-                <ul class="inline-flex -space-x-px text-sm">
-
-                    <li>
-                        <button @click="changePage(page - 1)" :disabled="page === 1"
-                            class="flex items-center justify-center px-3 h-8 ms-0 leading-tight text-gray-500 bg-white border border-e-0 border-gray-300 rounded-s-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
-                            Previous
-                        </button>
-                    </li>
-
-                    <li v-for="n in pages" :key="n">
-
-                        <button @click="changePage(n)" :class="[
-                            'flex items-center justify-center px-3 h-8 leading-tight border border-gray-300',
-                            n === page ? 'text-blue-600 bg-blue-50 hover:bg-blue-100 hover:text-blue-700 dark:bg-gray-700 dark:text-white' : 'text-gray-500 bg-white hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white'
-                        ]">
-                            {{ n }}
-                        </button>
-                    </li>
-
-                    <li>
-                        <button @click="changePage(page + 1)" :disabled="page === pages"
-                            class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
-                            Next
-                        </button>
-                    </li>
-
-                </ul>
-            </nav>
         </div>
     </BasePage>
 </template>
 
 <script setup lang="ts">
 import BasePage from '@/layouts/admin/BasePage.vue'
-import { LokasiPagination } from '@/models/lokasiModel';
+import { Lokasi } from '@/models/lokasiModel';
 import { deleteLokasi, fetchLokasiPagination } from '@/services/lokasiService';
 import { ref, onMounted, watch } from 'vue';
 import { useRouter } from 'vue-router'
 import { toast } from 'vue3-toastify'
+import DataTable from 'primevue/datatable';
+import Column from 'primevue/column';
+import { useConfirm } from "primevue/useconfirm";
+import ConfirmDialog from 'primevue/confirmdialog';
 
 
-const lokasiList = ref<LokasiPagination>({ pages: 1, total: 0, items: [] });
-const pages = ref(1);
-const page = ref(1);
+const lokasiList = ref<Lokasi[]>([]);
 const search = ref('');
+const confirm = useConfirm();
+const totalRecords = ref(0);
 let debounceTimer: any = null;
+const loading = ref(false);
 const router = useRouter()
 
 const addItem = () => {
@@ -119,58 +87,78 @@ const editItem = (id: any) => {
     router.push('lokasi/' + id);
 }
 
-const changePage = (newPage: number) => {
-    page.value = newPage
-    getLokasi()
-}
+const lazyParams = ref({
+    first: 0,
+    rows: 10,
+    page: 1,
+});
+
 const getLokasi = async () => {
+    loading.value = true;
     try {
 
         const params = {
-            page: page.value,
+            page: lazyParams.value.page,
+            size: lazyParams.value.rows,
             search: search.value
-        }
+        };
 
-        const response = fetchLokasiPagination(params)
+        const response = await fetchLokasiPagination(params)
 
-        lokasiList.value = (await response);
-        pages.value = Number((await response).pages);
+        lokasiList.value = response.items;
+        totalRecords.value = response.total;
 
         console.log(lokasiList.value);
     } catch (error) {
         console.error(error)
+    } finally {
+        loading.value = false;
     }
 }
 
+const onPage = (event: any) => {
+    lazyParams.value.page = event.page + 1;
+    lazyParams.value.rows = event.rows;
+    lazyParams.value.first = event.first;
+    getLokasi();
+};
+
+const confirmDelete = (id: string) => {
+    confirm.require({
+        message: 'Apakah Anda yakin ingin menghapus Lokasi ini? Lokasi ini tidak akan bisa digunakan lagi.',
+        header: 'Konfirmasi Hapus',
+        icon: 'fa-solid fa-triangle-exclamation',
+        acceptLabel: 'Ya, Hapus',
+        rejectLabel: 'Batal',
+        acceptClass: 'p-button-danger',
+        accept: () => deleteLok(id),
+    });
+};
+
 const deleteLok = async (id: string) => {
     try {
-        // Perform the delete logic here
+
         console.log('Delete item with id:', id);
 
         const response = await deleteLokasi(id);
 
         if (response.status === 200) {
-            toast.success("Success Delete Jabatan")
+            toast.success("Success Delete Lokasi")
             getLokasi()
         }
     } catch (error) {
         console.error(error)
-        toast.error(error.response.data.message);
     }
 }
 
-watch(search, (_newVal, _oldVal) => {
-
+watch(search, () => {
     if (debounceTimer) clearTimeout(debounceTimer);
-
     debounceTimer = setTimeout(() => {
-
-        page.value = 1
-        getLokasi()
-        console.log('search', search.value)
-
-    }, 1000);
-})
+        lazyParams.value.page = 1;
+        lazyParams.value.first = 0;
+        getLokasi();
+    }, 500);
+});
 
 onMounted(() => {
     getLokasi()
