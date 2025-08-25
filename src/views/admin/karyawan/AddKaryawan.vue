@@ -94,9 +94,8 @@
                         <p class="mt-2 mb-4 text-lg font-semibold">Data Kontak</p>
                         <div class="mb-6">
                             <label for="telepon"
-                                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nomor Telepon<span
-                                    class="text-red-600">*</span></label>
-                            <input type="text" id="telepon" v-model="user.data_kontak.no_telepon" required
+                                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nomor Telepon <span class="text-red-500">(wajib untuk tipe karyawan bulanan)</span></label>
+                            <input type="text" id="telepon" v-model="user.data_kontak.no_telepon"
                                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                         </div>
                         <div class="mb-6">
@@ -164,8 +163,7 @@
 
                         <div class="mb-6">
                             <label for="jadwal-kerja"
-                                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Jadwal Kerja<span
-                                    class="text-red-600">*</span></label>
+                                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Jadwal Kerja</label>
                             <ModelSelect id="jadwal-kerja" :options="jadwalKerjaList"
                                 v-model="user.data_karyawan.jadwal_kerja_id" placeholder="Pilih Shift Kerja" />
                         </div>
@@ -214,8 +212,8 @@
                         <div class="w-1/3 flex">
                             <button type="button" @click="goBack"
                                 class="w-full text-red-500 hover:text-white border border-red-600 hover:bg-red-500 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 dark:border-red-500 dark:text-red-500 dark:hover:text-white dark:hover:bg-red-500 dark:focus:ring-red-600">Batal</button>
-                            <button type="submit"
-                                class="w-full text-white bg-blue-500 hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Simpan</button>
+                            <button type="submit" :disabled="loading"
+                                class="w-full text-white bg-blue-500 hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"><i v-if="loading" class="fa-solid fa-spinner animate-spin mr-2"></i> Simpan</button>
                         </div>
                     </div>
                 </form>
@@ -270,7 +268,7 @@ const jadwalKerjaList = ref([])
 const userPosiblePIC = ref([]);
 const isSelectPIC = ref(true)
 const grupGajiList = ref<{ value: string, text: string }[]>([])
-
+const loading = ref(false);
 const router = useRouter();
 
 const goBack = () => {
@@ -339,9 +337,10 @@ const fetchInitialData = async () => {
 }
 
 const createKaryawan = async () => {
+    loading.value = true;
     user.value.phone = user.value.data_kontak.no_telepon;
 
-    errors.value = validateUserField(user.value)
+    errors.value = validateUserField(user.value)    
 
 
     console.log(errors)
@@ -354,6 +353,7 @@ const createKaryawan = async () => {
         if (response.status === 201) {
             toast.success("Success Add New Karyawan")
             setTimeout(() => {
+                loading.value = false;
                 router.replace('/admin/karyawan');
             }, 1500);
         }

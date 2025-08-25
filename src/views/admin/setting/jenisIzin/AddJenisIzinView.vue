@@ -60,8 +60,7 @@
                                 </button>
                                 <button type="submit" :disabled="loading"
                                     class="w-full text-white bg-blue-500 hover:bg-blue-700 rounded-lg px-5 py-2.5 disabled:bg-blue-300">
-                                    <span v-if="loading">Menyimpan...</span>
-                                    <span v-else>Simpan</span>
+                                    <i v-if="loading" class="fa-solid fa-spinner animate-spin mr-2"></i> Simpan
                                 </button>
                             </div>
                         </div>

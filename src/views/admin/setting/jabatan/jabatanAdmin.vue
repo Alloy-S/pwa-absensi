@@ -1,5 +1,6 @@
 <template>
     <BasePage>
+        <ConfirmDialog></ConfirmDialog>
         <div class="mt-5 mb-10 flex justify-between items-center">
             <p class="text-3xl font-semibold text-slate-800">Jabatan</p>
         </div>
@@ -11,7 +12,7 @@
                     <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
                         <i class="fa-solid fa-magnifying-glass"></i>
                     </div>
-                    <!-- v-model mengikat ke search ref -->
+                    
                     <input type="text" id="simple-search" v-model="search"
                         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5"
                         placeholder="Cari..." />
@@ -42,13 +43,13 @@
                 
                 <Column field="nama" header="Nama" style="width: 35%"></Column>
                 <Column field="parent_name" header="Atasan" style="width: 35%"></Column>
-                <!-- Kolom Aksi dengan Template Kustom -->
+                
                 <Column header="Action" style="width: 30%">
                     <template #body="slotProps">
                         <div class="px-6 space-x-3">
                             <a @click="editItem(slotProps.data.id)"
                                 class="font-medium text-blue-600 hover:underline cursor-pointer">Edit</a>
-                            <a @click="deleteJab(slotProps.data.id)" 
+                            <a @click="confirmDelete(slotProps.data.id)" 
                                 class="font-medium text-red-600 hover:underline cursor-pointer">Delete</a>
                         </div>
                     </template>
@@ -64,7 +65,8 @@ import { useRouter } from 'vue-router'
 import { ref, onMounted, watch } from 'vue'
 import { deleteJabatan, fetchJabatanPagination } from '@/services/jabatanService'
 import { toast } from 'vue3-toastify'
-
+import { useConfirm } from "primevue/useconfirm";
+import ConfirmDialog from 'primevue/confirmdialog';
 import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
 
@@ -75,7 +77,7 @@ const loading = ref(false);
 const totalRecords = ref(0);
 const search = ref('');
 let debounceTimer: any = null;
-
+const confirm = useConfirm();
 const lazyParams = ref({
     first: 0,
     rows: 10,
@@ -126,6 +128,17 @@ const deleteJab = async (id: string) => {
     }
 }
 
+const confirmDelete = (id: string) => {
+    confirm.require({
+        message: 'Apakah Anda yakin ingin menghapus jabatan ini? Jabatan ini tidak akan bisa digunakan lagi.',
+        header: 'Konfirmasi Hapus',
+        icon: 'fa-solid fa-triangle-exclamation',
+        acceptLabel: 'Ya, Hapus',
+        rejectLabel: 'Batal',
+        acceptClass: 'p-button-danger',
+        accept: () => deleteJab(id),
+    });
+};
 
 watch(search, () => {
     if (debounceTimer) clearTimeout(debounceTimer);

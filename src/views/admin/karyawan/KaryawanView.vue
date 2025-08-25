@@ -31,7 +31,8 @@
                 v-model:first="lazyParams.first" tableStyle="min-width: 50rem">
                 <Column field="fullname" header="Nama Karyawan" style="width: 25%"></Column>
                 <Column field="lokasi" header="Lokasi" style="width: 20%"></Column>
-                <Column field="jabatan" header="Jabatan" style="width: 20%"></Column>
+                <Column field="jabatan" header="Jabatan" style="width: 10%"></Column>
+                <Column field="tipe_karyawan" header="Tipe Karyawan" style="width: 10%"></Column>
                 <Column header="Status" style="width: 15%">
                     <template #body="slotProps">
                         <span class="px-2 py-1 text-xs font-medium rounded-full"

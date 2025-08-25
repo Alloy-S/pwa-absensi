@@ -78,6 +78,8 @@ onMounted(() => {
 .prose p {
     margin-bottom: 1em;
     line-height: 1.6;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
 }
 .prose ul, .prose ol {
     margin-bottom: 1em;

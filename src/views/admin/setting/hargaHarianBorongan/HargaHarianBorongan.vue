@@ -1,6 +1,6 @@
 <template>
     <BasePage>
-
+        <ConfirmDialog></ConfirmDialog>
         <div class="mt-5 mb-10 flex justify-between items-center">
             <p class="text-3xl font-semibold text-slate-800">Harga Harian Borongan</p>
         </div>
@@ -35,14 +35,20 @@
                 tableStyle="min-width: 50rem">
                 <Column field="nama" header="Nama" style="width: 35%"></Column>
                 <Column field="harga_normal" header="Harga Normal" style="width: 35%"></Column>
-                <Column field="harga_lembur" header="Harga Lembur" style="width: 35%"></Column>
-                <!-- Kolom Aksi dengan Template Kustom -->
+                <Column field="is_deleted" header="Status" style="width: 20%">
+                    <template #body="slotProps">
+                        <span class="px-2 py-1 text-xs font-medium rounded-full"
+                            :class="!slotProps.data.is_deleted ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800'">
+                            {{ !slotProps.data.is_deleted ? 'Aktif' : 'Arship' }}
+                        </span>
+                    </template>
+                </Column>
                 <Column header="Action" style="width: 30%">
                     <template #body="slotProps">
                         <div class="px-6 space-x-3">
                             <a @click="editItem(slotProps.data.id)"
-                                class="font-medium text-blue-600 hover:underline cursor-pointer">Edit</a>
-                            <a @click="deleteJab(slotProps.data.id)"
+                                class="font-medium text-blue-600 hover:underline cursor-pointer">{{ !slotProps.data.is_deleted? 'Edit': 'view' }}</a>
+                            <a v-if="!slotProps.data.is_deleted" @click="confirmDelete(slotProps.data.id)"
                                 class="font-medium text-red-600 hover:underline cursor-pointer">Delete</a>
                         </div>
                     </template>
@@ -63,6 +69,8 @@ import { toast } from 'vue3-toastify'
 import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
 import { deleteHarga, fetchHargaPagination } from '@/services/hargaHarianBorongan';
+import ConfirmDialog from 'primevue/confirmdialog';
+import { useConfirm } from "primevue/useconfirm";
 
 const router = useRouter()
 
@@ -71,7 +79,7 @@ const loading = ref(false);
 const totalRecords = ref(0);
 const search = ref('');
 let debounceTimer: any = null;
-
+const confirm = useConfirm();
 const lazyParams = ref({
     first: 0,
     rows: 10,
@@ -110,7 +118,7 @@ const onPage = (event: any) => {
     loadLazyData();
 };
 
-const deleteJab = async (id: string) => {
+const deleteHargaHarian = async (id: string) => {
     try {
         const response = await deleteHarga(id);
         if (response.status === 200) {
@@ -121,6 +129,18 @@ const deleteJab = async (id: string) => {
         console.error(error);
     }
 }
+
+const confirmDelete = (id: string) => {
+    confirm.require({
+        message: 'Apakah Anda yakin ingin menghapus harga harian/borongan ini?',
+        header: 'Konfirmasi Hapus',
+        icon: 'fa-solid fa-triangle-exclamation',
+        acceptLabel: 'Ya, Hapus',
+        rejectLabel: 'Batal',
+        acceptClass: 'p-button-danger',
+        accept: () => deleteHargaHarian(id),
+    });
+};
 
 
 watch(search, () => {

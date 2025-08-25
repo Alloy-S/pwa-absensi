@@ -276,6 +276,9 @@ const simpan = async () => {
     }
 
     for (const [index, komponen] of form.value.komponen.entries()) {
+        if (komponen.use_nilai_dinamis) {
+            komponen.nilai_statis = 0;
+        }
         if (!komponen.kom_id || !komponen.operation_sum) {
             toast.error(`Harap lengkapi semua field wajib di Komponen #${index + 1}.`);
             return;

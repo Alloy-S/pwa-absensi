@@ -159,13 +159,13 @@ export function initUser(): User {
       face_recognition_mode: "NORMAL",
       jabatan_id: "",
       jabatan: "",
-      jadwal_kerja_id: "",
+      jadwal_kerja_id: null,
       jadwal_kerja: "",
       lokasi_id: "",
       lokasi: "",
       user_pic_id: "",
       user_pic_name: "",
-      grup_gaji_id: "",
+      grup_gaji_id: null,
     },
     data_pribadi: {
       id: "",
@@ -221,19 +221,19 @@ export function initDataKaryawan(): DataKaryawan {
     face_recognition_mode: "NORMAL",
     jabatan_id: "",
     jabatan: "",
-    jadwal_kerja_id: "",
+    jadwal_kerja_id: null,
     jadwal_kerja: "",
     lokasi_id: "",
     lokasi: "",
     user_pic_id: "",
     user_pic_name: "",
-    grup_gaji_id: "",
+    grup_gaji_id: null,
   };
 }
 
 export function validateUserField(user: User) {
   const errors: String[] = [];
-
+  const kontak = user.data_kontak;
   const pribadi = user.data_pribadi;
   if (!pribadi.tgl_lahir) errors.push("Tgl Lahir harus dipilih");
 
@@ -241,6 +241,8 @@ export function validateUserField(user: User) {
   if (!karyawan.tgl_gabung) errors.push("Tgl Gabung harus dipilih");
   if (!karyawan.jabatan_id.trim()) errors.push("Jabatan harus dipilih");
   if (!karyawan.lokasi_id.trim()) errors.push("Lokasi harus dipilih");
+  if(karyawan.tipe_karyawan == 'bulanan' && !kontak.no_telepon) errors.push("Nomor Telepon wajib diisi untuk tipe karyawan bulanan");
+  if(karyawan.tipe_karyawan == 'bulanan' && !karyawan.jadwal_kerja_id) errors.push("Jadwal Kerja wajib diisi untuk tipe karyawan bulanan");
 
   return errors;
 }

@@ -5,10 +5,6 @@ import { HargaAll, HargaHarianBorongan, HargaPagination } from "@/models/hargaHa
 export interface HargaHarianBoronganReq {
   nama: string;
   harga_normal: number;
-  harga_lembur: number;
-  jam_start_normal: string;
-  jam_end_normal: string;
-  toleransi_waktu: number;
 }
 
 export const fetchHargaPagination = async (
