@@ -53,13 +53,13 @@ const goToDetail = () => {
     const type = props.approval.tipe_approval.toLowerCase();
 
     if (type.includes('izin')) {
-        path = `/menu/izin/${props.approval.id}`;
+        path = `/menu/izin/${props.approval.approval_id}`;
     } else if (type.includes('lembur')) {
-        path = `/menu/lembur/${props.approval.id}`;
+        path = `/menu/lembur/${props.approval.approval_id}`;
     } else if (type.includes('koreksi')) {
-        path = `/menu/koreksi/${props.approval.id}`;
+        path = `/menu/koreksi/${props.approval.approval_id}`;
     } else if (type.includes('reimburse')) {
-        path = `/menu/reimburse/${props.approval.id}`;
+        path = `/menu/reimburse/${props.approval.approval_id}`;
     }
     
     router.push(path);

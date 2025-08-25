@@ -33,9 +33,9 @@
                                     attendanceToday.shift }}</p>
                             </div>
                             <div class="flex justify-between items-center mt-1">
-                                <p class="font-semibold text-gray-800">Masuk: {{ attendanceToday.time_clock_in ||
+                                <p class="font-semibold text-gray-800">Masuk: {{ formatTime(attendanceToday.time_clock_in) ||
                                     '--:--' }}</p>
-                                <p class="font-semibold text-gray-800">Pulang: {{ attendanceToday.time_clock_out ||
+                                <p class="font-semibold text-gray-800">Pulang: {{ formatTime(attendanceToday.time_clock_out) ||
                                     '--:--' }}</p>
                             </div>
                         </div>
@@ -132,6 +132,7 @@ import { fetchLatestPengumuman } from '@/services/pengumumanService';
 import { fetchApprovalLatestUser } from '@/services/dashboardUserService';
 import { checkFaceStatus } from '@/services/userService';
 import { UserData } from '@/models/userModel';
+import { format } from 'date-fns';
 
 const router = useRouter();
 
@@ -198,6 +199,11 @@ const goToFaceRegistration = () => {
 
 const catatWaktu = (type: 'IN' | 'OUT') => {
     router.push(`/menu/absensi/pencatatan-waktu/${type.toLowerCase()}`);
+};
+
+const formatTime = (dateTimeString): string => {
+  if (!dateTimeString) return '--:--';
+  return format(new Date(dateTimeString), 'HH:mm');
 };
 
 
