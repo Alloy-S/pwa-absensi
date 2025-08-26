@@ -35,7 +35,6 @@ export interface AbsensiBoronganReq {
 
 export interface ItemBorongan {
   ton_normal: number;
-  ton_lembur: number;
   type: string;
   user_id: string;
   harga_id: string;

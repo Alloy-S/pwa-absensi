@@ -62,7 +62,7 @@
                             class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg p-2.5">
                             <option disabled value="">-- Pilih Jenis Borongan --</option>
                             <option v-for="harga in boronganHargaList" :key="harga.id" :value="harga.id">{{ harga.nama
-                            }}
+                                }}
                                 ({{ formatCurrency(harga.harga_normal) }}/ton)</option>
                         </select>
                     </div>
@@ -98,18 +98,13 @@
                 <h3 class="text-lg font-semibold text-gray-700 mb-2">Daftar Absensi untuk Disimpan</h3>
                 <div class="bg-white p-4 rounded-lg shadow-md">
                     <DataTable :value="attendanceList" responsiveLayout="scroll">
-                        <Column field="userName" header="Karyawan"></Column>
+                        <Column field="username" header="Karyawan"></Column>
                         <Column field="type" header="Tipe"></Column>
-                        <Column field="hargaName" header="Jenis Pekerjaan"></Column>
-                        <!-- <Column header="Tonase">
-                            <template #body="slotProps">
-                                {{ slotProps.data.ton_normal }}
-                            </template>
-</Column> -->
+                        <Column field="harga_name" header="Jenis Pekerjaan"></Column>
                         <Column header="Pendapatan">
                             <template #body="slotProps">
-                                <span class="font-semibold text-blue-600">{{ formatCurrency(slotProps.data.totalHarga)
-                                    }}</span>
+                                <span class="font-semibold text-blue-600">{{ formatCurrency(slotProps.data.total_harga)
+                                }}</span>
                             </template>
                         </Column>
                         <Column header="Aksi">
@@ -155,11 +150,13 @@ import { HargaHarianBorongan } from '@/models/hargaHarianBorongan';
 import { AbsensiBoronganReq, ItemBorongan } from '@/models/absensiBoronganModel';
 import { fetchUserbyPic } from '@/services/userService';
 import { fetchAllHarga } from '@/services/hargaHarianBorongan';
+import { v4 as uuidv4 } from "uuid";
 
 interface AttendanceEntry extends ItemBorongan {
-    userName: string;
-    hargaName: string;
-    totalHarga: number;
+    username: string;
+    harga_name: string;
+    total_harga: number;
+    grup_id?: string;
 }
 
 const router = useRouter();
@@ -183,7 +180,11 @@ const harianHargaList = computed(() => hargaList.value.filter(h => h.type === 'H
 const boronganHargaList = computed(() => hargaList.value.filter(h => h.type === 'Borongan'));
 const supirHargaList = computed(() => hargaList.value.filter(h => h.type === 'Supir'));
 const totalAmount = computed(() => {
-    return attendanceList.value.reduce((sum, item) => sum + (item.totalHarga || 0), 0);
+    return attendanceList.value.reduce((sum, item) => {
+        const itemTotal = Number(item.total_harga) || 0;
+
+        return sum + itemTotal;
+    }, 0);
 });
 
 const fetchInitialData = async () => {
@@ -222,10 +223,10 @@ const addToTable = () => {
         const user = userList.value.find(u => u.id === entryForm.value.user_id);
         const harga = hargaList.value.find(h => h.id === entryForm.value.harga_id);
         attendanceList.value.push({
-            user_id: user.id, userName: user.fullname, type: type,
-            harga_id: harga.id, hargaName: harga.nama,
-            ton_normal: 1, ton_lembur: 0,
-            totalHarga: harga.harga_normal,
+            user_id: user.id, username: user.fullname, type: type,
+            harga_id: harga.id, harga_name: harga.nama,
+            ton_normal: 1,
+            total_harga: harga.harga_normal,
         });
     } else if (type === 'Borongan') {
         if (!entryForm.value.harga_id || entryForm.value.ton_total <= 0 || entryForm.value.selected_user_ids.length === 0) {
@@ -238,13 +239,16 @@ const addToTable = () => {
         const pricePerUser = totalGroupPrice / userCount;
         const tonPerUser = parseFloat((entryForm.value.ton_total / userCount).toFixed(2));
 
+        const grupId = uuidv4();
+
         entryForm.value.selected_user_ids.forEach(userId => {
             const user = userList.value.find(u => u.id === userId);
             attendanceList.value.push({
-                user_id: user.id, userName: user.fullname, type: 'Borongan',
-                harga_id: harga.id, hargaName: harga.nama,
-                ton_normal: tonPerUser, ton_lembur: 0,
-                totalHarga: pricePerUser,
+                user_id: user.id, username: user.fullname, type: 'Borongan',
+                harga_id: harga.id, harga_name: harga.nama,
+                ton_normal: tonPerUser,
+                total_harga: pricePerUser,
+                grup_id: grupId,
             });
         });
     }
@@ -252,7 +256,14 @@ const addToTable = () => {
 };
 
 const removeEntry = (index: number) => {
-    attendanceList.value.splice(index, 1);
+    const itemToRemove = attendanceList.value[index];
+
+    if (itemToRemove.type !== 'Borongan') {
+        attendanceList.value.splice(index, 1);
+        return;
+    } else {
+        attendanceList.value = attendanceList.value.filter(item => item.grup_id !== itemToRemove.grup_id);
+    }
 };
 
 const saveData = async () => {
@@ -268,7 +279,6 @@ const saveData = async () => {
             details: attendanceList.value.map(item => ({
                 user_id: item.user_id, type: item.type, harga_id: item.harga_id,
                 ton_normal: Number(item.ton_normal) || 0,
-                ton_lembur: Number(item.ton_lembur) || 0,
             }))
         };
         await createApprovalBoronganApi(payload);

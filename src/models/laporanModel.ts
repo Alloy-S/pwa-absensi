@@ -52,6 +52,7 @@ export interface HeaderUpahItem {
 export interface UpahBorongan {
     nip: string;
     nama: string;
+    jabatan: string;
     upah: UpahItem[];
     total_upah: number;
 }

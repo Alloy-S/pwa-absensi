@@ -94,7 +94,8 @@
                         <p class="mt-2 mb-4 text-lg font-semibold">Data Kontak</p>
                         <div class="mb-6">
                             <label for="telepon"
-                                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nomor Telepon <span class="text-red-500">(wajib untuk tipe karyawan bulanan)</span></label>
+                                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nomor Telepon <span
+                                    class="text-red-500">(wajib untuk tipe karyawan bulanan)</span></label>
                             <input type="text" id="telepon" v-model="user.data_kontak.no_telepon"
                                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                         </div>
@@ -163,9 +164,15 @@
 
                         <div class="mb-6">
                             <label for="jadwal-kerja"
-                                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Jadwal Kerja</label>
+                                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Jadwal
+                                Kerja</label>
                             <ModelSelect id="jadwal-kerja" :options="jadwalKerjaList"
                                 v-model="user.data_karyawan.jadwal_kerja_id" placeholder="Pilih Shift Kerja" />
+                            <button v-if="user.data_karyawan.jadwal_kerja_id" type="button"
+                                @click="user.data_karyawan.jadwal_kerja_id = null"
+                                class="text-sm text-blue-600 hover:underline mt-2">
+                                Hapus Pilihan
+                            </button>
                         </div>
 
                         <div class="mb-6">
@@ -185,19 +192,26 @@
                                 Gaji</label>
                             <ModelSelect id="grup-gaji" :options="grupGajiList"
                                 v-model="user.data_karyawan.grup_gaji_id" placeholder="Pilih Grup Gaji" />
+                            <button v-if="user.data_karyawan.grup_gaji_id" type="button"
+                                @click="user.data_karyawan.grup_gaji_id = null"
+                                class="text-sm text-blue-600 hover:underline mt-2">
+                                Hapus Pilihan
+                            </button>
                         </div>
 
                         <div class="mb-6">
                             <label for="gaji-pokok" class="block mb-2 text-sm font-medium text-gray-900">Gaji
                                 Pokok</label>
-                            <input id="gaji-pokok" v-model="user.data_karyawan.gaji_pokok" type="number" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" />
+                            <input id="gaji-pokok" v-model="user.data_karyawan.gaji_pokok" type="number"
+                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" />
                         </div>
 
                         <div class="mb-6">
                             <label for="tipe-karyawan"
                                 class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Mode Pengenalan
                                 Wajah<span class="text-red-600">*</span></label>
-                            <select id="tipe-karyawan" v-model="user.data_karyawan.face_recognition_mode" required disabled
+                            <select id="tipe-karyawan" v-model="user.data_karyawan.face_recognition_mode" required
+                                disabled
                                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                 <option selected>Pilih salah satu</option>
                                 <option value="NORMAL">Normal</option>
@@ -213,7 +227,8 @@
                             <button type="button" @click="goBack"
                                 class="w-full text-red-500 hover:text-white border border-red-600 hover:bg-red-500 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 dark:border-red-500 dark:text-red-500 dark:hover:text-white dark:hover:bg-red-500 dark:focus:ring-red-600">Batal</button>
                             <button type="submit" :disabled="loading"
-                                class="w-full text-white bg-blue-500 hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"><i v-if="loading" class="fa-solid fa-spinner animate-spin mr-2"></i> Simpan</button>
+                                class="w-full text-white bg-blue-500 hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"><i
+                                    v-if="loading" class="fa-solid fa-spinner animate-spin mr-2"></i> Simpan</button>
                         </div>
                     </div>
                 </form>
@@ -281,6 +296,10 @@ onMounted(() => {
 
 watch(() => user.value.data_karyawan.jabatan_id, async (_oldValue, _newValue) => {
 
+    if (user.value.data_karyawan.jabatan_id == null) {
+        return;
+    }
+
     const repsonse = await fetchPosiblePIC(user.value.data_karyawan.jabatan_id);
 
     userPosiblePIC.value = repsonse.map(item => {
@@ -340,7 +359,7 @@ const createKaryawan = async () => {
     loading.value = true;
     user.value.phone = user.value.data_kontak.no_telepon;
 
-    errors.value = validateUserField(user.value)    
+    errors.value = validateUserField(user.value)
 
 
     console.log(errors)
@@ -348,17 +367,24 @@ const createKaryawan = async () => {
     if (errors.value.length == 0) {
         user.value.data_pribadi.tgl_lahir = format(user.value.data_pribadi.tgl_lahir, 'yyyy-MM-dd')
         user.value.data_karyawan.tgl_gabung = format(user.value.data_karyawan.tgl_gabung, 'yyyy-MM-dd')
-        const response = await addKaryawan(user.value);
+        try {
+            const response = await addKaryawan(user.value);
 
-        if (response.status === 201) {
-            toast.success("Success Add New Karyawan")
-            setTimeout(() => {
-                loading.value = false;
-                router.replace('/admin/karyawan');
-            }, 1500);
+            if (response.status === 201) {
+                toast.success("Success Add New Karyawan")
+                setTimeout(() => {
+                    loading.value = false;
+                    router.replace('/admin/karyawan');
+                }, 1500);
+            }
+        } catch (error) {
+            toast.error("Gagal menambah Karyawan")
         }
+
     } else {
         ModalMandatoryfield.value = true;
     }
+
+    loading.value = false;
 }
 </script>

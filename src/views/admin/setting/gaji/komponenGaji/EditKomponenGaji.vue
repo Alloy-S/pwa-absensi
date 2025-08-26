@@ -17,7 +17,7 @@
                             <div>
                                 <label for="kom_kode" class="block mb-2 text-sm font-medium text-gray-900">Kode
                                     Komponen<span class="text-red-600">*</span></label>
-                                <input v-model="form.kom_kode" type="text" id="kom_kode" required
+                                <input v-model="form.kom_kode" type="text" id="kom_kode" required maxlength="5"
                                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
                             </div>
 

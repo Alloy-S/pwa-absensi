@@ -11,8 +11,19 @@
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
 
         <div class="bg-white p-4 rounded-xl shadow border">
-          <p class="text-gray-500 text-sm">Total Karyawan Aktif</p>
-          <h2 class="text-2xl font-bold text-slate-800">{{ totalUsers.total_active_users }}</h2>
+          <p class="text-gray-500 text-sm">Status Masuk Hari ini</p>
+          <h2 class="text-2xl font-bold" :class="attendanceSummary.libur ? 'text-red-600' : 'text-green-600'">{{
+            attendanceSummary.libur ? 'Libur' :'Masuk' }}</h2>
+        </div>
+
+        <div class="bg-white p-4 rounded-xl shadow border">
+          <p class="text-gray-500 text-sm">Total Karyawan Bulanan</p>
+          <h2 class="text-2xl font-bold text-slate-800">{{ totalUsers.user_bulanan }}</h2>
+        </div>
+
+        <div class="bg-white p-4 rounded-xl shadow border">
+          <p class="text-gray-500 text-sm">Total Karyawan Harian</p>
+          <h2 class="text-2xl font-bold text-slate-800">{{ totalUsers.user_harian }}</h2>
         </div>
 
 
@@ -24,7 +35,7 @@
 
         <div class="bg-white p-4 rounded-xl shadow border">
           <p class="text-gray-500 text-sm">Terlambat Hari Ini</p>
-          <h2 class="text-2xl font-bold text-amber-500">{{ attendanceSummary.terlambat }}</h2>
+          <h2 class="text-2xl font-bold text-amber-500">{{ attendanceSummary.datang_terlambat }}</h2>
         </div>
 
 
@@ -36,7 +47,7 @@
 
         <div class="bg-white p-4 rounded-xl shadow border">
           <p class="text-gray-500 text-sm">Terlambat & Pulang Cepat</p>
-          <h2 class="text-2xl font-bold text-orange-500">{{ attendanceSummary.terlambat_pulang_cepat }}</h2>
+          <h2 class="text-2xl font-bold text-orange-500">{{ attendanceSummary.datang_terlambat_pulang_cepat }}</h2>
         </div>
 
 
@@ -76,12 +87,14 @@ import { fetchTodayAttendaceSummary, fetchTotalUsers } from '@/services/dashboar
 import type { TodayAttendaceSummary, TotalUsers } from '@/models/dashboardAdminModel';
 
 const attendanceSummary = ref<TodayAttendaceSummary>({
-  hadir: 0, terlambat: 0, pulang_cepat: 0,
-  terlambat_pulang_cepat: 0, izin: 0, alpha: 0,
+  libur: false,
+  hadir: 0, datang_terlambat: 0, pulang_cepat: 0,
+  datang_terlambat_pulang_cepat: 0, izin: 0, alpha: 0,
 });
 
 const totalUsers = ref<TotalUsers>({
-  total_active_users: 0,
+  user_bulanan: 0,
+  user_harian: 0,
 });
 
 let intervalId: number | undefined;
@@ -101,9 +114,9 @@ const chartData = computed(() => {
   ];
   const data = [
     attendanceSummary.value.hadir,
-    attendanceSummary.value.terlambat,
+    attendanceSummary.value.datang_terlambat,
     attendanceSummary.value.pulang_cepat,
-    attendanceSummary.value.terlambat_pulang_cepat,
+    attendanceSummary.value.datang_terlambat_pulang_cepat,
     attendanceSummary.value.izin,
     attendanceSummary.value.alpha,
   ];

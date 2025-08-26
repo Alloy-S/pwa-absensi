@@ -50,6 +50,7 @@
                         <tr>
                             <th class="px-4 py-3 border text-left">NIP</th>
                             <th class="px-4 py-3 border text-left">Nama</th>
+                            <th class="px-4 py-3 border text-left">Jabatan</th>
                             <th v-for="header in dateHeaders" :key="header.date" class="px-4 py-3 border">
                                 {{ header.day }} <br> {{ formatDateForHeader(header.date) }}
                             </th>
@@ -60,6 +61,7 @@
                         <tr v-for="item in laporanList" :key="item.nip" class="bg-white border-b hover:bg-gray-50">
                             <td class="px-4 py-2 border font-medium text-gray-900 text-left">{{ item.nip }}</td>
                             <td class="px-4 py-2 border font-medium text-gray-900 text-left">{{ item.nama }}</td>
+                            <td class="px-4 py-2 border font-medium text-gray-900 text-left">{{ item.jabatan }}</td>
                             <td v-for="header in dateHeaders" :key="header.date" class="px-4 py-2 border text-right">
                                 {{ formatCurrency(getUpahFromDate(item.upah, header.date)) }}
                             </td>
@@ -159,8 +161,8 @@ const exportToExcel = async () => {
     isExporting.value = true;
     try {
         const params = {
-            "start-date": filters.startDate,
-            "end-date": filters.endDate,
+            "start-date": format(filters.startDate, 'yyyy-MM-dd'),
+            "end-date": format(filters.endDate, 'yyyy-MM-dd'),
         };
         const response = await ExportUpahBorongan(params);
 
