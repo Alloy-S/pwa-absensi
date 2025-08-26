@@ -219,6 +219,14 @@
                             </select>
                         </div>
 
+                        <div class=" mb-6">
+                            <label for="tgl-resign"
+                                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Tanggal
+                                Resign/Keluar</label>
+                            <DatePicker v-model="(user.data_karyawan.tgl_resign as any)" dateFormat="dd/mm/yy"
+                                class="w-full" />
+                        </div>
+
                     </div>
                     <div class="flex justify-end">
                         <div class="w-1/3 flex">
@@ -408,6 +416,9 @@ const submitUpdateKaryawan = async () => {
     if (errors.value.length == 0) {
         user.value.data_pribadi.tgl_lahir = format(user.value.data_pribadi.tgl_lahir, 'yyyy-MM-dd')
         user.value.data_karyawan.tgl_gabung = format(user.value.data_karyawan.tgl_gabung, 'yyyy-MM-dd')
+        if (user.value.data_karyawan.tgl_resign) {
+            user.value.data_karyawan.tgl_resign = format(user.value.data_karyawan.tgl_resign, 'yyyy-MM-dd')
+        }
         try {
             const response = await updateKaryawan(route.params.id as string, user.value);
 

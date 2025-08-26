@@ -17,6 +17,7 @@ export interface DataKaryawan {
   user_pic_id: string;
   user_pic_name: string;
   grup_gaji_id: string;
+  tgl_resign?: string;
 }
 
 export interface DataPribadi {
