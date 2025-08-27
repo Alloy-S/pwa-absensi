@@ -1,24 +1,25 @@
 <template>
     <div class="w-screen h-screen flex bg-slate-100 overflow-hidden">
-        
+
         <div class="min-w-72 h-screen sticky top-0 bg-white shadow-lg">
             <KeepAlive>
                 <SideBar />
             </KeepAlive>
         </div>
 
-        
+
         <div class="flex flex-col flex-1 h-screen min-w-0">
-            
+
             <nav class="bg-white border-gray-200 dark:bg-gray-900 sticky top-0 z-50 shadow-md">
                 <div class="max-w-screen-xl flex flex-wrap items-center justify-end mx-auto p-4">
                     <div class="flex items-center md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse">
-                        <button type="button" @click="toggleDropdown"
+                        <p class="mr-3 font-semibold">{{ user.fullname }}</p>
+                        <!-- <button type="button" @click="toggleDropdown"
                             class="flex text-sm bg-gray-800 rounded-full md:me-0 focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600"
                             id="user-menu-button">
                             <img class="w-8 h-8 rounded-full" src="@/assets/profile.jpg" alt="user photo" />
                         </button>
-                        
+
                         <div v-show="isDropdownOpen" ref="isDropdownRef"
                             class="z-50 my-4 text-base list-none bg-white divide-y divide-gray-100 rounded-lg shadow-lg dark:bg-gray-700 dark:divide-gray-600 absolute right-4 top-10 mt-2"
                             id="user-dropdown">
@@ -34,7 +35,7 @@
                                         out</a>
                                 </li>
                             </ul>
-                        </div>
+                        </div> -->
                     </div>
                 </div>
             </nav>
@@ -49,11 +50,13 @@
 
 <script setup lang="ts">
 import SideBar from '@/components/admin/sidebar.vue'
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 import { onClickOutside } from "@vueuse/core";
+import { UserData } from '@/models/userModel';
 
 const isDropdownOpen = ref(false)
 const isDropdownRef = ref(null)
+const user = ref<UserData>({ fullname: '', userRole: '', username: '-' })
 
 const toggleDropdown = () => {
     isDropdownOpen.value = !isDropdownOpen.value
@@ -61,6 +64,17 @@ const toggleDropdown = () => {
 
 onClickOutside(isDropdownRef, () => {
     isDropdownOpen.value = false
+});
+
+onMounted(() => {
+    const userDataString = localStorage.getItem('user_data');
+    if (userDataString) {
+        try {
+            user.value = JSON.parse(userDataString);
+        } catch (e) {
+            console.error("Gagal parsing data pengguna dari localStorage:", e);
+        }
+    }
 });
 </script>
 

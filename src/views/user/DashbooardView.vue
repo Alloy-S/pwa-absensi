@@ -137,7 +137,7 @@ import { format } from 'date-fns';
 const router = useRouter();
 
 const loading = ref(true);
-const user = ref<UserData>({ fullname: 'Pengguna', userRole: 'User', username: '-' });
+const user = ref<UserData>({ fullname: '', userRole: '', username: '-' });
 const attendanceToday = ref<CheckTodayAttendanceRes | null>(null);
 const announcements = ref<Pengumuman[]>([]);
 const approvals = ref<ApprovalItem[]>([]);

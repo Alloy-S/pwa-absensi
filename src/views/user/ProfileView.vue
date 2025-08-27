@@ -77,7 +77,7 @@ import { useRouter } from 'vue-router';
 import { UserData } from '@/models/userModel';
 
 const router = useRouter();
-const user = ref<UserData>({ fullname: 'Pengguna', userRole: 'User', username: '-' });
+const user = ref<UserData>({ fullname: '', userRole: '', username: '-' });
 
 onMounted(() => {
     const userDataString = localStorage.getItem('user_data');

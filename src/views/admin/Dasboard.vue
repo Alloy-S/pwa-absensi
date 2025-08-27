@@ -4,7 +4,7 @@
 
       <div class="mt-4">
         <h1 class="text-3xl font-semibold text-slate-800">Dashboard Admin</h1>
-        <p class="text-slate-600 text-sm mt-1">Selamat datang kembali 👋 Data diperbarui otomatis setiap menit.</p>
+        <p class="text-slate-600 text-sm mt-1">Selamat datang kembali 👋</p>
       </div>
 
 

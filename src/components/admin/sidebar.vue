@@ -385,7 +385,7 @@
                                 class="flex items-center w-full p-2 text-base font-normal text-gray-600 transition duration-75 group hover:bg-gray-100 border-l-4 border-transparent hover:border-blue-600 pl-14">
                                 Grup Gaji</RouterLink>
                         </li>
-                       
+
                     </ul>
                 </li>
                 <li>
@@ -431,7 +431,15 @@
                         <span class="ml-2 text-sm tracking-wide truncate">Menuju Aplikasi Absensi</span>
                     </RouterLink>
                 </li>
-
+                <li>
+                    <a @click="logout" 
+                        class="relative flex flex-row items-center hover:cursor-pointer h-11 transition duration-150 ease-in-out focus:outline-none hover:bg-gray-50 text-gray-600 hover:text-gray-800 border-l-4 border-transparent hover:border-blue-600 pr-6">
+                        <span class="inline-flex justify-center items-center ml-4">
+                            <i class="fas fa-sign-out-alt"></i>
+                        </span>
+                        <span class="ml-2 text-sm tracking-wide truncate">Logout</span>
+                    </a>
+                </li>
 
             </ul>
             <div class="mb-32"></div>
@@ -443,7 +451,10 @@
 import { ref, onMounted, nextTick } from "vue";
 import { RouterLink } from 'vue-router';
 import { useAdminSidebarStore } from '@/stores/adminsSidebarStore';
+import { hitLogout } from '@/services/authService';
+import { useRouter } from 'vue-router';
 
+const router = useRouter();
 const sidebarRef = ref<HTMLElement | null>(null);
 const sidebarStore = useAdminSidebarStore();
 
@@ -461,7 +472,14 @@ onMounted(() => {
     });
 });
 
+const logout = async () => {
+    console.log('Logging out...');
 
+    await hitLogout()
+
+    localStorage.clear();
+    router.replace('/login');
+};
 
 const dropdownKarywan = () => {
     sidebarStore.toggleIsKarywanOpen();
