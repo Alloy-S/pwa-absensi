@@ -21,7 +21,6 @@
                     <div v-if="isHoliday" class="text-center py-8">
                         <i class="fa-solid fa-mug-saucer text-5xl text-blue-500 mb-4"></i>
                         <p class="text-xl font-semibold text-gray-700">Hari Libur</p>
-                        <p class="text-gray-500">Nikmati waktu istirahat Anda.</p>
                     </div>
 
                     

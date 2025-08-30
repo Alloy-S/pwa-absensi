@@ -93,7 +93,7 @@
                             <CardApproval v-for="approval in approvals" :key="approval.approval_id"
                                 :approval="approval" />
                         </div>
-                        <button @click="router.push('/menu/approval')"
+                        <button v-if="user.userRole.includes('hrd') || user.userRole.includes('admin')" @click="router.push('/menu/approval')"
                             class="mt-3 w-full py-2 border-2 rounded-md text-blue-500 border-blue-500 hover:text-white hover:bg-blue-500 transition font-semibold">
                             Lihat Semua Persetujuan
                         </button>

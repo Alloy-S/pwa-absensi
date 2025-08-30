@@ -8,11 +8,13 @@
                 <h1 class="text-lg font-semibold">Absensi {{ isCheckIn ? 'Masuk' : 'Keluar' }}</h1>
 
                 <div class="relative w-40 h-40 mx-auto">
-                    <div v-if="isCompressing" class="w-full h-full flex items-center justify-center rounded-full bg-gray-100">
+                    <div v-if="isCompressing"
+                        class="w-full h-full flex items-center justify-center rounded-full bg-gray-100">
                         <i class="fa-solid fa-spinner fa-spin text-3xl text-gray-500"></i>
                     </div>
                     <div v-else class="w-full h-full">
-                        <img v-if="photo" :src="photo" class="w-full h-full rounded-full border border-gray-300 object-cover" />
+                        <img v-if="photo" :src="photo"
+                            class="w-full h-full rounded-full border border-gray-300 object-cover" />
                         <div v-else class="w-full h-full flex items-center justify-center rounded-full">
                             <img src="@/assets/person.svg" class="border-2 border-slate-500 rounded-full" />
                         </div>
@@ -30,9 +32,12 @@
                 <div class="p-2 border rounded-md bg-gray-100">
                     <p><strong>Lokasi:</strong> {{ location.status }}</p>
                     <p v-if="location.coords">📍 {{ location.coords.latitude }}, {{ location.coords.longitude }}</p>
+                    <div class="flex justify-center items-center mt-2">
+                        <a @click="openMapModal" class="text-blue-500 hover:cursor-pointer text-center">Lihat Lokasi</a>
+                    </div>
                 </div>
 
-                
+
                 <button @click="submitAttendance" :disabled="!photo || loading"
                     class="w-full px-4 py-2 font-semibold text-white bg-blue-500 rounded-md hover:bg-blue-700 disabled:bg-gray-300 disabled:cursor-not-allowed">
                     <span v-if="loading">Mengirim...</span>
@@ -40,6 +45,13 @@
                 </button>
             </div>
         </div>
+        <Dialog header="Preview Lokasi" v-model:visible="isMapModal" modal
+            :style="{ width: '90vw', maxWidth: '600px' }">
+            <iframe v-if="location.coords"
+                :src="`https://maps.google.com/maps?q=${location.coords.latitude},${location.coords.longitude}&z=15&output=embed`"
+                width="100%" height="450" style="border:0;" loading="lazy">
+            </iframe>
+        </Dialog>
     </BasePageNoNav>
 </template>
 
@@ -51,6 +63,7 @@ import WebCamUI from '@/components/user/WebCamUI.vue';
 import { useRouter, useRoute } from 'vue-router';
 import { toast } from 'vue3-toastify';
 import { submitAttendanceApi } from '@/services/attendanceService';
+import Dialog from 'primevue/dialog';
 
 const router = useRouter();
 const route = useRoute();
@@ -63,6 +76,16 @@ const isCameraOpen = ref(false);
 const isCompressing = ref(false);
 const loading = ref(false);
 
+const isMapModal = ref(false);
+
+const openMapModal = () => {
+    if (location.value.coords) {
+        isMapModal.value = true;
+    } else {
+        toast.error("Lokasi belum ditemukan untuk ditampilkan di peta.");
+    }
+}
+
 const getLocation = () => {
     if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(
@@ -72,9 +95,6 @@ const getLocation = () => {
                     coords: {
                         latitude: pos.coords.latitude,
                         longitude: pos.coords.longitude
-                        // data mock untuk site A
-                        // latitude: -7.349732,
-                        // longitude: 110.510053
                     }
                 };
             },
