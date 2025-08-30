@@ -130,10 +130,10 @@ const getRiwayatPenggajian = async () => {
         const params: RiwayatPenggajianParams = {
             page: lazyParams.value.page,
             size: lazyParams.value.rows,
-            "periode-start": filters["periode-start"] ? format(new Date(filters["periode-start"]), 'yyyy-MM-dd') : null,
-            "periode-end": filters["periode-end"] ? format(new Date(filters["periode-end"]), 'yyyy-MM-dd') : null,
+            "periode-start": filters.value["periode-start"] ? format(new Date(filters.value["periode-start"]), 'yyyy-MM-dd') : null,
+            "periode-end": filters.value["periode-end"] ? format(new Date(filters.value["periode-end"]), 'yyyy-MM-dd') : null,
             status: filters.value.status && filters.value.status !== 'all' ? filters.value.status : null,
-            "grup-gaji": filters['grup-gaji'] || null,
+            "grup-gaji": filters.value['grup-gaji'] || null,
         };
 
         const response = await fetchRiwayatPenggajianPagination(params);

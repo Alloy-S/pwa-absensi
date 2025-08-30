@@ -49,17 +49,19 @@ const formatDate = (dateString: string) => {
 };
 
 const goToDetail = () => {
-    let path = '/menu/approval';
+    let path = '';
     const type = props.approval.tipe_approval.toLowerCase();
 
     if (type.includes('izin')) {
-        path = `/menu/izin/${props.approval.approval_id}`;
+        path = `/menu/absensi/izin`;
     } else if (type.includes('lembur')) {
-        path = `/menu/lembur/${props.approval.approval_id}`;
+        path = `/menu/absensi/lembur`;
     } else if (type.includes('koreksi')) {
-        path = `/menu/koreksi/${props.approval.approval_id}`;
+        path = `/menu/absensi/koreksi-kehadiran`;
     } else if (type.includes('reimburse')) {
-        path = `/menu/reimburse/${props.approval.approval_id}`;
+        path = `/menu/reimburse`;
+    } else if (type.includes('absensi borongan')) {
+        path = `/menu/absensi/borongan`;
     }
     
     router.push(path);
