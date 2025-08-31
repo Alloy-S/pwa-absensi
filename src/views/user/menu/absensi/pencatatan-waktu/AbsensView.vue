@@ -87,6 +87,11 @@ const openMapModal = () => {
 }
 
 const getLocation = () => {
+    const options = {
+        enableHighAccuracy: true,
+        timeout: 10000,
+        maximumAge: 0
+    };
     if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(
             (pos) => {
@@ -101,7 +106,8 @@ const getLocation = () => {
             () => {
                 location.value.status = 'Gagal mengambil lokasi';
                 toast.error("Gagal mendapatkan lokasi. Pastikan GPS aktif dan Anda memberikan izin.");
-            }
+            },
+            options
         );
     } else {
         location.value.status = 'Geolocation tidak didukung';
