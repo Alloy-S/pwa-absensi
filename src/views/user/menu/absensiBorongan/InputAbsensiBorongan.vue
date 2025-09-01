@@ -74,13 +74,16 @@
                     <div>
                         <label class="block mb-2 text-sm font-medium text-gray-700">Pilih Karyawan (Centang yang
                             ikut)</label>
-                        <div class="max-h-40 overflow-y-auto border rounded-lg p-2 space-y-1">
+                        <div class="max-h-52 overflow-y-auto border rounded-lg p-2 space-y-1">
                             <div v-for="user in userList" :key="user.id" class="flex items-center">
-                                <input :id="'user-' + user.id" type="checkbox" :value="user.id"
-                                    v-model="entryForm.selected_user_ids"
-                                    class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500">
-                                <label :for="'user-' + user.id" class="ms-2 text-sm font-medium text-gray-900">{{
-                                    user.fullname }}</label>
+                                <div @click="entryForm.selected_user_ids.includes(user.id) ? entryForm.selected_user_ids = entryForm.selected_user_ids.filter(id => id !== user.id) : entryForm.selected_user_ids.push(user.id)" 
+                                    class="w-full mb-2 p-2 border rounded-md">
+                                    <input :id="'user-' + user.id" type="checkbox" :value="user.id"
+                                        v-model="entryForm.selected_user_ids"
+                                        class="w-5 h-5 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500">
+                                    <label :for="'user-' + user.id" class="ms-2 text-sm font-medium text-gray-900">{{
+                                        user.fullname }}</label>
+                                </div>
                             </div>
                         </div>
                     </div>
