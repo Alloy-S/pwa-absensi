@@ -40,3 +40,8 @@ export const ExportRiwayatPenggajian = async (
   );
   return response.data;
 };
+
+export const deleteRiwayatPenggajianById = async (id: string) => {
+  const response = await api.delete(`/riwayat-penggajian/${id}`);
+  return response;
+};

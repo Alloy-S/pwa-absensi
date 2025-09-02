@@ -1,5 +1,6 @@
 <template>
     <BasePage>
+        <ConfirmDialog></ConfirmDialog>
         <div class="my-5 flex justify-between items-center">
             <p class="text-3xl font-semibold text-slate-800">Riwayat Penggajian</p>
         </div>
@@ -69,6 +70,8 @@
                                 class="font-medium text-blue-600 hover:underline cursor-pointer">View</a>
                             <a @click="exportToExcel(slotProps.data.id)"
                                 class="ml-2 font-medium text-green-600 hover:underline cursor-pointer">Export</a>
+                            <a @click="confirmDelete(slotProps.data.id)"
+                                class="ml-2 font-medium text-red-600 hover:underline cursor-pointer">Delete</a>
                         </div>
                     </template>
                 </Column>
@@ -92,12 +95,15 @@ import Column from 'primevue/column';
 import DatePicker from 'primevue/datepicker';
 import { format } from 'date-fns';
 import { RiwayatPenggajianPaginationItem, RiwayatPenggajianParams } from '@/models/riwayatPenggajianModel';
-import { ExportRiwayatPenggajian, fetchRiwayatPenggajianPagination } from '@/services/riwayatPenggajianService';
+import { deleteRiwayatPenggajianById, ExportRiwayatPenggajian, fetchRiwayatPenggajianPagination } from '@/services/riwayatPenggajianService';
 import { GrupGaji } from '@/models/GrupGajiModel';
 import { fetchAllGrupGaji } from '@/services/GrupGajiService';
 import { toast } from 'vue3-toastify';
+import { useConfirm } from "primevue/useconfirm";
+import ConfirmDialog from 'primevue/confirmdialog';
 
 const router = useRouter();
+const confirm = useConfirm();
 
 const RiwayatPenggajianList = ref<RiwayatPenggajianPaginationItem[]>([]);
 const loading = ref(false);
@@ -145,6 +151,28 @@ const getRiwayatPenggajian = async () => {
         loading.value = false;
     }
 };
+
+const deleteRiwayatPenggajian = async (id: string) => {
+    try {
+        await deleteRiwayatPenggajianById(id);
+        toast.success("Riwayat penggajian berhasil dihapus.");
+        getRiwayatPenggajian();
+    } catch (error) {
+        console.error("Gagal menghapus riwayat penggajian.");
+    }
+};
+
+const confirmDelete = (id: string) => {
+    confirm.require({
+        message: 'Apakah Anda yakin ingin menghapus riwayat penggajian ini?',
+        header: 'Konfirmasi Hapus',
+        icon: 'fa-solid fa-triangle-exclamation',
+        acceptLabel: 'Ya, Hapus',
+        rejectLabel: 'Batal',
+        acceptClass: 'p-button-danger',
+        accept: () => deleteRiwayatPenggajian(id),
+    });
+}
 
 const base64ToBlob = (base64: string, contentType: string = ''): Blob => {
     const byteCharacters = atob(base64);
