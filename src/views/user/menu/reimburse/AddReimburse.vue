@@ -24,18 +24,18 @@
                             <div class="space-y-3">
                                 <div>
                                     <label class="block text-sm font-medium text-gray-600">Nama Barang /
-                                        Deskripsi</label>
+                                        Deskripsi<span class="text-red-600">*</span></label>
                                     <input v-model="item.nama" type="text" required
                                         class="mt-1 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5" />
                                 </div>
                                 <div class="grid grid-cols-2 gap-4">
                                     <div>
-                                        <label class="block text-sm font-medium text-gray-600">Jumlah</label>
+                                        <label class="block text-sm font-medium text-gray-600">Jumlah<span class="text-red-600">*</span></label>
                                         <input v-model.number="item.jumlah" type="number" required min="1"
                                             class="mt-1 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5" />
                                     </div>
                                     <div>
-                                        <label class="block text-sm font-medium text-gray-600">Harga Satuan</label>
+                                        <label class="block text-sm font-medium text-gray-600">Harga Satuan<span class="text-red-600">*</span></label>
                                         <input v-model.number="item.harga" type="number" required min="0"
                                             class="mt-1 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5" />
                                     </div>
@@ -57,7 +57,7 @@
 
 
                 <div>
-                    <label class="block mb-2 text-sm font-medium text-gray-700">Upload Bukti Foto</label>
+                    <label class="block mb-2 text-sm font-medium text-gray-700">Upload Bukti Foto<span class="text-red-600">*</span></label>
                     <div class="mt-2 flex justify-center rounded-lg border border-dashed border-gray-900/25 px-6 py-10">
                         <div class="text-center">
                             <i class="fa-solid fa-image text-4xl text-gray-300"></i>

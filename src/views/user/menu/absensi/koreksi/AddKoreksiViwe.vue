@@ -10,7 +10,7 @@
 
 
                 <div class="relative">
-                    <label for="tanggal" class="block mb-2 text-sm font-medium text-gray-700">Tanggal Kehadiran</label>
+                    <label for="tanggal" class="block mb-2 text-sm font-medium text-gray-700">Tanggal Kehadiran<span class="text-red-600">*</span></label>
                     <DatePicker v-model="(form.date as any)" model-type="yyyy-mm-dd" :enable-time-picker="false"
                         dateFormat="dd/mm/yy" class="w-full" @update:model-value="checkExistingAttendance" />
                 </div>
@@ -18,7 +18,7 @@
 
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
                     <div class="relative">
-                        <label for="waktuMasuk" class="block mb-2 text-sm font-medium text-gray-700">Waktu Masuk</label>
+                        <label for="waktuMasuk" class="block mb-2 text-sm font-medium text-gray-700">Waktu Masuk<span class="text-red-600">*</span></label>
                         <div class="absolute inset-y-0 start-0 top-8 flex items-center ps-3.5 pointer-events-none">
                             <i class="fa-regular fa-clock text-gray-500"></i>
                         </div>
@@ -27,7 +27,7 @@
                     </div>
                     <div class="relative">
                         <label for="waktuPulang" class="block mb-2 text-sm font-medium text-gray-700">Waktu
-                            Pulang</label>
+                            Pulang<span class="text-red-600">*</span></label>
                         <div class="absolute inset-y-0 start-0 top-8 flex items-center ps-3.5 pointer-events-none">
                             <i class="fa-regular fa-clock text-gray-500"></i>
                         </div>
@@ -107,6 +107,11 @@ const checkExistingAttendance = async () => {
 };
 
 const submitKoreksi = async () => {
+    if (!form.value.date) {
+        toast.error("Tanggal kehadiran harus diisi.");
+        return;
+    }
+
     if (form.value.time_in && form.value.time_out && new Date(form.value.time_out) <= new Date(form.value.time_in)) {
         toast.error("Waktu pulang harus setelah waktu masuk.");
         return;

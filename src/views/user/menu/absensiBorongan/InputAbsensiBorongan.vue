@@ -8,7 +8,7 @@
 
 
             <div class="mb-5">
-                <label for="main-date" class="block mb-2 text-sm font-medium text-gray-700">Tanggal Absensi</label>
+                <label for="main-date" class="block mb-2 text-sm font-medium text-gray-700">Tanggal Absensi<span class="text-red-600">*</span></label>
                 <DatePicker v-model="(formDate as any)" dateFormat="dd/mm/yy" class="w-full" />
             </div>
 
@@ -18,7 +18,7 @@
 
 
                 <div>
-                    <label class="block mb-2 text-sm font-medium text-gray-700">Tipe Pekerjaan</label>
+                    <label class="block mb-2 text-sm font-medium text-gray-700">Tipe Pekerjaan<span class="text-red-600">*</span></label>
                     <select v-model="entryForm.type" @change="resetEntryDetails"
                         class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5">
                         <option value="Harian">Harian</option>
@@ -31,7 +31,7 @@
                 <div v-if="entryForm.type === 'Harian' || entryForm.type === 'Supir'" class="space-y-4 pt-4 border-t">
                     <div class="mb-5">
                         <label for="karyawan" class="block mb-2 text-sm font-medium text-gray-700">Pilih
-                            Karyawan</label>
+                            Karyawan<span class="text-red-600">*</span></label>
                         <select v-model="entryForm.user_id" id="karyawan"
                             class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg p-2.5">
                             <option disabled value="">-- Pilih Karyawan --</option>
@@ -41,7 +41,7 @@
                     </div>
                     <div class="mb-5">
                         <label for="jenis-pekerjaan-single" class="block mb-2 text-sm font-medium text-gray-700">Jenis
-                            Pekerjaan</label>
+                            Pekerjaan<span class="text-red-600">*</span></label>
                         <select v-model="entryForm.harga_id" id="jenis-pekerjaan-single"
                             class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg p-2.5">
                             <option disabled value="">-- Pilih Jenis Pekerjaan --</option>
@@ -57,7 +57,7 @@
                 <div v-if="entryForm.type === 'Borongan'" class="space-y-4 pt-4 border-t">
                     <div class="mb-5">
                         <label for="jenis-pekerjaan" class="block mb-2 text-sm font-medium text-gray-700">Jenis
-                            Pekerjaan</label>
+                            Pekerjaan<span class="text-red-600">*</span></label>
                         <select v-model="entryForm.harga_id" id="jenis-pekerjaan"
                             class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg p-2.5">
                             <option disabled value="">-- Pilih Jenis Borongan --</option>
@@ -67,13 +67,13 @@
                         </select>
                     </div>
                     <div class="mb-5">
-                        <label for="total-ton" class="block mb-2 text-sm font-medium text-gray-700">Total Tonase</label>
+                        <label for="total-ton" class="block mb-2 text-sm font-medium text-gray-700">Total Tonase/adukan<span class="text-red-600">*</span></label>
                         <input type="number" v-model="entryForm.ton_total" placeholder="Total Tonase" id="total-ton"
                             class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg p-2.5">
                     </div>
                     <div>
                         <label class="block mb-2 text-sm font-medium text-gray-700">Pilih Karyawan (Centang yang
-                            ikut)</label>
+                            ikut)<span class="text-red-600">*</span></label>
                         <div class="max-h-52 overflow-y-auto border rounded-lg p-2 space-y-1">
                             <div v-for="user in userList" :key="user.id" class="flex items-center">
                                 <div @click="entryForm.selected_user_ids.includes(user.id) ? entryForm.selected_user_ids = entryForm.selected_user_ids.filter(id => id !== user.id) : entryForm.selected_user_ids.push(user.id)" 

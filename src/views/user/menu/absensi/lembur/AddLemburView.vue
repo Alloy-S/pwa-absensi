@@ -9,7 +9,7 @@
                 
                 
                 <div class="relative">
-                    <label for="date-start" class="block mb-2 text-sm font-medium text-gray-700">Waktu Lembur Mulai</label>
+                    <label for="date-start" class="block mb-2 text-sm font-medium text-gray-700">Waktu Lembur Mulai<span class="text-red-600">*</span></label>
                     <div class="absolute inset-y-0 start-0 top-8 flex items-center ps-3.5 pointer-events-none">
                         <i class="fa-regular fa-clock text-gray-500"></i>
                     </div>
@@ -20,7 +20,7 @@
 
                 
                 <div class="relative">
-                    <label for="date-end" class="block mb-2 text-sm font-medium text-gray-700">Waktu Lembur Selesai</label>
+                    <label for="date-end" class="block mb-2 text-sm font-medium text-gray-700">Waktu Lembur Selesai<span class="text-red-600">*</span></label>
                      <div class="absolute inset-y-0 start-0 top-8 flex items-center ps-3.5 pointer-events-none">
                         <i class="fa-regular fa-clock text-gray-500"></i>
                     </div>
@@ -31,7 +31,7 @@
                 
                 
                 <div>
-                    <label for="keterangan" class="block mb-2 text-sm font-medium text-gray-700">Keterangan / Alasan Lembur</label>
+                    <label for="keterangan" class="block mb-2 text-sm font-medium text-gray-700">Keterangan / Alasan Lembur<span class="text-red-600">*</span></label>
                     <textarea id="keterangan" v-model="form.keterangan" required
                         class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 min-h-[120px]"
                         placeholder="Contoh: Menyelesaikan laporan bulanan."

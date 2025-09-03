@@ -9,22 +9,22 @@
 
                 <div class="relative">
                     <label for="tanggal-mulai" class="block mb-2 text-sm font-medium text-gray-700">Tanggal Izin
-                        Mulai</label>
+                        Mulai<span class="text-red-600">*</span></label>
 
-                    <DatePicker v-model="(form.tgl_izin_start as any)" dateFormat="dd/mm/yy" class="w-full" />
+                    <DatePicker v-model="(form.tgl_izin_start as any)" dateFormat="dd/mm/yy" required class="w-full" />
                 </div>
 
 
                 <div class="relative">
                     <label for="tanggal-selesai" class="block mb-2 text-sm font-medium text-gray-700">Tanggal Izin
-                        Selesai</label>
+                        Selesai<span class="text-red-600">*</span></label>
                     
                     <DatePicker v-model="(form.tgl_izin_end as any)" dateFormat="dd/mm/yy" class="w-full" />
                 </div>
 
 
                 <div>
-                    <label for="jenisIzin" class="block mb-2 text-sm font-medium text-gray-700">Jenis Izin</label>
+                    <label for="jenisIzin" class="block mb-2 text-sm font-medium text-gray-700">Jenis Izin<span class="text-red-600">*</span></label>
                     <select id="jenisIzin" v-model="form.jenis_izin_id" required
                         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
                         <option disabled value="">Pilih jenis izin</option>
@@ -90,7 +90,10 @@ const getJenisIzin = async () => {
 };
 
 const submitIzin = async () => {
-    if (!form.value.tgl_izin_start && !form.value.tgl_izin_end) toast.error("Tanggal Wajib Diisi");
+    if (!form.value.tgl_izin_start || !form.value.tgl_izin_end) {
+        toast.error("Tanggal Wajib Diisi");
+        return;
+    }
 
     form.value.tgl_izin_start = format(form.value.tgl_izin_start, 'yyyy-MM-dd')
     form.value.tgl_izin_end = format(form.value.tgl_izin_end, 'yyyy-MM-dd')
