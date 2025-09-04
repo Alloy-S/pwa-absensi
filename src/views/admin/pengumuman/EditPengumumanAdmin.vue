@@ -13,7 +13,7 @@
         <div v-else class="flex flex-col lg:flex-row lg:space-x-5">
        
           <div class="flex-[7] space-y-5">
-            <div class="bg-white p-5 rounded-md shadow-md space-y-4">
+            <div class="bg-white p-5 rounded-md shadow-md max-w-4xl space-y-4">
               <div>
                 <label class="block mb-2 text-sm font-medium text-gray-900">Judul Pengumuman<span
                     class="text-red-600">*</span></label>
@@ -21,7 +21,7 @@
                   class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" />
               </div>
   
-              <div>
+              <div class="">
                 <label class="block mb-2 text-sm font-medium text-gray-900">Isi Pengumuman<span
                     class="text-red-600">*</span></label>
                 <Editor v-model="form.isi" editorStyle="height: 320px" />

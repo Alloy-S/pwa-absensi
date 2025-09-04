@@ -8,7 +8,7 @@
       <div class="flex flex-col lg:flex-row lg:space-x-5">
        
         <div class="flex-[7] space-y-5">
-          <div class="bg-white p-5 rounded-md shadow-md space-y-4">
+          <div class="bg-white p-5 rounded-md shadow-md max-w-4xl space-y-4">
             <div>
               <label class="block mb-2 text-sm font-medium text-gray-900">Judul Pengumuman<span
                   class="text-red-600">*</span></label>
