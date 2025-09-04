@@ -25,7 +25,7 @@
                             <DatePicker v-model="(libur.date as any)" dateFormat="dd/mm/yy" class="w-full" />
                         </div>
 
-                        <div class="mb-6">
+                        <!-- <div class="mb-6">
                             <label for="type" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Tipe
                                 Libur<span class="text-red-600">*</span></label>
                             <select id="type" v-model="libur.is_holiday"
@@ -34,7 +34,7 @@
                                 <option value="true">Libur nasional</option>
                                 <option value="false">Cuti bersama</option>
                             </select>
-                        </div>
+                        </div> -->
                     </div>
 
 
@@ -93,7 +93,7 @@ const hitUpdateLibur = async () => {
 
     const request = {
         date: libur.value.date,
-        is_holiday: libur.value.is_holiday,
+        is_holiday: true,
         description: libur.value.description
     }
 

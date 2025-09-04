@@ -36,11 +36,11 @@
                 <Column field="date" header="Tanggal"></Column>
                 <Column field="description" header="Event"></Column>
 
-                <Column header="Type">
+                <!-- <Column header="Type">
                     <template #body="slotProps">
                         <span>{{ slotProps.data.is_holiday ? 'Libur' : 'Cuti Bersama' }}</span>
                     </template>
-                </Column>
+                </Column> -->
 
                 <Column header="Action" style="min-width: 12rem">
                     <template #body="slotProps">
