@@ -1,6 +1,7 @@
 export interface AbsensiBorongan {
   id: string;
   date: string;
+  absensi_date: string;
   status: string;
   total: number;
   user: User;

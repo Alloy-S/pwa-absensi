@@ -36,6 +36,11 @@
                         {{ formatDateTime(slotProps.data.created_date) }}
                     </template>
                 </Column>
+                <Column field="absensi_date" header="Tanggal Absensi" style="width: 20%">
+                    <template #body="slotProps">
+                        {{ formatDate(slotProps.data.absensi_date) }}
+                    </template>
+                </Column>
                  <Column field="total" header="Total Biaya" style="width: 25%">
                     <template #body="slotProps">
                         <span class="font-semibold">{{ formatCurrency(slotProps.data.total) }}</span>
@@ -134,6 +139,11 @@ const goToDetail = (id: string) => {
 const formatDateTime = (dateString: string) => {
     if (!dateString) return '-';
     return new Date(dateString).toLocaleString('id-ID', { day: 'numeric', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit' });
+};
+
+const formatDate = (dateString: string) => {
+    if (!dateString) return '-';
+    return new Date(dateString).toLocaleString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
 };
 
 const formatCurrency = (value: number) => {
