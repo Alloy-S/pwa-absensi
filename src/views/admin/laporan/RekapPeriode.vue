@@ -105,7 +105,7 @@
 
 
             <Paginator v-if="totalRecords > 0" :rows="lazyParams.rows" :totalRecords="totalRecords"
-                :first="lazyParams.first" @page="onPage" :rowsPerPageOptions="[2, 10, 25, 50]" class="mt-4"></Paginator>
+                :first="lazyParams.first" @page="onPage" :rowsPerPageOptions="[10, 25, 50]" class="mt-4"></Paginator>
         </div>
         <div class="mb-16"></div>
     </BasePage>
