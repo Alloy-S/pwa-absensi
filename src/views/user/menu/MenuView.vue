@@ -41,7 +41,7 @@ onMounted(() => {
 });
 
 const visibleButtons = computed(() => {
-    const canApprove = userRoles.value.some(role => ['Admin', 'HRD'].includes(role));
+    const canApprove = userRoles.value.some(role => ['Admin', 'PIC'].includes(role));
 
     return allButtons.value.filter(button => {
         if (!button.requiredRole) {

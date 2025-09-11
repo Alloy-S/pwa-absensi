@@ -4,7 +4,7 @@ import DatangTerlambat from "@/views/admin/laporan/DatangTerlambat.vue";
 import CutiPribadi from "@/views/admin/laporan/CutiPribadi.vue";
 import UpahBorongan from "@/views/admin/laporan/UpahBorongan.vue";
 
-const adminRoles = ["Admin", "HRD"];
+const adminRoles = ["Admin", "PIC"];
 
 export const adminRoutes = [
   {

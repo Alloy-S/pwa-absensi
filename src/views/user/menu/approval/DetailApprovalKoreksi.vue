@@ -159,7 +159,7 @@ const handleAction = async (action: 'approve' | 'reject') => {
 };
 
 const formatDate = (dateString: string) => new Date(dateString).toLocaleDateString('id-ID', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
-const formatTime = (dateTimeString?: string) => dateTimeString ? new Date(dateTimeString).toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }) : '--:--';
+const formatTime = (dateTimeString?: string) => dateTimeString ? new Date(dateTimeString).toLocaleTimeString('id-ID', {year: 'numeric', month: 'long', day: 'numeric',  hour: '2-digit', minute: '2-digit' }) : '--:--';
 const statusColor = (status: string) => {
     const s = status.toLowerCase();
     if (s.includes('menunggu')) return 'border-yellow-500';
