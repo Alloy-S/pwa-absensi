@@ -10,7 +10,8 @@
 
 
                 <div class="relative">
-                    <label for="tanggal" class="block mb-2 text-sm font-medium text-gray-700">Tanggal Kehadiran<span class="text-red-600">*</span></label>
+                    <label for="tanggal" class="block mb-2 text-sm font-medium text-gray-700">Tanggal Kehadiran<span
+                            class="text-red-600">*</span></label>
                     <DatePicker v-model="(form.date as any)" model-type="yyyy-mm-dd" :enable-time-picker="false"
                         dateFormat="dd/mm/yy" class="w-full" @update:model-value="checkExistingAttendance" />
                 </div>
@@ -18,21 +19,16 @@
 
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
                     <div class="relative">
-                        <label for="waktuMasuk" class="block mb-2 text-sm font-medium text-gray-700">Waktu Masuk<span class="text-red-600">*</span></label>
-                        <div class="absolute inset-y-0 start-0 top-8 flex items-center ps-3.5 pointer-events-none">
-                            <i class="fa-regular fa-clock text-gray-500"></i>
-                        </div>
-                        <input id="waktuMasuk" type="datetime-local" v-model="form.time_in" required
-                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5" />
+                        <label for="waktuMasuk" class="block mb-2 text-sm font-medium text-gray-700">Waktu Masuk<span
+                                class="text-red-600">*</span></label>
+                        <DatePicker v-model="timeInPicker" timeOnly id="waktuMasuk" hourFormat="24"
+                            class="w-full" placeholder="HH:mm" :disabled="!form.date" />
                     </div>
                     <div class="relative">
                         <label for="waktuPulang" class="block mb-2 text-sm font-medium text-gray-700">Waktu
                             Pulang<span class="text-red-600">*</span></label>
-                        <div class="absolute inset-y-0 start-0 top-8 flex items-center ps-3.5 pointer-events-none">
-                            <i class="fa-regular fa-clock text-gray-500"></i>
-                        </div>
-                        <input id="waktuPulang" type="datetime-local" v-model="form.time_out" required
-                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5" />
+                        <DatePicker v-model="timeOutPicker" timeOnly id="waktuKeluar" hourFormat="24"
+                            class="w-full" placeholder="HH:mm" :disabled="!form.date" />
                     </div>
                 </div>
 
@@ -73,12 +69,18 @@ const isSubmitting = ref(false);
 const offlineStore = useOfflineStore();
 
 const form = ref<KoreksiReq>(initKoreksiReq());
+const timeInPicker = ref<Date | null>(null);
+const timeOutPicker = ref<Date | null>(null);
+
+
 
 const checkExistingAttendance = async () => {
     if (!form.value.date) return;
 
     if (!offlineStore.isOnline) {
         toast.info("Anda sedang offline, data absensi sebelumnya tidak dapat dimuat.");
+        timeInPicker.value = null;
+        timeOutPicker.value = null;
         return;
     }
 
@@ -89,20 +91,27 @@ const checkExistingAttendance = async () => {
 
         if (existingData) {
             toast.info("Data absensi ditemukan. Form diisi otomatis.");
-            if (existingData.time_in) {
-                form.value.time_in = existingData.time_in.replace(' ', 'T').substring(0, 16);
-            }
-            if (existingData.time_out) {
-                form.value.time_out = existingData.time_out.replace(' ', 'T').substring(0, 16);
-            }
+
+            timeInPicker.value = null;
+            timeOutPicker.value = null;
+
             form.value.absensi_id = existingData.absensi_id;
+
+            if (existingData.time_in) {
+                timeInPicker.value = new Date(existingData.time_in);
+            }
+
+            if (existingData.time_out) {
+                timeOutPicker.value = new Date(existingData.time_out);
+            }
+            
         }
     } catch (error: any) {
         console.error("Gagal memeriksa absensi:", error);
 
         form.value.absensi_id = null;
-        form.value.time_in = '';
-        form.value.time_out = '';
+        timeInPicker.value = null;
+        timeOutPicker.value = null;
     }
 };
 
@@ -112,20 +121,29 @@ const submitKoreksi = async () => {
         return;
     }
 
-    if (form.value.time_in && form.value.time_out && new Date(form.value.time_out) <= new Date(form.value.time_in)) {
+    if (timeInPicker.value && timeOutPicker.value && timeOutPicker.value <= timeInPicker.value) {
         toast.error("Waktu pulang harus setelah waktu masuk.");
+        return;
+    }
+
+    if (!timeInPicker.value || !timeOutPicker.value) {
+        toast.error("Waktu masuk dan waktu pulang wajib diisi.");
         return;
     }
 
     isSubmitting.value = true;
     try {
+        
+        const dateString = format(form.value.date, 'yyyy-MM-dd');
+
         const payload: KoreksiReq = {
             ...form.value,
-            time_in: form.value.time_in.replace('T', ' '),
-            time_out: form.value.time_out.replace('T', ' '),
+            date: dateString,
+            time_in: dateString + " " + format(timeInPicker.value, 'HH:mm'),
+            time_out: dateString + " " + format(timeOutPicker.value, 'HH:mm'),
         };
 
-        payload.date = format(form.value.date, 'yyyy-MM-dd')
+        console.log(payload);
 
         await offlineStore.submitKoreksi(payload);
 

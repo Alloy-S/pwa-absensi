@@ -35,6 +35,8 @@ api.interceptors.response.use(
         toast.error(error.response.data.message);
       } else if (status === 404) {
         toast.error(error.response.data.message);
+      } else if (status === 403) {
+        toast.error(error.response.data.message);
       } else if (status === 500) {
         toast.error("Terjadi kesalahan pada server");
       } else {
