@@ -3,7 +3,7 @@ module.exports = {
   darkMode: "class",
   content: [
     "./index.html",
-    "./src/**/*.{js,ts,jsx,tsx,vue}", // Sesuaikan dengan proyekmu
+    "./src/**/*.{js,ts,jsx,tsx,vue}",
     "./node_modules/flowbite/**/*.js"
   ],
   theme: {

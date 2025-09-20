@@ -75,6 +75,7 @@ const location = ref<{ status: string; coords: { latitude: number; longitude: nu
 const isCameraOpen = ref(false);
 const isCompressing = ref(false);
 const loading = ref(false);
+const failedAttempts = ref(0);
 
 const isMapModal = ref(false);
 
@@ -179,9 +180,13 @@ const submitAttendance = async () => {
         }
     } catch (error) {
         console.error('Gagal submit absensi:', error);
+        failedAttempts.value += 1;
     } finally {
         toast.remove(toastId);
         loading.value = false;
+        if (failedAttempts.value >= 3) {
+            toast.error(`Gagal melakukan absensi. Silahkan ajukan koreksi absensi atau coba kembali.`);
+        }
     }
 };
 
