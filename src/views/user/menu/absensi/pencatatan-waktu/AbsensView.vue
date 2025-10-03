@@ -7,6 +7,8 @@
             <div class="p-4 space-y-4">
                 <h1 class="text-lg font-semibold">Absensi {{ isCheckIn ? 'Masuk' : 'Keluar' }}</h1>
 
+                
+
                 <div class="relative w-40 h-40 mx-auto">
                     <div v-if="isCompressing"
                         class="w-full h-full flex items-center justify-center rounded-full bg-gray-100">
@@ -24,6 +26,18 @@
                         class="absolute bottom-0 left-3/4 transform -translate-x-1/2 bg-blue-400 text-white p-2 rounded-full hover:bg-blue-500">
                         <img src="@/assets/camera.svg" alt="Ambil Foto" />
                     </button>
+                </div>
+
+                <div class="bg-blue-50 border border-blue-200 text-blue-800 text-sm rounded-lg p-3 text-left flex items-start space-x-3">
+                    <i class="fa-solid fa-circle-info mt-1"></i>
+                    <div>
+                        <p class="font-semibold">Petunjuk Pengambilan Foto:</p>
+                        <ul class="list-disc list-inside mt-1">
+                            <li>Pastikan wajah Anda terlihat jelas.</li>
+                            <li>Lepaskan masker dan kacamata.</li>
+                            <li>Pastikan pencahayaan cukup terang.</li>
+                        </ul>
+                    </div>
                 </div>
 
                 <textarea v-model="note" class="w-full min-h-[100px] p-2 border rounded-md"
