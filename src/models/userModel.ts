@@ -42,6 +42,7 @@ export interface DataKontak {
 export interface User {
   id: string;
   fullname: string;
+  no_ktp: string;
   username: string;
   phone: string;
   password: string;
@@ -145,6 +146,7 @@ export function initUser(): User {
   return {
     id: "",
     fullname: "",
+    no_ktp: "",
     username: "",
     phone: "",
     password: "",
