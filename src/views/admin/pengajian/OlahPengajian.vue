@@ -82,7 +82,7 @@
                                             <tr v-for="(rincian, index) in item.rincian" :key="index" class="text-xs">
                                                 <td class="py-1 pr-4">{{ rincian.komponen }}</td>
                                                 <td class="py-1 pr-4">{{ rincian.tipe }}</td>
-                                                <td class="py-1 pr-4">{{ `${rincian.nilai_a} ${rincian.operasi} ${rincian.nilai_b}` }}</td>
+                                                <td class="py-1 pr-4">{{ `${formatCurrency(rincian.nilai_a)} ${rincian.operasi} ${formatCurrency(rincian.nilai_a)}` }}</td>
                                                 <td class="py-1 font-medium text-right">{{
                                                     formatCurrency(rincian.jumlah) }}</td>
                                             </tr>
