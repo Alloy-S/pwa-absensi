@@ -4,11 +4,12 @@
             <p class="text-3xl font-semibold text-slate-800">Riwayat Absensi</p>
         </div>
 
-        
+
         <div class="bg-white p-4 mb-5 rounded-lg shadow-md">
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 items-end">
                 <div>
-                    <label for="search-karyawan" class="block mb-2 text-sm font-medium text-gray-700">Cari Nama Karyawan</label>
+                    <label for="search-karyawan" class="block mb-2 text-sm font-medium text-gray-700">Cari Nama
+                        Karyawan</label>
                     <div class="relative">
                         <span class="absolute inset-y-0 left-0 flex items-center pl-3">
                             <i class="fa-solid fa-magnifying-glass text-gray-400"></i>
@@ -26,7 +27,7 @@
             </div>
         </div>
 
-        
+
         <div class="bg-white p-4 rounded-lg shadow-md">
             <DataTable :value="absensiList" lazy paginator :rows="lazyParams.rows" :rowsPerPageOptions="[5, 10, 20, 50]"
                 :totalRecords="totalRecords" :loading="loading" @page="onPage" v-model:first="lazyParams.first"
@@ -34,14 +35,15 @@
 
                 <Column field="user.fullname" header="Nama Karyawan" style="width: 25%"></Column>
                 <Column field="date" header="Tanggal" style="width: 20%">
-                     <template #body="slotProps">
+                    <template #body="slotProps">
                         {{ formatDate(slotProps.data.date) }}
                     </template>
                 </Column>
                 <Column field="lokasi" header="Lokasi" style="width: 20%"></Column>
                 <Column field="status" header="Status" style="width: 20%">
                     <template #body="slotProps">
-                        <span class="px-2 py-1 text-xs font-medium rounded-full" :class="statusBadgeColor(slotProps.data.status)">
+                        <span class="px-2 py-1 text-xs font-medium rounded-full"
+                            :class="statusBadgeColor(slotProps.data.status)">
                             {{ slotProps.data.status }}
                         </span>
                     </template>
@@ -68,7 +70,7 @@
 
 <script setup lang="ts">
 import { ref, onMounted, watch } from 'vue';
-import { useRouter } from 'vue-router';
+import { useRouter, useRoute } from 'vue-router';
 import BasePage from '@/layouts/admin/BasePage.vue';
 import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
@@ -76,20 +78,22 @@ import { Absensi, AbsensiParams } from '@/models/absensiModel';
 import { fetchHistoryAbsensiAdmin } from '@/services/absensiService';
 
 const router = useRouter();
+const route = useRoute();
 
 const absensiList = ref<Absensi[]>([]);
 const loading = ref(false);
 const totalRecords = ref(0);
 let debounceTimer: any = null;
 
-const searchQuery = ref('');
-const getCurrentMonth = () => {
-    const now = new Date();
-    const year = now.getFullYear();
-    const month = (now.getMonth() + 1).toString().padStart(2, '0');
-    return `${year}-${month}`;
-};
-const selectedMonth = ref(getCurrentMonth());
+const searchQuery = ref(
+    Array.isArray(route.query.nama) ? route.query.nama[0] : route.query.nama || ''
+);
+
+const selectedMonth = ref(
+    Array.isArray(route.query.bulan)
+        ? route.query.bulan[0]
+        : route.query.bulan || new Date().toISOString().slice(0, 7)
+);
 
 const lazyParams = ref({
     first: 0,
@@ -141,7 +145,15 @@ const statusBadgeColor = (status: string) => {
     return 'bg-gray-100 text-gray-800';
 };
 
-watch([searchQuery, selectedMonth], () => {
+watch([searchQuery, selectedMonth], ([newSearch, newMonth]) => {
+
+    router.replace({ 
+        query: { 
+            nama: newSearch || undefined,
+            bulan: newMonth 
+        } 
+    });
+
     if (debounceTimer) clearTimeout(debounceTimer);
     debounceTimer = setTimeout(() => {
         lazyParams.value.page = 1;

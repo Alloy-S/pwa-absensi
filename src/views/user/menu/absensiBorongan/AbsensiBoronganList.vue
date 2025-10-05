@@ -83,19 +83,28 @@
 import { ref, onMounted, watch } from 'vue';
 import TopHeader from '@/components/user/TopHeader.vue';
 import BasePageNoNav from '@/layouts/user/BasePageNoNav.vue';
-import { useRouter } from 'vue-router';
+import { useRouter, useRoute } from 'vue-router';
 import DataView from 'primevue/dataview';
 import { AbsensiBorongan, AbsensiBoronganParams } from '@/models/absensiBoronganModel';
 import { fetchApprovalBoronganPagination } from '@/services/absensiBoronganService';
 
 const router = useRouter();
+const route = useRoute();
 
 
 const loading = ref(true);
 const boronganList = ref<AbsensiBorongan[]>([]);
 const totalRecords = ref(0);
-const selectedMonth = ref(new Date().toISOString().slice(0, 7));
-const selectedStatus = ref('Menunggu Persetujuan');
+const selectedMonth = ref(
+    Array.isArray(route.query.bulan)
+        ? route.query.bulan[0]
+        : route.query.bulan || new Date().toISOString().slice(0, 7)
+);
+const selectedStatus = ref(
+    Array.isArray(route.query.status)
+        ? route.query.status[0]
+        : route.query.status || 'Menunggu Persetujuan'
+);
 let debounceTimer: any = null;
 
 const lazyParams = ref({
@@ -167,7 +176,14 @@ const onPage = (event: any) => {
 };
 
 
-watch([selectedMonth, selectedStatus], () => {
+watch([selectedMonth, selectedStatus], ([newMonth, newStatus]) => {
+    router.replace({
+        query: {
+            bulan: newMonth,
+            status: newStatus
+        }
+    });
+
     if (debounceTimer) clearTimeout(debounceTimer);
     debounceTimer = setTimeout(() => {
         lazyParams.value.page = 1;

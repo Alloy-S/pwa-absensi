@@ -18,7 +18,6 @@
             <div class="mt-4">
                 <p class="text-sm font-semibold text-gray-700">Riwayat Absensi</p>
 
-                <!-- Mengganti list manual dengan PrimeVue DataView -->
                 <DataView 
                     :value="records" 
                     :lazy="true" 
@@ -69,19 +68,23 @@ import TopAbsensiNavigation from '@/components/user/TopAbsensiNavigation.vue';
 import TopHeader from '@/components/user/TopHeader.vue';
 import BasePageNoNav from '@/layouts/user/BasePageNoNav.vue';
 import { ref, onMounted, watch } from 'vue';
-import { useRouter } from 'vue-router';
+import { useRouter, useRoute } from 'vue-router';
 import DataView from 'primevue/dataview';
 import { Absensi } from '@/models/absensiModel';
 import { fetchRiwayatAbsensiPagination } from '@/services/absensiService';
 
 
 const router = useRouter();
+const route = useRoute();
 
-// State untuk DataView
 const records = ref<Absensi[]>([]); 
 const loading = ref(false);
 const totalRecords = ref(0);
-const selectedMonth = ref<string>(new Date().toISOString().slice(0, 7)); 
+const selectedMonth = ref(
+    Array.isArray(route.query.bulan)
+        ? route.query.bulan[0]
+        : route.query.bulan || new Date().toISOString().slice(0, 7)
+);
 let debounceTimer: any = null;
 
 
@@ -127,7 +130,14 @@ const onPage = (event: any) => {
 };
 
 
-watch(selectedMonth, () => {
+watch(selectedMonth, ([newMonth]) => {
+
+    router.replace({
+        query: {
+            bulan: newMonth
+        }
+    });
+
     if (debounceTimer) clearTimeout(debounceTimer);
     debounceTimer = setTimeout(() => {
         lazyParams.value.page = 1;

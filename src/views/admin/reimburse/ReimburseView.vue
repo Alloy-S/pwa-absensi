@@ -4,7 +4,6 @@
             <p class="text-3xl font-semibold text-slate-800">Riwayat Reimburse</p>
         </div>
 
-        <!-- Filter Section -->
         <div class="bg-white p-4 mb-5 rounded-lg shadow-md">
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 items-end">
                 <div>
@@ -26,7 +25,6 @@
             </div>
         </div>
 
-        <!-- DataTable Section -->
         <div class="bg-white p-4 rounded-lg shadow-md">
             <DataTable :value="reimburseList" lazy paginator :rows="lazyParams.rows" :rowsPerPageOptions="[5, 10, 20, 50]"
                 :totalRecords="totalRecords" :loading="loading" @page="onPage" v-model:first="lazyParams.first"
@@ -72,7 +70,7 @@
 
 <script setup lang="ts">
 import { ref, onMounted, watch } from 'vue';
-import { useRouter } from 'vue-router';
+import { useRouter, useRoute } from 'vue-router';
 import BasePage from '@/layouts/admin/BasePage.vue';
 import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
@@ -80,6 +78,7 @@ import { ReimburseApprovalItem, ReimburseParams } from '@/models/reimburseModel'
 import { fetchHistoryReimburseAdmin } from '@/services/reimburseService';
 
 const router = useRouter();
+const route = useRoute();
 
 const reimburseList = ref<ReimburseApprovalItem[]>([]);
 const loading = ref(false);
@@ -87,14 +86,15 @@ const totalRecords = ref(0);
 let debounceTimer: any = null;
 
 
-const searchQuery = ref('');
-const getCurrentMonth = () => {
-    const now = new Date();
-    const year = now.getFullYear();
-    const month = (now.getMonth() + 1).toString().padStart(2, '0');
-    return `${year}-${month}`;
-};
-const selectedMonth = ref(getCurrentMonth());
+const searchQuery = ref(
+    Array.isArray(route.query.nama) ? route.query.nama[0] : route.query.nama || ''
+);
+
+const selectedMonth = ref(
+    Array.isArray(route.query.bulan)
+        ? route.query.bulan[0]
+        : route.query.bulan || new Date().toISOString().slice(0, 7)
+);
 
 const lazyParams = ref({
     first: 0,
@@ -151,7 +151,14 @@ const statusBadgeColor = (status: string) => {
     return 'bg-gray-100 text-gray-800';
 };
 
-watch([searchQuery, selectedMonth], () => {
+watch([searchQuery, selectedMonth], ([newSearch, newMonth]) => {
+    router.replace({ 
+        query: { 
+            nama: newSearch || undefined,
+            bulan: newMonth 
+        } 
+    });
+    
     if (debounceTimer) clearTimeout(debounceTimer);
     debounceTimer = setTimeout(() => {
         lazyParams.value.page = 1;

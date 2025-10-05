@@ -71,7 +71,7 @@
 
 <script setup lang="ts">
 import { ref, onMounted, watch } from 'vue';
-import { useRouter } from 'vue-router';
+import { useRouter, useRoute } from 'vue-router';
 import BasePage from '@/layouts/admin/BasePage.vue';
 import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
@@ -79,6 +79,7 @@ import { Izin, IzinParams } from '@/models/izinModel';
 import { fetchIzinPaginationAdmin } from '@/services/izinService';
 
 const router = useRouter();
+const route = useRoute();
 
 const izinList = ref<Izin[]>([]);
 const loading = ref(false);
@@ -86,14 +87,16 @@ const totalRecords = ref(0);
 let debounceTimer: any = null;
 
 
-const getCurrentMonth = () => {
-    const now = new Date();
-    const year = now.getFullYear();
-    const month = (now.getMonth() + 1).toString().padStart(2, '0');
-    return `${year}-${month}`;
-};
-const selectedMonth = ref(getCurrentMonth());
-const selectedStatus = ref('Menunggu Persetujuan');
+const selectedMonth = ref(
+    Array.isArray(route.query.bulan)
+        ? route.query.bulan[0]
+        : route.query.bulan || new Date().toISOString().slice(0, 7)
+);
+const selectedStatus = ref(
+    Array.isArray(route.query.status)
+        ? route.query.status[0]
+        : route.query.status || 'Menunggu Persetujuan'
+);
 
 const lazyParams = ref({
     first: 0,
@@ -145,7 +148,14 @@ const statusBadgeColor = (status: string) => {
     return 'bg-gray-100 text-gray-800';
 };
 
-watch([selectedMonth, selectedStatus], () => {
+watch([selectedMonth, selectedStatus], ([newMonth, newStatus]) => {
+    router.replace({ 
+        query: { 
+            bulan: newMonth,
+            status: newStatus, 
+        } 
+    });
+    
     if (debounceTimer) clearTimeout(debounceTimer);
     debounceTimer = setTimeout(() => {
         lazyParams.value.page = 1;

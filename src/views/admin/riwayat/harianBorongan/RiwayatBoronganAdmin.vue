@@ -68,7 +68,7 @@
 
 <script setup lang="ts">
 import { ref, onMounted, watch } from 'vue';
-import { useRouter } from 'vue-router';
+import { useRouter, useRoute } from 'vue-router';
 import BasePage from '@/layouts/admin/BasePage.vue';
 import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
@@ -76,6 +76,7 @@ import { AbsensiBorongan, AbsensiBoronganParams } from '@/models/absensiBorongan
 import { fetchHistoryAbsensiBoronganAdmin } from '@/services/absensiBoronganService';
 
 const router = useRouter();
+const route = useRoute();
 
 const boronganList = ref<AbsensiBorongan[]>([]);
 const loading = ref(false);
@@ -83,14 +84,15 @@ const totalRecords = ref(0);
 let debounceTimer: any = null;
 
 
-const searchQuery = ref('');
-const getCurrentMonth = () => {
-    const now = new Date();
-    const year = now.getFullYear();
-    const month = (now.getMonth() + 1).toString().padStart(2, '0');
-    return `${year}-${month}`;
-};
-const selectedMonth = ref(getCurrentMonth());
+const searchQuery = ref(
+    Array.isArray(route.query.nama) ? route.query.nama[0] : route.query.nama || ''
+);
+
+const selectedMonth = ref(
+    Array.isArray(route.query.bulan)
+        ? route.query.bulan[0]
+        : route.query.bulan || new Date().toISOString().slice(0, 7)
+);
 
 const lazyParams = ref({
     first: 0,
@@ -142,7 +144,14 @@ const statusBadgeColor = (status: string) => {
     return 'bg-gray-100 text-gray-800';
 };
 
-watch([searchQuery, selectedMonth], () => {
+watch([searchQuery, selectedMonth], ([newSearch, newMonth]) => {
+    router.replace({ 
+        query: { 
+            nama: newSearch || undefined,
+            bulan: newMonth 
+        } 
+    });
+    
     if (debounceTimer) clearTimeout(debounceTimer);
     debounceTimer = setTimeout(() => {
         lazyParams.value.page = 1;
