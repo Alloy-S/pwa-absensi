@@ -18,7 +18,8 @@
                     </div>
                     <div>
                         <label for="status-filter" class="text-sm font-semibold text-gray-700">Filter Status</label>
-                        <select v-model="selectedStatus" id="status-filter" class="w-full border-slate-300 p-2 rounded-md bg-white">
+                        <select v-model="selectedStatus" id="status-filter"
+                            class="w-full border-slate-300 p-2 rounded-md bg-white">
                             <option value="all">Semua</option>
                             <option value="Menunggu Persetujuan">Menunggu Persetujuan</option>
                             <option value="Disetujui">Disetujui</option>
@@ -27,31 +28,43 @@
                     </div>
                 </div>
 
-                <DataView
-                    :value="lemburList"
-                    :lazy="true"
-                    :paginator="true"
-                    :rows="lazyParams.rows"
-                    :totalRecords="totalRecords"
-                    :loading="loading"
-                    @page="onPage"
+                <DataView :value="lemburList" :lazy="true" :paginator="true" :rows="lazyParams.rows"
+                    :totalRecords="totalRecords" :loading="loading" @page="onPage"
                     paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink RowsPerPageDropdown"
-                    :rowsPerPageOptions="[5, 10, 20, 50]"
-                    class="mt-3"
-                >
-                    
+                    :rowsPerPageOptions="[5, 10, 20, 50]" class="mt-3">
                     <template #list="slotProps">
-                        <div class="grid grid-cols-1 gap-3">
+                        <div class="grid grid-cols-1 gap-4">
                             <div v-for="(lembur, index) in slotProps.items" :key="index">
-                                <button
-                                    class="w-full flex justify-between items-center bg-white p-4 rounded-lg shadow border-l-4 text-left"
-                                    :class="statusColor(lembur.status)" @click="detailLembur(lembur.id)">
-                                    <div class="flex flex-col items-start">
-                                        <p class="text-sm font-semibold">Tanggal: {{ formatDate(lembur.created_date) }}</p>
-                                        
+                                <div @click="detailLembur(lembur.id)"
+                                    class="w-full bg-white p-4 rounded-lg shadow-md hover:shadow-lg hover:cursor-pointer transition-shadow duration-300 border-l-4"
+                                    :class="statusColor(lembur.status)">
+                                    <div class="flex justify-between items-center">
+                                        <p class="font-semibold text-gray-800 flex items-center">
+                                            <i class="fa-solid fa-calendar-day text-gray-500 mr-2"></i>
+                                            {{ formatDateWithDay(lembur.date_start) }}
+                                        </p>
+                                        <span class="text-xs font-semibold px-3 py-1 rounded-full whitespace-nowrap"
+                                            :class="statusBadge(lembur.status)">
+                                            {{ lembur.status }}
+                                        </span>
                                     </div>
-                                    <div class="text-sm font-semibold" :class="statusTextColor(lembur.status)">{{ lembur.status }}</div>
-                                </button>
+
+                                    <div class="mt-3 pt-3 border-t border-gray-100 space-y-2">
+                                        <div class="flex items-center text-gray-600">
+                                            <i class="fa-solid fa-clock w-5 text-center text-gray-400"></i>
+                                            <p class="text-sm ml-2 font-medium">
+                                                {{ formatTime(lembur.date_start) }} - {{ formatTime(lembur.date_end) }}
+                                            </p>
+                                        </div>
+                                        <div class="flex items-center text-gray-600">
+                                            <i class="fa-solid fa-user-check w-5 text-center text-gray-400"></i>
+                                            <p class="text-sm ml-2">
+                                                <span class="text-gray-500 text-xs">Approval:</span> {{
+                                                    lembur.approval_user || '-' }}
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </template>
@@ -115,26 +128,34 @@ const getLemburList = async () => {
 
 const statusColor = (status: string) => {
     const s = status.toLowerCase();
-    if (s.includes('Menunggu')) return 'border-yellow-500';
-    if (s.includes('Disetujui')) return 'border-green-500';
-    if (s.includes('Ditolak')) return 'border-red-500';
+    if (s.includes('menunggu')) return 'border-yellow-500';
+    if (s.includes('disetujui')) return 'border-green-500';
+    if (s.includes('ditolak')) return 'border-red-500';
     return 'border-gray-500';
 };
 
-const statusTextColor = (status: string) => {
+const statusBadge = (status: string) => {
     const s = status.toLowerCase();
-    if (s.includes('Menunggu')) return 'text-yellow-600';
-    if (s.includes('Disetujui')) return 'text-green-600';
-    if (s.includes('Ditolak')) return 'text-red-600';
-    return 'text-gray-600';
+    if (s.includes('menunggu')) return 'bg-yellow-100 text-yellow-800';
+    if (s.includes('disetujui')) return 'bg-green-100 text-green-800';
+    if (s.includes('ditolak')) return 'bg-red-100 text-red-800';
+    return 'bg-gray-100 text-gray-800';
 };
 
-const formatDate = (dateStr: string) => {
+const formatTime = (dateTimeStr: string | undefined): string => {
+    if (!dateTimeStr) return '--:--';
+    const date = new Date(dateTimeStr);
+    const hours = date.getHours().toString().padStart(2, '0');
+    const minutes = date.getMinutes().toString().padStart(2, '0');
+
+    return `${hours}:${minutes}`;
+};
+
+const formatDateWithDay = (dateStr: string) => {
     return new Date(dateStr).toLocaleDateString('id-ID', {
-        day: '2-digit', month: 'long', year: 'numeric'
+        weekday: 'long', day: '2-digit', month: 'long', year: 'numeric'
     });
 };
-
 
 const tambahLembur = () => {
     router.push('/menu/absensi/lembur/add');
@@ -169,7 +190,6 @@ onMounted(() => {
 </script>
 
 <style scoped>
-
 :deep(.p-paginator) {
     @apply bg-transparent mt-4 justify-center;
 }

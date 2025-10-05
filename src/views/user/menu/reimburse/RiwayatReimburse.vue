@@ -17,7 +17,8 @@
                     </div>
                     <div>
                         <label for="status-filter" class="text-sm font-semibold text-gray-700">Filter Status</label>
-                        <select v-model="selectedStatus" id="status-filter" class="w-full border-slate-300 p-2 rounded-md bg-white">
+                        <select v-model="selectedStatus" id="status-filter"
+                            class="w-full border-slate-300 p-2 rounded-md bg-white">
                             <option value="all">Semua</option>
                             <option value="Menunggu Persetujuan">Menunggu Persetujuan</option>
                             <option value="Disetujui">Disetujui</option>
@@ -26,31 +27,44 @@
                     </div>
                 </div>
 
-                <DataView
-                    :value="reimburseList"
-                    :lazy="true"
-                    :paginator="true"
-                    :rows="lazyParams.rows"
-                    :totalRecords="totalRecords"
-                    :loading="loading"
-                    @page="onPage"
+                <DataView :value="reimburseList" :lazy="true" :paginator="true" :rows="lazyParams.rows"
+                    :totalRecords="totalRecords" :loading="loading" @page="onPage"
                     paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink RowsPerPageDropdown"
-                    :rowsPerPageOptions="[5, 10, 20, 50]"
-                    class="mt-3"
-                >
-                    
+                    :rowsPerPageOptions="[5, 10, 20, 50]" class="mt-3">
+
                     <template #list="slotProps">
-                        <div class="grid grid-cols-1 gap-3">
+                        <div class="grid grid-cols-1 gap-4">
                             <div v-for="(reimburse, index) in slotProps.items" :key="index">
-                                <button
-                                    class="w-full flex justify-between items-center bg-white p-4 rounded-lg shadow border-l-4 text-left"
-                                    :class="statusColor(reimburse.status)" @click="detailReimburse(reimburse.id)">
-                                    <div class="flex flex-col items-start">
-                                        <p class="text-sm font-semibold">Tanggal: {{ formatDate(reimburse.created_date) }}</p>
-                                        
+                                <div @click="detailReimburse(reimburse.id)"
+                                    class="w-full bg-white p-4 rounded-lg shadow-md hover:shadow-lg hover:cursor-pointer transition-shadow duration-300 border-l-4"
+                                    :class="statusColor(reimburse.status)">
+                                    <div class="flex justify-between items-center pb-3 border-b border-gray-100">
+                                        <p class="text-xl font-bold text-gray-800">
+                                            {{ formatCurrency(reimburse.total) }}
+                                        </p>
+                                        <span class="text-xs font-semibold px-3 py-1 rounded-full whitespace-nowrap"
+                                            :class="statusBadge(reimburse.status)">
+                                            {{ reimburse.status }}
+                                        </span>
                                     </div>
-                                    <div class="text-sm font-semibold" :class="statusTextColor(reimburse.status)">{{ reimburse.status }}</div>
-                                </button>
+
+                                    <div class="mt-3 space-y-2">
+                                        <div class="flex items-center text-gray-600">
+                                            <i class="fa-solid fa-calendar-day w-5 text-center text-gray-400"></i>
+                                            <p class="text-sm ml-2">
+                                                <span class="text-gray-500 text-xs">Diajukan:</span> {{
+                                                formatDate(reimburse.created_date) }}
+                                            </p>
+                                        </div>
+                                        <div class="flex items-center text-gray-600">
+                                            <i class="fa-solid fa-user-check w-5 text-center text-gray-400"></i>
+                                            <p class="text-sm ml-2">
+                                                <span class="text-gray-500 text-xs">Approval:</span> {{
+                                                reimburse.approval_user || '-' }}
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </template>
@@ -113,18 +127,10 @@ const getReimburseList = async () => {
 
 const statusColor = (status: string) => {
     const s = status.toLowerCase();
-    if (s.includes('Menunggu')) return 'border-yellow-500';
-    if (s.includes('Disetujui')) return 'border-green-500';
-    if (s.includes('Ditolak')) return 'border-red-500';
+    if (s.includes('menunggu')) return 'border-yellow-500';
+    if (s.includes('disetujui')) return 'border-green-500';
+    if (s.includes('ditolak')) return 'border-red-500';
     return 'border-gray-500';
-};
-
-const statusTextColor = (status: string) => {
-    const s = status.toLowerCase();
-    if (s.includes('Menunggu')) return 'text-yellow-600';
-    if (s.includes('Disetujui')) return 'text-green-600';
-    if (s.includes('Ditolak')) return 'text-red-600';
-    return 'text-gray-600';
 };
 
 const formatDate = (dateStr: string) => {
@@ -132,6 +138,16 @@ const formatDate = (dateStr: string) => {
         day: '2-digit', month: 'long', year: 'numeric'
     });
 };
+
+const statusBadge = (status: string) => {
+    const s = status.toLowerCase();
+    if (s.includes('menunggu')) return 'bg-yellow-100 text-yellow-800';
+    if (s.includes('disetujui')) return 'bg-green-100 text-green-800';
+    if (s.includes('ditolak')) return 'bg-red-100 text-red-800';
+    return 'bg-gray-100 text-gray-800';
+};
+
+const formatCurrency = (value: number) => new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(value);
 
 
 const tambahReimburse = () => {
@@ -167,7 +183,6 @@ onMounted(() => {
 </script>
 
 <style scoped>
-
 :deep(.p-paginator) {
     @apply bg-transparent mt-4 justify-center;
 }
