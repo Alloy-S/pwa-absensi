@@ -130,7 +130,9 @@ const onPage = (event: any) => {
 };
 
 
-watch(selectedMonth, ([newMonth]) => {
+watch(selectedMonth, (newMonth) => {
+
+    console.log("Bulan dipilih:", newMonth);
 
     router.replace({
         query: {
